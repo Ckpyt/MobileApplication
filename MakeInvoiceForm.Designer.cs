@@ -28,64 +28,88 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.tabControl1.SuspendLayout();
+            this.AllTabs = new System.Windows.Forms.TabControl();
+            this.MakeInvoice = new System.Windows.Forms.TabPage();
+            this.KeywordsTab = new System.Windows.Forms.TabPage();
+            this.CustomersTab = new System.Windows.Forms.TabPage();
+            this.LogsTab = new System.Windows.Forms.TabPage();
+            this.AllTabs.SuspendLayout();
             this.SuspendLayout();
             // 
-            // tabControl1
+            // AllTabs
             // 
-            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.AllTabs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Location = new System.Drawing.Point(0, 0);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.Padding = new System.Drawing.Point(0, 0);
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(807, 456);
-            this.tabControl1.TabIndex = 0;
+            this.AllTabs.Controls.Add(this.MakeInvoice);
+            this.AllTabs.Controls.Add(this.KeywordsTab);
+            this.AllTabs.Controls.Add(this.CustomersTab);
+            this.AllTabs.Controls.Add(this.LogsTab);
+            this.AllTabs.Location = new System.Drawing.Point(0, 0);
+            this.AllTabs.Name = "AllTabs";
+            this.AllTabs.Padding = new System.Drawing.Point(0, 0);
+            this.AllTabs.SelectedIndex = 0;
+            this.AllTabs.Size = new System.Drawing.Size(807, 456);
+            this.AllTabs.TabIndex = 0;
             // 
-            // tabPage1
+            // MakeInvoice
             // 
-            this.tabPage1.Location = new System.Drawing.Point(4, 22);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(799, 430);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "tabPage1";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.MakeInvoice.Location = new System.Drawing.Point(4, 22);
+            this.MakeInvoice.Name = "MakeInvoice";
+            this.MakeInvoice.Padding = new System.Windows.Forms.Padding(3);
+            this.MakeInvoice.Size = new System.Drawing.Size(799, 430);
+            this.MakeInvoice.TabIndex = 0;
+            this.MakeInvoice.Text = "Make invoice";
+            this.MakeInvoice.UseVisualStyleBackColor = true;
             // 
-            // tabPage2
+            // KeywordsTab
             // 
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(692, 279);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "tabPage2";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.KeywordsTab.Location = new System.Drawing.Point(4, 22);
+            this.KeywordsTab.Name = "KeywordsTab";
+            this.KeywordsTab.Padding = new System.Windows.Forms.Padding(3);
+            this.KeywordsTab.Size = new System.Drawing.Size(799, 430);
+            this.KeywordsTab.TabIndex = 1;
+            this.KeywordsTab.Text = "Keywords";
+            this.KeywordsTab.UseVisualStyleBackColor = true;
+            // 
+            // CustomersTab
+            // 
+            this.CustomersTab.Location = new System.Drawing.Point(4, 22);
+            this.CustomersTab.Name = "CustomersTab";
+            this.CustomersTab.Size = new System.Drawing.Size(799, 430);
+            this.CustomersTab.TabIndex = 2;
+            this.CustomersTab.Text = "Customers.";
+            this.CustomersTab.UseVisualStyleBackColor = true;
+            // 
+            // LogsTab
+            // 
+            this.LogsTab.Location = new System.Drawing.Point(4, 22);
+            this.LogsTab.Name = "LogsTab";
+            this.LogsTab.Size = new System.Drawing.Size(799, 430);
+            this.LogsTab.TabIndex = 3;
+            this.LogsTab.Text = "Logs";
+            this.LogsTab.UseVisualStyleBackColor = true;
             // 
             // MakeInvoiceForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.AllTabs);
             this.Name = "MakeInvoiceForm";
             this.Text = "MakeInvoice";
-            this.tabControl1.ResumeLayout(false);
+            this.AllTabs.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabPage1;
-        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TabControl AllTabs;
+        private System.Windows.Forms.TabPage MakeInvoice;
+        private System.Windows.Forms.TabPage KeywordsTab;
+        private System.Windows.Forms.TabPage CustomersTab;
+        private System.Windows.Forms.TabPage LogsTab;
     }
 }
 
