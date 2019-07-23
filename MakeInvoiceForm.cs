@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SHA3.Net;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,6 +13,7 @@ namespace MobileApplication
 {
     public partial class MakeInvoiceForm : Form
     {
+        Sha3 sha;
         public MakeInvoiceForm()
         {
             InitializeComponent();
