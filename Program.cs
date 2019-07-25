@@ -16,7 +16,7 @@ namespace MobileApplication
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MakeInvoiceForm());
+            Application.Run(new MainForm());
         }
     }
 }
