@@ -180,6 +180,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CustomersPage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="CustomersPage.Designer.cs">
+      <DependentUpon>CustomersPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LoginForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LoginForm.Designer.cs">
+      <DependentUpon>LoginForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LogsPage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LogsPage.Designer.cs">
+      <DependentUpon>LogsPage.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -192,13 +210,25 @@
     <Compile Include="MakeInvoicePage.Designer.cs">
       <DependentUpon>MakeInvoicePage.cs</DependentUpon>
     </Compile>
+    <Compile Include="ObjectsPage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="ObjectsPage.Designer.cs">
+      <DependentUpon>ObjectsPage.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="LoginForm.resx">
+      <DependentUpon>LoginForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MakeInvoicePage.resx">
       <DependentUpon>MakeInvoicePage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ObjectsPage.resx">
+      <DependentUpon>ObjectsPage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
