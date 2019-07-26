@@ -43,6 +43,7 @@ namespace MobileApplication
             {
                 Add.Text = "Add";
                 listView1.Items[SelectedPos] = itm;
+                IsSelected = false;
             }
             else
             {
@@ -56,6 +57,10 @@ namespace MobileApplication
         }
 
         private void OnlyDecimalChecker(object sender, EventArgs e)
+        {
+            OnlyDecimalCheckerStatic(sender, e);
+        }
+        public static void OnlyDecimalCheckerStatic(object sender, EventArgs e)
         {
             TextBox sd = sender as TextBox;
             string txt = "";

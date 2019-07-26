@@ -55,6 +55,7 @@
             this.UnitPrice,
             this.Total});
             this.listView1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.listView1.FullRowSelect = true;
             this.listView1.GridLines = true;
             this.listView1.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
             this.listView1.Location = new System.Drawing.Point(0, 101);

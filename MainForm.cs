@@ -41,5 +41,16 @@ namespace MobileApplication
             MakeInvoicePage mkf = new MakeInvoicePage();
             mkf.ShowDialog();
         }
+
+        private void Button2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Button3_Click(object sender, EventArgs e)
+        {
+            CustomersPage page = new CustomersPage();
+            page.ShowDialog();
+        }
     }
 }
