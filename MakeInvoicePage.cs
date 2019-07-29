@@ -60,6 +60,7 @@ namespace MobileApplication
         {
             OnlyDecimalCheckerStatic(sender, e);
         }
+
         public static void OnlyDecimalCheckerStatic(object sender, EventArgs e)
         {
             TextBox sd = sender as TextBox;
@@ -72,13 +73,17 @@ namespace MobileApplication
                 else
                     pos--;
 
-            if (pos >= 0)
+            if (txt.Length > 0)
             {
                 int tmp = Int32.Parse(txt);
                 sd.Text = tmp.ToString();
 
                 sd.SelectionStart = pos;
                 sd.SelectionLength = 0;
+            }
+            else
+            {
+                sd.Text = "0";
             }
         }
 

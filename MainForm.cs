@@ -21,6 +21,7 @@ namespace MobileApplication
         {
 
             InitializeComponent();
+            SQLWorker.GetInstance();
         }
 
         static byte[] ComputeHash(string input)
@@ -44,12 +45,19 @@ namespace MobileApplication
 
         private void Button2_Click(object sender, EventArgs e)
         {
-
+            ObjectsPage page = new ObjectsPage();
+            page.ShowDialog();
         }
 
         private void Button3_Click(object sender, EventArgs e)
         {
             CustomersPage page = new CustomersPage();
+            page.ShowDialog();
+        }
+
+        private void Button4_Click(object sender, EventArgs e)
+        {
+            LogsPage page = new LogsPage();
             page.ShowDialog();
         }
     }
