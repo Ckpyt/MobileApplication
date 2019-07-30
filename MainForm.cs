@@ -15,7 +15,9 @@ namespace MobileApplication
 {
     public partial class MainForm : Form
     {
-       
+
+        public static User currentUser = null;
+
         public MainForm()
         {
             InitializeComponent();
@@ -49,7 +51,7 @@ namespace MobileApplication
 
         private void Button3_Click(object sender, EventArgs e)
         {
-            CustomersPage page = new CustomersPage();
+            UsersPage page = new UsersPage();
             page.ShowDialog();
         }
 

@@ -1,6 +1,6 @@
 ﻿namespace MobileApplication
 {
-    partial class CustomersPage
+    partial class UsersPage
     {
         /// <summary>
         /// Required designer variable.
@@ -46,11 +46,14 @@
             this.CustomersCheckBox = new System.Windows.Forms.CheckBox();
             this.LogsCheckBox = new System.Windows.Forms.CheckBox();
             this.Add = new System.Windows.Forms.Button();
+            this.Id = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.delBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // listView1
             // 
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.Id,
             this.CustName,
             this.Phone,
             this.Rights});
@@ -69,7 +72,7 @@
             // CustName
             // 
             this.CustName.Text = "Name";
-            this.CustName.Width = 111;
+            this.CustName.Width = 88;
             // 
             // Phone
             // 
@@ -220,11 +223,27 @@
             this.Add.UseVisualStyleBackColor = true;
             this.Add.Click += new System.EventHandler(this.Button1_Click);
             // 
-            // CustomersPage
+            // Id
+            // 
+            this.Id.Text = "Id";
+            this.Id.Width = 46;
+            // 
+            // delBtn
+            // 
+            this.delBtn.Location = new System.Drawing.Point(287, 422);
+            this.delBtn.Name = "delBtn";
+            this.delBtn.Size = new System.Drawing.Size(75, 23);
+            this.delBtn.TabIndex = 15;
+            this.delBtn.Text = "Delete";
+            this.delBtn.UseVisualStyleBackColor = true;
+            this.delBtn.Click += new System.EventHandler(this.DelBtn_Click);
+            // 
+            // UsersPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.delBtn);
             this.Controls.Add(this.Add);
             this.Controls.Add(this.LogsCheckBox);
             this.Controls.Add(this.CustomersCheckBox);
@@ -240,8 +259,8 @@
             this.Controls.Add(this.NameBox);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.listView1);
-            this.Name = "CustomersPage";
-            this.Text = "CustomersPage";
+            this.Name = "UsersPage";
+            this.Text = "UsersPage";
             this.SizeChanged += new System.EventHandler(this.ListView1_SizeChanged);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -268,5 +287,7 @@
         private System.Windows.Forms.ColumnHeader CustName;
         private System.Windows.Forms.ColumnHeader Phone;
         private System.Windows.Forms.ColumnHeader Rights;
+        private System.Windows.Forms.ColumnHeader Id;
+        private System.Windows.Forms.Button delBtn;
     }
 }

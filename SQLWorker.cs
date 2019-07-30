@@ -66,17 +66,20 @@ namespace MobileApplication
         }
 
         /// <summary>
-        /// Get all the customers from database
+        /// Get all the users from database
         /// </summary>
         /// <returns></returns>
-        public SortedList<int, Customer> ReadCustomers()
+        public SortedList<int, User> ReadUsers()
+        {
+            SqlCommand comm = new SqlCommand("select * from tblUsers");
+            return GetUsersFromDatabase(comm);
+        }
+
+        SortedList<int, User> GetUsersFromDatabase(SqlCommand comm)
         {
             SqlConnection conn = new SqlConnection(connectingString);
-            SqlCommand comm = new SqlCommand("select * from tblCustomers", conn);
-            SortedList<int, Customer> answ = new SortedList<int, Customer>();
-
-            
-
+            comm.Connection = conn; 
+            SortedList<int, User> answ = new SortedList<int, User>();
             SqlDataReader result = null;
             conn.Open();
 
@@ -85,7 +88,7 @@ namespace MobileApplication
                 result = comm.ExecuteReader();
                 while (result.HasRows && result.Read())
                 {
-                    Customer cust = new Customer();
+                    User cust = new User();
                     cust.ReadSqlResult(result);
                     answ.Add(cust.ID, cust);
                     //Description.Text = descr;
@@ -101,19 +104,15 @@ namespace MobileApplication
         }
 
         /// <summary>
-        /// Update one customer's details
+        /// Read users with a name
         /// </summary>
-        public void UpdateCustomer(Customer cust)
+        /// <param name="name">user's name</param>
+        /// <returns>collection of all the users with the same name</returns>
+        public SortedList<int, User> ReadUser(string name)
         {
-
+            SqlCommand comm = new SqlCommand("select * from tblUsers where(Name=\"" + name + "\")");
+            return GetUsersFromDatabase(comm);
         }
 
-        /// <summary>
-        /// Add a customer to database
-        /// </summary>
-        public void AddCustomer(Customer cust)
-        {
-
-        }
     }
 }

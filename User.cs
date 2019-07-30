@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MobileApplication
 {
-    class Customer
+    public class User
     {
         public int ID;
         //rights into bite system.
@@ -38,9 +38,9 @@ namespace MobileApplication
             return ret;
         }
 
-        public SqlCommand InsertNewCustomer()
+        public SqlCommand InsertNewUser()
         {
-            SqlCommand ret = new SqlCommand("insert into tblCustomers values(@Id, @Name, @Phone, @Rights, @PassHash)");
+            SqlCommand ret = new SqlCommand("insert into tblUsers values(@Id, @Name, @Phone, @Rights, @PassHash)");
             SqlParameter par = new SqlParameter("Id", ID);
             ret.Parameters.Add(par);
             ret = SetParams(ret);
@@ -51,7 +51,7 @@ namespace MobileApplication
 
         public SqlCommand UpdateSqlCommand()
         {
-            SqlCommand ret = new SqlCommand("update tblCustomers set Name=@Name, Phone=@Phone, Rights=@Rights, PassHash=@PassHash where(Id=" + ID.ToString() + ")");
+            SqlCommand ret = new SqlCommand("update tblUsers set Name=@Name, Phone=@Phone, Rights=@Rights, PassHash=@PassHash where(Id=" + ID.ToString() + ")");
             ret = SetParams(ret);
 
             return ret;

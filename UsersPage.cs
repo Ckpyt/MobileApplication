@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -10,26 +11,28 @@ using System.Windows.Forms;
 
 namespace MobileApplication
 {
-    public partial class CustomersPage : Form
+    public partial class UsersPage : Form
     {
-        SortedList<int, Customer> customers;
+        SortedList<int, User> users;
         bool IsSelected = false;
         int SelectedPos = -1;
 
-        public CustomersPage()
+        public UsersPage()
         {
             InitializeComponent();
-            customers = SQLWorker.GetInstance().ReadCustomers();
+            users = SQLWorker.GetInstance().ReadUsers();
             FillListBox();
+            delBtn.Visible = false;
 
         }
 
         private void FillListBox()
         {
-            foreach(var custPair in customers)
+            foreach(var custPair in users)
             {
-                Customer cust = custPair.Value;
-                ListViewItem itm = new ListViewItem(cust.Name);
+                User cust = custPair.Value;
+                ListViewItem itm = new ListViewItem(cust.ID.ToString());
+                itm.SubItems.Add(cust.Name);
                 itm.SubItems.Add(cust.Phone);
                 itm.SubItems.Add(cust.GetStringRights());
                 listView1.Items.Add(itm);
@@ -41,9 +44,9 @@ namespace MobileApplication
             listView1.Height = Height - 219;
         }
 
-        Customer ChangeDetails(int id, string rights)
+        User ChangeDetails(int id, string rights)
         {
-            Customer cust = customers[id];
+            User cust = users[id];
             cust.Name = NameBox.Text;
             cust.Phone = PhoneBox.Text;
             cust.SetStringRights(rights);
@@ -66,6 +69,8 @@ namespace MobileApplication
             PriceCheckBox.Checked = false;
             CustomersCheckBox.Checked = false;
             LogsCheckBox.Checked = false;
+
+            delBtn.Visible = false;
         }
 
         /// <summary>
@@ -73,8 +78,8 @@ namespace MobileApplication
         /// </summary>
         private void Button1_Click(object sender, EventArgs e)
         {
-            ListViewItem itm = new ListViewItem(NameBox.Text);
-            itm.SubItems.Add(PhoneBox.Text);
+            User cust = null;
+
             string rights = "";
             rights += InvoceCheckBox.Checked ?      "I" :"";
             rights += DeviceCheckBox.Checked ?      "D" : "";
@@ -82,25 +87,40 @@ namespace MobileApplication
             rights += CustomersCheckBox.Checked ?   "C" : "";
             rights += LogsCheckBox.Checked ?        "L" : "";
 
-            itm.SubItems.Add(rights);
+
             
             if (IsSelected)
             {
-                Customer cust = ChangeDetails(SelectedPos, rights);
-                listView1.Items[SelectedPos] = itm;
-                IsSelected = false;
+                int id = Int32.Parse(listView1.Items[SelectedPos].Text);
+                cust = ChangeDetails(id, rights);
                 SQLWorker.GetInstance().SqlComm(cust.UpdateSqlCommand);
+            }
+            else
+            {
+                cust = new User();
+                cust.ID = users.Last().Value.ID + 1;
+                users.Add(cust.ID, cust);
+                ChangeDetails(cust.ID, rights);
+
+                SQLWorker.GetInstance().SqlComm(cust.InsertNewUser);
+            }
+
+            ListViewItem itm = new ListViewItem(cust.ID.ToString());
+            itm.SubItems.Add(NameBox.Text);
+            itm.SubItems.Add(PhoneBox.Text);
+            itm.SubItems.Add(rights);
+
+            if (IsSelected)
+            {
+                IsSelected = false;
+                listView1.Items[SelectedPos] = itm;
                 Add.Text = "Add";
             }
             else
             {
-                Customer cust = new Customer();
-                cust.ID = customers.Count;
-                customers.Add(cust.ID, cust);
-                ChangeDetails(cust.ID, rights);
                 listView1.Items.Add(itm);
-                SQLWorker.GetInstance().SqlComm(cust.InsertNewCustomer);
             }
+
 
             CleanFields();
         }
@@ -117,9 +137,9 @@ namespace MobileApplication
                 SelectedPos = lst.SelectedIndices[0];
 
                 var itm = lst.SelectedItems[0];
-                NameBox.Text = itm.Text;
-                PhoneBox.Text = itm.SubItems[1].Text;
-                string rights = itm.SubItems[2].Text;
+                NameBox.Text = itm.SubItems[1].Text;
+                PhoneBox.Text = itm.SubItems[2].Text;
+                string rights = itm.SubItems[3].Text;
                 foreach(char c in rights)
                 {
                     switch (c)
@@ -145,6 +165,7 @@ namespace MobileApplication
                     }
                 }
                 Add.Text = "Edit";
+                delBtn.Visible = true;
             }
             else
             {
@@ -155,6 +176,22 @@ namespace MobileApplication
                     Add.Text = "Add";
                 }
             }
+        }
+
+        private void DelBtn_Click(object sender, EventArgs e)
+        {
+            if (!IsSelected)
+                return;
+
+            string id = listView1.SelectedItems[0].Text;
+
+            SQLWorker.GetInstance().SqlComm(() =>
+            {
+                return new SqlCommand("delete from tblUsers where(ID=" + id + ")");
+            });
+
+            listView1.Clear();
+            FillListBox();
         }
     }
 }
