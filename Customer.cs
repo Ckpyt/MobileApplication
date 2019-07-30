@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,10 +11,81 @@ namespace MobileApplication
     class Customer
     {
         public int ID;
-        //rights used bite system.
+        //rights into bite system.
         int Rights;
         public string Name;
-        public string phone;
+        public string Phone;
+        byte[] PasswordHash;
+
+        /// <summary>
+        /// Set a new password to customer
+        /// </summary>
+        /// <param name="Pass">new password</param>
+        public void SetPassword(string Pass)
+        {
+            PasswordHash = MainForm.ComputeHash(Pass);
+        }
+
+
+        SqlCommand SetParams(SqlCommand ret)
+        {
+
+            ret.Parameters.Add(new SqlParameter("Name", Name));
+            ret.Parameters.Add(new SqlParameter("Phone", Phone));
+            ret.Parameters.Add(new SqlParameter("Rights", Rights));
+            ret.Parameters.Add(new SqlParameter("PassHash", PasswordHash));
+
+            return ret;
+        }
+
+        public SqlCommand InsertNewCustomer()
+        {
+            SqlCommand ret = new SqlCommand("insert into tblCustomers values(@Id, @Name, @Phone, @Rights, @PassHash)");
+            SqlParameter par = new SqlParameter("Id", ID);
+            ret.Parameters.Add(par);
+            ret = SetParams(ret);
+
+            return ret;
+        }
+
+
+        public SqlCommand UpdateSqlCommand()
+        {
+            SqlCommand ret = new SqlCommand("update tblCustomers set Name=@Name, Phone=@Phone, Rights=@Rights, PassHash=@PassHash where(Id=" + ID.ToString() + ")");
+            ret = SetParams(ret);
+
+            return ret;
+        }
+
+        public void ReadSqlResult(SqlDataReader result)
+        {
+            ID = Convert.ToInt32(result[0]);
+            Name = Convert.ToString(result[1]);
+            Phone = Convert.ToString(result[2]);
+            Rights = Convert.ToInt32(result[3]);
+            PasswordHash = result[4] as byte[];
+            Name = SQLWorker.FixString(Name);
+            Phone = SQLWorker.FixString(Phone);
+        }
+
+        /// <summary>
+        /// compare customer password with another one
+        /// </summary>
+        /// <param name="Pass">another password</param>
+        /// <returns>comparison of passwords</returns>
+        public bool ComparePasswords(string Pass)
+        {
+            byte[] passHash = MainForm.ComputeHash(Pass);
+            bool answer = false;
+
+            if (PasswordHash == null || passHash.Length != PasswordHash.Length)
+                return false;
+
+            for (int i = 0; i < passHash.Length; i++)
+                answer |= (passHash[i] == PasswordHash[i]);
+
+            return answer;
+        }
 
         /// <summary>
         /// Convert right from bite system to string
@@ -27,11 +100,13 @@ namespace MobileApplication
             result += (Rights & 16) != 0 ? "L" : "";
             return result;
         }
+
         /// <summary>
         /// Convert right from string to byte system
         /// </summary>
         public void SetStringRights(string rights)
         {
+            Rights = 0;
             foreach (char c in rights)
             {
                 switch (c)

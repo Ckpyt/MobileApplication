@@ -12,11 +12,28 @@ namespace MobileApplication
 {
     public partial class CustomersPage : Form
     {
+        SortedList<int, Customer> customers;
         bool IsSelected = false;
         int SelectedPos = -1;
+
         public CustomersPage()
         {
             InitializeComponent();
+            customers = SQLWorker.GetInstance().ReadCustomers();
+            FillListBox();
+
+        }
+
+        private void FillListBox()
+        {
+            foreach(var custPair in customers)
+            {
+                Customer cust = custPair.Value;
+                ListViewItem itm = new ListViewItem(cust.Name);
+                itm.SubItems.Add(cust.Phone);
+                itm.SubItems.Add(cust.GetStringRights());
+                listView1.Items.Add(itm);
+            }
         }
 
         private void ListView1_SizeChanged(object sender, EventArgs e)
@@ -24,6 +41,36 @@ namespace MobileApplication
             listView1.Height = Height - 219;
         }
 
+        Customer ChangeDetails(int id, string rights)
+        {
+            Customer cust = customers[id];
+            cust.Name = NameBox.Text;
+            cust.Phone = PhoneBox.Text;
+            cust.SetStringRights(rights);
+            if(PassBox.Text.Length > 0)
+                cust.SetPassword(PassBox.Text);
+            return cust;
+        }
+
+        /// <summary>
+        /// Clean all the boxes after ListBox
+        /// </summary>
+        void CleanFields()
+        {
+            NameBox.Text = "";
+            PhoneBox.Text = "";
+            PassBox.Text = "";
+
+            InvoceCheckBox.Checked = false;
+            DeviceCheckBox.Checked = false;
+            PriceCheckBox.Checked = false;
+            CustomersCheckBox.Checked = false;
+            LogsCheckBox.Checked = false;
+        }
+
+        /// <summary>
+        /// add/edit customer
+        /// </summary>
         private void Button1_Click(object sender, EventArgs e)
         {
             ListViewItem itm = new ListViewItem(NameBox.Text);
@@ -39,25 +86,28 @@ namespace MobileApplication
             
             if (IsSelected)
             {
-                Add.Text = "Add";
+                Customer cust = ChangeDetails(SelectedPos, rights);
                 listView1.Items[SelectedPos] = itm;
                 IsSelected = false;
+                SQLWorker.GetInstance().SqlComm(cust.UpdateSqlCommand);
+                Add.Text = "Add";
             }
             else
             {
+                Customer cust = new Customer();
+                cust.ID = customers.Count;
+                customers.Add(cust.ID, cust);
+                ChangeDetails(cust.ID, rights);
                 listView1.Items.Add(itm);
+                SQLWorker.GetInstance().SqlComm(cust.InsertNewCustomer);
             }
 
-            NameBox.Text = "";
-            PhoneBox.Text = "";
-
-            InvoceCheckBox.Checked = false;
-            DeviceCheckBox.Checked = false;
-            PriceCheckBox.Checked = false;
-            CustomersCheckBox.Checked = false;
-            LogsCheckBox.Checked = false;
+            CleanFields();
         }
 
+        /// <summary>
+        /// select customer for editing
+        /// </summary>
         private void ListView1_SelectedIndexChanged(object sender, EventArgs e)
         {
             ListView lst = sender as ListView;
@@ -95,6 +145,15 @@ namespace MobileApplication
                     }
                 }
                 Add.Text = "Edit";
+            }
+            else
+            {
+                if (IsSelected)
+                {
+                    CleanFields();
+                    IsSelected = false;
+                    Add.Text = "Add";
+                }
             }
         }
     }

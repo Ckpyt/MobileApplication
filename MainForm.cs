@@ -16,15 +16,13 @@ namespace MobileApplication
     public partial class MainForm : Form
     {
        
-        Sha3 sha;
         public MainForm()
         {
-
             InitializeComponent();
             SQLWorker.GetInstance();
         }
 
-        static byte[] ComputeHash(string input)
+        public static byte[] ComputeHash(string input)
         {
             byte[] byteArray = Encoding.UTF32.GetBytes(input);
             MemoryStream stream = new MemoryStream(byteArray);
