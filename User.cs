@@ -76,13 +76,13 @@ namespace MobileApplication
         public bool ComparePasswords(string Pass)
         {
             byte[] passHash = MainForm.ComputeHash(Pass);
-            bool answer = false;
+            bool answer = true;
 
             if (PasswordHash == null || passHash.Length != PasswordHash.Length)
                 return false;
 
             for (int i = 0; i < passHash.Length; i++)
-                answer |= (passHash[i] == PasswordHash[i]);
+                answer &= (passHash[i] == PasswordHash[i]);
 
             return answer;
         }

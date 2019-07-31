@@ -190,8 +190,8 @@ namespace MobileApplication
                 return new SqlCommand("delete from tblUsers where(ID=" + id + ")");
             });
 
-            listView1.Clear();
-            FillListBox();
+            listView1.Items.Remove(listView1.SelectedItems[0]);
+
         }
     }
 }
