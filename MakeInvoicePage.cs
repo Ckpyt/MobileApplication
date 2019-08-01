@@ -12,7 +12,7 @@ namespace MobileApplication
 {
     /// <summary>
     /// The page for making invoices. Keywords should be get from database
-    /// Result shpuld be saved to database and invoice.pdf
+    /// Result should be saved to database and invoice.pdf
     /// Later, parent class should be changed to tabPage
     /// </summary>
     public partial class MakeInvoicePage : Form

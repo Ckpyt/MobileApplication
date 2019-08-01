@@ -26,10 +26,14 @@ namespace MobileApplication
             PasswordHash = MainForm.ComputeHash(Pass);
         }
 
-
+        /// <summary>
+        /// Set parametres to sql command
+        /// </summary>
+        /// <param name="ret">Sql command before executing</param>
+        /// <returns>sql command with parametres</returns>
         SqlCommand SetParams(SqlCommand ret)
         {
-
+            ret.Parameters.Add(new SqlParameter("Id", ID));
             ret.Parameters.Add(new SqlParameter("Name", Name));
             ret.Parameters.Add(new SqlParameter("Phone", Phone));
             ret.Parameters.Add(new SqlParameter("Rights", Rights));
@@ -38,25 +42,35 @@ namespace MobileApplication
             return ret;
         }
 
+        /// <summary>
+        /// for making a sql command for inserting a new user
+        /// </summary>
+        /// <returns>new sql command</returns>
         public SqlCommand InsertNewUser()
         {
             SqlCommand ret = new SqlCommand("insert into tblUsers values(@Id, @Name, @Phone, @Rights, @PassHash)");
-            SqlParameter par = new SqlParameter("Id", ID);
-            ret.Parameters.Add(par);
             ret = SetParams(ret);
 
             return ret;
         }
 
-
+        /// <summary>
+        /// for making a sql command for updating details of a user
+        /// </summary>
+        /// <returns>new sql command</returns>
         public SqlCommand UpdateSqlCommand()
         {
-            SqlCommand ret = new SqlCommand("update tblUsers set Name=@Name, Phone=@Phone, Rights=@Rights, PassHash=@PassHash where(Id=" + ID.ToString() + ")");
+            SqlCommand ret = new SqlCommand("update tblUsers set Name=@Name, Phone=@Phone, Rights=@Rights, PassHash=@PassHash where(Id=@Id)");
             ret = SetParams(ret);
 
             return ret;
         }
 
+        /// <summary>
+        /// Setting parametres of a current users from dataset.
+        /// Command should be executed before
+        /// </summary>
+        /// <param name="result">Result of executing sql command</param>
         public void ReadSqlResult(SqlDataReader result)
         {
             ID = Convert.ToInt32(result[0]);

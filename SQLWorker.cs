@@ -67,7 +67,8 @@ namespace MobileApplication
         /// </summary>
         /// <param name="checkingCommand"> command for checking table. it could be ""select max(Id) from Table"" </param>
         /// <param name="creatingCommand"> command for create a table. It could be copyed from Table Definition </param>
-        void CheckAndCreateTable(string checkingCommand, string creatingCommand)
+        /// /// <returns>retirns true if table was created</returns>
+        bool CheckAndCreateTable(string checkingCommand, string creatingCommand)
         {
             SqlConnection conn = new SqlConnection(connectingString);
             SqlCommand comm = new SqlCommand(checkingCommand, conn);
@@ -92,7 +93,9 @@ namespace MobileApplication
                 comm = new SqlCommand(creatingCommand, conn);
 
                 comm.ExecuteNonQuery();
+                return true;
             }
+            return false;
         }
 
         /// <summary>
@@ -100,7 +103,16 @@ namespace MobileApplication
         /// </summary>
         void CheckAndCreateTables()
         {
-            CheckAndCreateTable("select max(Id) from tblUsers", "CREATE TABLE [dbo].[tblUsers] ([Id] INT NOT NULL, [Name] CHAR (50) NOT NULL, [Phone] CHAR (50) NOT NULL, [Rights] INT NULL, [PassHash] VARBINARY (32) NULL, PRIMARY KEY CLUSTERED ([Id] ASC) );");
+            if(CheckAndCreateTable("select max(Id) from tblUsers", "CREATE TABLE [dbo].[tblUsers] ([Id] INT NOT NULL, [Name] CHAR (50) NOT NULL, [Phone] CHAR (50) NOT NULL, [Rights] INT NULL, [PassHash] VARBINARY (32) NULL, PRIMARY KEY CLUSTERED ([Id] ASC) );"))
+            {
+                User user = new User();
+                user.Name = "Adm";
+                user.ID = 1;
+                user.SetPassword("adm");
+                user.SetStringRights("IDPCL");
+                user.Phone = "1111";
+                SqlComm(user.InsertNewUser);
+            }
         }
 
         /// <summary>
@@ -121,6 +133,10 @@ namespace MobileApplication
             return inp.Substring(0, pos);
         }
 
+        /// <summary>
+        /// Executing current sql command with no result
+        /// </summary>
+        /// <param name="writeCommand"> single sql command </param>
         public void SqlComm(Func<SqlCommand> writeCommand)
         {
             SqlCommand comm = writeCommand();
@@ -139,13 +155,18 @@ namespace MobileApplication
         /// <summary>
         /// Get all the users from database
         /// </summary>
-        /// <returns></returns>
+        /// <returns> list of all the users </returns>
         public SortedList<int, User> ReadUsers()
         {
             SqlCommand comm = new SqlCommand("select * from tblUsers");
             return GetUsersFromDatabase(comm);
         }
 
+        /// <summary>
+        /// Read users from database with existing sql command
+        /// </summary>
+        /// <param name="comm"> presetted sql command </param>
+        /// <returns> list of users </returns>
         SortedList<int, User> GetUsersFromDatabase(SqlCommand comm)
         {
             SqlConnection conn = new SqlConnection(connectingString);
@@ -181,7 +202,7 @@ namespace MobileApplication
         /// <returns>collection of all the users with the same name</returns>
         public SortedList<int, User> ReadUser(string name)
         {
-            SqlCommand comm = new SqlCommand("select * from tblUsers where(Name=\"" + name + "\")");
+            SqlCommand comm = new SqlCommand("select * from tblUsers where(Name='" + name + "')");
             return GetUsersFromDatabase(comm);
         }
 

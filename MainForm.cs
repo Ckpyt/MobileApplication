@@ -22,6 +22,8 @@ namespace MobileApplication
         {
             InitializeComponent();
             SQLWorker.GetInstance();
+            LoginForm lg = new LoginForm();
+            lg.ShowDialog();
         }
 
         public static byte[] ComputeHash(string input)

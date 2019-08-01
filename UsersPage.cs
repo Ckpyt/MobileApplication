@@ -11,12 +11,23 @@ using System.Windows.Forms;
 
 namespace MobileApplication
 {
+    /// <summary>
+    /// Page for creating users or changing users' details
+    /// Later, parent class should be changed to tabPage
+    /// </summary>
     public partial class UsersPage : Form
     {
+        /// <summary> Full list of users </summary>
         SortedList<int, User> users;
+        /// <summary> Is someone selected in the ListView? </summary>
         bool IsSelected = false;
+        /// <summary> Position of selected user in the ListView </summary>
         int SelectedPos = -1;
 
+        /// <summary>
+        /// Construct of the class.
+        /// It should get all the users from database and fill the listView
+        /// </summary>
         public UsersPage()
         {
             InitializeComponent();
@@ -26,6 +37,9 @@ namespace MobileApplication
 
         }
 
+        /// <summary>
+        /// filling ListBox with users' details
+        /// </summary>
         private void FillListBox()
         {
             foreach(var custPair in users)
@@ -39,11 +53,20 @@ namespace MobileApplication
             }
         }
 
+        /// <summary>
+        /// scalable size of ListView
+        /// </summary>
         private void ListView1_SizeChanged(object sender, EventArgs e)
         {
             listView1.Height = Height - 219;
         }
 
+        /// <summary>
+        /// change details of a user
+        /// </summary>
+        /// <param name="id"> user's id </param>
+        /// <param name="rights">user's rights</param>
+        /// <returns> the user with new parametres </returns>
         User ChangeDetails(int id, string rights)
         {
             User cust = users[id];
