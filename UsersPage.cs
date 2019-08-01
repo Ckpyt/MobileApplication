@@ -78,6 +78,11 @@ namespace MobileApplication
         /// </summary>
         private void Button1_Click(object sender, EventArgs e)
         {
+            if (PassBox.TextLength == 0)
+            {
+                MessageBox.Show("Sorry, password cannot be empty", "Password Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             User cust = null;
 
             string rights = "";
@@ -98,7 +103,7 @@ namespace MobileApplication
             else
             {
                 cust = new User();
-                cust.ID = users.Last().Value.ID + 1;
+                cust.ID = users.Count > 0 ? users.Last().Value.ID + 1 : 1;
                 users.Add(cust.ID, cust);
                 ChangeDetails(cust.ID, rights);
 
