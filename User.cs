@@ -78,8 +78,6 @@ namespace MobileApplication
             Phone = Convert.ToString(result[2]);
             Rights = Convert.ToInt32(result[3]);
             PasswordHash = result[4] as byte[];
-            Name = SQLWorker.FixString(Name);
-            Phone = SQLWorker.FixString(Phone);
         }
 
         /// <summary>

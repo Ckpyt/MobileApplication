@@ -16,7 +16,7 @@ namespace MobileApplication
     /// </summary>
     public partial class LoginForm : Form
     {
-
+        /// <summary> Is someone loggined? </summary>
         bool IsSomeoneLogged = false;
 
         public LoginForm()

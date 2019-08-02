@@ -103,7 +103,7 @@ namespace MobileApplication
         /// </summary>
         void CheckAndCreateTables()
         {
-            if(CheckAndCreateTable("select max(Id) from tblUsers", "CREATE TABLE [dbo].[tblUsers] ([Id] INT NOT NULL, [Name] CHAR (50) NOT NULL, [Phone] CHAR (50) NOT NULL, [Rights] INT NULL, [PassHash] VARBINARY (32) NULL, PRIMARY KEY CLUSTERED ([Id] ASC) );"))
+            if(CheckAndCreateTable("select max(Id) from tblUsers", "CREATE TABLE [dbo].[tblUsers] ([Id] INT NOT NULL, [Name] varchar(max) NOT NULL, [Phone] varchar(20) NOT NULL, [Rights] INT NULL, [PassHash] VARBINARY (32) NULL, PRIMARY KEY CLUSTERED ([Id] ASC) );"))
             {
                 User user = new User();
                 user.Name = "Adm";
@@ -113,6 +113,11 @@ namespace MobileApplication
                 user.Phone = "1111";
                 SqlComm(user.InsertNewUser);
             }
+
+            CheckAndCreateTable("select max(Id) from tblPhoneModels", "CREATE TABLE [dbo].[tblPhoneModels] ([Id] INT NOT NULL, [Name] varchar(max) NOT NULL, [ParentId] INT NULL, PRIMARY KEY CLUSTERED ([Id] ASC) );");
+            CheckAndCreateTable("select max(Id) from tblFunctions", "CREATE TABLE [dbo].[tblFunctions] ([Id] INT NOT NULL, [Name] varchar(max) NOT NULL, [Price] INT NULL, PRIMARY KEY CLUSTERED ([Id] ASC) );");
+            CheckAndCreateTable("select max(Id) from tblOperations", "CREATE TABLE [dbo].[tblOperations] ([Id] INT NOT NULL, [DeviceId] int NOT NULL, [FunctionId] INT NOT NULL, [Price] INT NULL, PRIMARY KEY CLUSTERED ([Id] ASC) );");
+
         }
 
         /// <summary>
@@ -122,15 +127,6 @@ namespace MobileApplication
         public static SQLWorker GetInstance()
         {
             return worker;
-        }
-
-        public static string FixString(string inp)
-        {
-            int pos = inp.Length -1;
-            while (inp[pos] == ' ' && pos > 0)
-                pos--;
-            pos++;
-            return inp.Substring(0, pos);
         }
 
         /// <summary>
