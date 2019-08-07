@@ -31,19 +31,19 @@
             this.listView1 = new System.Windows.Forms.ListView();
             this.Device = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Desription = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this._Price = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Count = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.UnitPrice = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Total = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.labelDevice = new System.Windows.Forms.Label();
-            this.DeviceBox = new System.Windows.Forms.ComboBox();
+            this.deviceBox = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.DescriptionBox = new System.Windows.Forms.ComboBox();
+            this.descriptionBox = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.QTYBox = new System.Windows.Forms.TextBox();
+            this.qtyBox = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.PriceBox = new System.Windows.Forms.TextBox();
-            this.Add = new System.Windows.Forms.Button();
-            this.SaveInvoice = new System.Windows.Forms.Button();
+            this.priceBox = new System.Windows.Forms.TextBox();
+            this.addButton = new System.Windows.Forms.Button();
+            this.saveInvoiceButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // listView1
@@ -51,7 +51,7 @@
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.Device,
             this.Desription,
-            this._Price,
+            this.Count,
             this.UnitPrice,
             this.Total});
             this.listView1.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -77,10 +77,10 @@
             this.Desription.Text = "Description";
             this.Desription.Width = 333;
             // 
-            // _Price
+            // Count
             // 
-            this._Price.Text = "QTY";
-            this._Price.Width = 53;
+            this.Count.Text = "Count";
+            this.Count.Width = 53;
             // 
             // UnitPrice
             // 
@@ -101,20 +101,20 @@
             this.labelDevice.TabIndex = 1;
             this.labelDevice.Text = "Device";
             // 
-            // DeviceBox
+            // deviceBox
             // 
-            this.DeviceBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.DeviceBox.FormattingEnabled = true;
-            this.DeviceBox.Items.AddRange(new object[] {
+            this.deviceBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.deviceBox.FormattingEnabled = true;
+            this.deviceBox.Items.AddRange(new object[] {
             "1",
             "2",
             "3",
             "4",
             "5"});
-            this.DeviceBox.Location = new System.Drawing.Point(100, 12);
-            this.DeviceBox.Name = "DeviceBox";
-            this.DeviceBox.Size = new System.Drawing.Size(121, 21);
-            this.DeviceBox.TabIndex = 2;
+            this.deviceBox.Location = new System.Drawing.Point(100, 12);
+            this.deviceBox.Name = "deviceBox";
+            this.deviceBox.Size = new System.Drawing.Size(121, 21);
+            this.deviceBox.TabIndex = 2;
             // 
             // label1
             // 
@@ -126,14 +126,14 @@
             this.label1.TabIndex = 3;
             this.label1.Text = "Description";
             // 
-            // DescriptionBox
+            // descriptionBox
             // 
-            this.DescriptionBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.DescriptionBox.FormattingEnabled = true;
-            this.DescriptionBox.Location = new System.Drawing.Point(294, 12);
-            this.DescriptionBox.Name = "DescriptionBox";
-            this.DescriptionBox.Size = new System.Drawing.Size(121, 21);
-            this.DescriptionBox.TabIndex = 4;
+            this.descriptionBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.descriptionBox.FormattingEnabled = true;
+            this.descriptionBox.Location = new System.Drawing.Point(294, 12);
+            this.descriptionBox.Name = "descriptionBox";
+            this.descriptionBox.Size = new System.Drawing.Size(121, 21);
+            this.descriptionBox.TabIndex = 4;
             // 
             // label2
             // 
@@ -141,19 +141,19 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(422, 16);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(29, 13);
+            this.label2.Size = new System.Drawing.Size(35, 13);
             this.label2.TabIndex = 5;
-            this.label2.Text = "QTY";
+            this.label2.Text = "Count";
             // 
-            // QTYBox
+            // qtyBox
             // 
-            this.QTYBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.QTYBox.Location = new System.Drawing.Point(457, 12);
-            this.QTYBox.MaxLength = 10;
-            this.QTYBox.Name = "QTYBox";
-            this.QTYBox.Size = new System.Drawing.Size(43, 20);
-            this.QTYBox.TabIndex = 6;
-            this.QTYBox.TextChanged += new System.EventHandler(this.OnlyDecimalChecker);
+            this.qtyBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.qtyBox.Location = new System.Drawing.Point(457, 12);
+            this.qtyBox.MaxLength = 10;
+            this.qtyBox.Name = "qtyBox";
+            this.qtyBox.Size = new System.Drawing.Size(43, 20);
+            this.qtyBox.TabIndex = 6;
+            this.qtyBox.TextChanged += new System.EventHandler(this.OnlyDecimalChecker);
             // 
             // label3
             // 
@@ -165,35 +165,35 @@
             this.label3.TabIndex = 7;
             this.label3.Text = "Unit Price";
             // 
-            // PriceBox
+            // priceBox
             // 
-            this.PriceBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.PriceBox.Location = new System.Drawing.Point(567, 12);
-            this.PriceBox.Name = "PriceBox";
-            this.PriceBox.Size = new System.Drawing.Size(100, 20);
-            this.PriceBox.TabIndex = 8;
-            this.PriceBox.TextChanged += new System.EventHandler(this.OnlyDecimalChecker);
+            this.priceBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.priceBox.Location = new System.Drawing.Point(567, 12);
+            this.priceBox.Name = "priceBox";
+            this.priceBox.Size = new System.Drawing.Size(100, 20);
+            this.priceBox.TabIndex = 8;
+            this.priceBox.TextChanged += new System.EventHandler(this.OnlyDecimalChecker);
             // 
-            // Add
+            // addButton
             // 
-            this.Add.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.Add.Location = new System.Drawing.Point(708, 12);
-            this.Add.Name = "Add";
-            this.Add.Size = new System.Drawing.Size(80, 23);
-            this.Add.TabIndex = 9;
-            this.Add.Text = "Add";
-            this.Add.UseVisualStyleBackColor = true;
-            this.Add.Click += new System.EventHandler(this.Add_Click);
+            this.addButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.addButton.Location = new System.Drawing.Point(708, 12);
+            this.addButton.Name = "addButton";
+            this.addButton.Size = new System.Drawing.Size(80, 23);
+            this.addButton.TabIndex = 9;
+            this.addButton.Text = "Add";
+            this.addButton.UseVisualStyleBackColor = true;
+            this.addButton.Click += new System.EventHandler(this.Add_Click);
             // 
-            // SaveInvoice
+            // saveInvoiceButton
             // 
-            this.SaveInvoice.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.SaveInvoice.Location = new System.Drawing.Point(708, 42);
-            this.SaveInvoice.Name = "SaveInvoice";
-            this.SaveInvoice.Size = new System.Drawing.Size(80, 23);
-            this.SaveInvoice.TabIndex = 10;
-            this.SaveInvoice.Text = "Save invoice";
-            this.SaveInvoice.UseVisualStyleBackColor = true;
+            this.saveInvoiceButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.saveInvoiceButton.Location = new System.Drawing.Point(708, 42);
+            this.saveInvoiceButton.Name = "saveInvoiceButton";
+            this.saveInvoiceButton.Size = new System.Drawing.Size(80, 23);
+            this.saveInvoiceButton.TabIndex = 10;
+            this.saveInvoiceButton.Text = "Save invoice";
+            this.saveInvoiceButton.UseVisualStyleBackColor = true;
             // 
             // MakeInvoicePage
             // 
@@ -201,15 +201,15 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(800, 451);
-            this.Controls.Add(this.SaveInvoice);
-            this.Controls.Add(this.Add);
-            this.Controls.Add(this.PriceBox);
+            this.Controls.Add(this.saveInvoiceButton);
+            this.Controls.Add(this.addButton);
+            this.Controls.Add(this.priceBox);
             this.Controls.Add(this.label3);
-            this.Controls.Add(this.QTYBox);
+            this.Controls.Add(this.qtyBox);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.DescriptionBox);
+            this.Controls.Add(this.descriptionBox);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.DeviceBox);
+            this.Controls.Add(this.deviceBox);
             this.Controls.Add(this.labelDevice);
             this.Controls.Add(this.listView1);
             this.Name = "MakeInvoicePage";
@@ -225,18 +225,18 @@
         private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.ColumnHeader Device;
         private System.Windows.Forms.ColumnHeader Desription;
-        private System.Windows.Forms.ColumnHeader _Price;
+        private System.Windows.Forms.ColumnHeader Count;
         private System.Windows.Forms.ColumnHeader UnitPrice;
         private System.Windows.Forms.ColumnHeader Total;
         private System.Windows.Forms.Label labelDevice;
-        private System.Windows.Forms.ComboBox DeviceBox;
+        private System.Windows.Forms.ComboBox deviceBox;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.ComboBox DescriptionBox;
+        private System.Windows.Forms.ComboBox descriptionBox;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox QTYBox;
+        private System.Windows.Forms.TextBox qtyBox;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.TextBox PriceBox;
-        private System.Windows.Forms.Button Add;
-        private System.Windows.Forms.Button SaveInvoice;
+        private System.Windows.Forms.TextBox priceBox;
+        private System.Windows.Forms.Button addButton;
+        private System.Windows.Forms.Button saveInvoiceButton;
     }
 }

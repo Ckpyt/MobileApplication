@@ -106,17 +106,27 @@ namespace MobileApplication
             if(CheckAndCreateTable("select max(Id) from tblUsers", "CREATE TABLE [dbo].[tblUsers] ([Id] INT NOT NULL, [Name] varchar(max) NOT NULL, [Phone] varchar(20) NOT NULL, [Rights] INT NULL, [PassHash] VARBINARY (32) NULL, PRIMARY KEY CLUSTERED ([Id] ASC) );"))
             {
                 User user = new User();
-                user.Name = "Adm";
-                user.ID = 1;
+                user.name = "Adm";
+                user.id = 1;
                 user.SetPassword("adm");
                 user.SetStringRights("IDPCL");
-                user.Phone = "1111";
+                user.phone = "1111";
                 SqlComm(user.InsertNewUser);
             }
 
-            CheckAndCreateTable("select max(Id) from tblPhoneModels", "CREATE TABLE [dbo].[tblPhoneModels] ([Id] INT NOT NULL, [Name] varchar(max) NOT NULL, [ParentId] INT NULL, PRIMARY KEY CLUSTERED ([Id] ASC) );");
+            if(CheckAndCreateTable("select max(Id) from tblPhoneModels", "CREATE TABLE [dbo].[tblPhoneModels] ([Id] INT NOT NULL, [Name] varchar(max) NOT NULL, [ParentId] INT NULL, PRIMARY KEY CLUSTERED ([Id] ASC) );")){
+                SqlComm(() =>
+                {
+                    return new SqlCommand("insert into tblPhoneModels values(1,'Samsung', 0);");
+                });
+                SqlComm(() =>
+                {
+                    return new SqlCommand("insert into tblPhoneModels values(2,'Samsung 6s', 1);");
+                });
+            }
             CheckAndCreateTable("select max(Id) from tblFunctions", "CREATE TABLE [dbo].[tblFunctions] ([Id] INT NOT NULL, [Name] varchar(max) NOT NULL, [Price] INT NULL, PRIMARY KEY CLUSTERED ([Id] ASC) );");
             CheckAndCreateTable("select max(Id) from tblOperations", "CREATE TABLE [dbo].[tblOperations] ([Id] INT NOT NULL, [DeviceId] int NOT NULL, [FunctionId] INT NOT NULL, [Price] INT NULL, PRIMARY KEY CLUSTERED ([Id] ASC) );");
+            
 
         }
 
@@ -132,20 +142,39 @@ namespace MobileApplication
         /// <summary>
         /// Executing current sql command with no result
         /// </summary>
-        /// <param name="writeCommand"> single sql command </param>
-        public void SqlComm(Func<SqlCommand> writeCommand)
+        /// <param name="writeCommand"> text for single sql command </param>
+        public void SqlComm(string comm)
         {
-            SqlCommand comm = writeCommand();
+            SqlComm(new SqlCommand(comm));
+        }
+
+        /// <summary>
+        /// Executing current sql command with no result
+        /// </summary>
+        /// <param name="writeCommand"> single sql command </param>
+        public void SqlComm(SqlCommand comm)
+        {
             SqlConnection conn = new SqlConnection(connectingString);
             comm.Connection = conn;
             conn.Open();
             try
             {
                 comm.ExecuteNonQuery();
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "SqlException", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        /// <summary>
+        /// Executing current sql command with no result
+        /// </summary>
+        /// <param name="writeCommand"> function for making single sql command </param>
+        public void SqlComm(Func<SqlCommand> writeCommand)
+        {
+            SqlCommand comm = writeCommand();
+            SqlComm(comm);
         }
 
         /// <summary>
@@ -178,14 +207,14 @@ namespace MobileApplication
                 {
                     User cust = new User();
                     cust.ReadSqlResult(result);
-                    answ.Add(cust.ID, cust);
+                    answ.Add(cust.id, cust);
                     //Description.Text = descr;
                 }
                 conn.Close();
             }
             catch (Exception ex)
             {
-                ex.ToString();
+                MessageBox.Show(ex.Message, "SqlException", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             return answ;
@@ -200,6 +229,69 @@ namespace MobileApplication
         {
             SqlCommand comm = new SqlCommand("select * from tblUsers where(Name='" + name + "')");
             return GetUsersFromDatabase(comm);
+        }
+
+        List<T> ReadTable<T>(string command, Func<SqlDataReader, T, T> FillReaded )
+        {
+            SqlConnection conn = new SqlConnection(connectingString);
+            SqlCommand comm = new SqlCommand(command, conn);
+            List<T> answ = new List<T>();
+            SqlDataReader result = null;
+            conn.Open();
+
+            try
+            {
+                result = comm.ExecuteReader();
+                while (result.HasRows && result.Read())
+                {
+                    T readed = (T)Activator.CreateInstance(typeof(T));
+
+                    readed = FillReaded(result, readed);
+                    answ.Add(readed);
+                    //Description.Text = descr;
+                }
+                conn.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message, "SqlException", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            return answ;
+        }
+
+        public List<PhoneModel> ReadPhones()
+        {
+            return ReadTable<PhoneModel>("select * from tblPhoneModels", (result, phmd) =>
+            {
+                phmd.id = Convert.ToInt32(result[0]);
+                phmd.name = Convert.ToString(result[1]);
+                phmd.parentId = Convert.ToInt32(result[2]);
+                return phmd;
+            });
+        }
+
+        public List<Operation> ReadOperations()
+        {
+            return ReadTable<Operation>("select * from tblOperations", (result, phmd) =>
+            {
+                phmd.id = Convert.ToInt32(result[0]);
+                phmd.deviceID = Convert.ToInt32(result[1]);
+                phmd.functionID = Convert.ToInt32(result[2]);
+                phmd.price = Convert.ToInt32(result[3]);
+                return phmd;
+            });
+        }
+
+        public List<Function> ReadFunctions()
+        {
+            return ReadTable<Function>("select * from tblFunctions", (result, phmd) =>
+            {
+                phmd.id = Convert.ToInt32(result[0]);
+                phmd.name = Convert.ToString(result[1]);
+                phmd.price = Convert.ToInt32(result[2]);
+                return phmd;
+            });
         }
 
     }

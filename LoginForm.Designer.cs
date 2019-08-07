@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             this.label1 = new System.Windows.Forms.Label();
-            this.NameBox = new System.Windows.Forms.TextBox();
+            this.nameBox = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.PasswordBox = new System.Windows.Forms.TextBox();
+            this.passwordBox = new System.Windows.Forms.TextBox();
             this.button1 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -44,12 +44,12 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Name";
             // 
-            // NameBox
+            // nameBox
             // 
-            this.NameBox.Location = new System.Drawing.Point(4, 26);
-            this.NameBox.Name = "NameBox";
-            this.NameBox.Size = new System.Drawing.Size(223, 20);
-            this.NameBox.TabIndex = 1;
+            this.nameBox.Location = new System.Drawing.Point(4, 26);
+            this.nameBox.Name = "nameBox";
+            this.nameBox.Size = new System.Drawing.Size(223, 20);
+            this.nameBox.TabIndex = 1;
             // 
             // label2
             // 
@@ -60,14 +60,14 @@
             this.label2.TabIndex = 2;
             this.label2.Text = "Password";
             // 
-            // PasswordBox
+            // passwordBox
             // 
-            this.PasswordBox.Location = new System.Drawing.Point(4, 70);
-            this.PasswordBox.MaxLength = 256;
-            this.PasswordBox.Name = "PasswordBox";
-            this.PasswordBox.PasswordChar = '*';
-            this.PasswordBox.Size = new System.Drawing.Size(223, 20);
-            this.PasswordBox.TabIndex = 3;
+            this.passwordBox.Location = new System.Drawing.Point(4, 70);
+            this.passwordBox.MaxLength = 256;
+            this.passwordBox.Name = "passwordBox";
+            this.passwordBox.PasswordChar = '*';
+            this.passwordBox.Size = new System.Drawing.Size(223, 20);
+            this.passwordBox.TabIndex = 3;
             // 
             // button1
             // 
@@ -83,12 +83,15 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(234, 153);
+            this.ClientSize = new System.Drawing.Size(234, 161);
             this.Controls.Add(this.button1);
-            this.Controls.Add(this.PasswordBox);
+            this.Controls.Add(this.passwordBox);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.NameBox);
+            this.Controls.Add(this.nameBox);
             this.Controls.Add(this.label1);
+            this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(250, 200);
+            this.MinimumSize = new System.Drawing.Size(250, 200);
             this.Name = "LoginForm";
             this.Text = "LoginForm";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.LoginForm_FormClosed);
@@ -100,9 +103,9 @@
         #endregion
 
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox NameBox;
+        private System.Windows.Forms.TextBox nameBox;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox PasswordBox;
+        private System.Windows.Forms.TextBox passwordBox;
         private System.Windows.Forms.Button button1;
     }
 }

@@ -193,6 +193,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PhoneModel.cs" />
     <Compile Include="User.cs" />
     <Compile Include="UsersPage.cs">
       <SubType>Form</SubType>

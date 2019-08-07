@@ -20,9 +20,9 @@ namespace MobileApplication
         /// <summary> Full list of users </summary>
         SortedList<int, User> users;
         /// <summary> Is someone selected in the ListView? </summary>
-        bool IsSelected = false;
+        bool isSelected = false;
         /// <summary> Position of selected user in the ListView </summary>
-        int SelectedPos = -1;
+        int selectedPos = -1;
 
         /// <summary>
         /// Construct of the class.
@@ -45,9 +45,9 @@ namespace MobileApplication
             foreach(var custPair in users)
             {
                 User cust = custPair.Value;
-                ListViewItem itm = new ListViewItem(cust.ID.ToString());
-                itm.SubItems.Add(cust.Name);
-                itm.SubItems.Add(cust.Phone);
+                ListViewItem itm = new ListViewItem(cust.id.ToString());
+                itm.SubItems.Add(cust.name);
+                itm.SubItems.Add(cust.phone);
                 itm.SubItems.Add(cust.GetStringRights());
                 listView1.Items.Add(itm);
             }
@@ -70,8 +70,8 @@ namespace MobileApplication
         User ChangeDetails(int id, string rights)
         {
             User cust = users[id];
-            cust.Name = NameBox.Text;
-            cust.Phone = PhoneBox.Text;
+            cust.name = NameBox.Text;
+            cust.phone = PhoneBox.Text;
             cust.SetStringRights(rights);
             if(PassBox.Text.Length > 0)
                 cust.SetPassword(PassBox.Text);
@@ -101,7 +101,7 @@ namespace MobileApplication
         /// </summary>
         private void Button1_Click(object sender, EventArgs e)
         {
-            if (PassBox.TextLength == 0)
+            if (PassBox.TextLength == 0 && !isSelected)
             {
                 MessageBox.Show("Sorry, password cannot be empty", "Password Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -117,31 +117,31 @@ namespace MobileApplication
 
 
             
-            if (IsSelected)
+            if (isSelected)
             {
-                int id = Int32.Parse(listView1.Items[SelectedPos].Text);
+                int id = Int32.Parse(listView1.Items[selectedPos].Text);
                 cust = ChangeDetails(id, rights);
                 SQLWorker.GetInstance().SqlComm(cust.UpdateSqlCommand);
             }
             else
             {
                 cust = new User();
-                cust.ID = users.Count > 0 ? users.Last().Value.ID + 1 : 1;
-                users.Add(cust.ID, cust);
-                ChangeDetails(cust.ID, rights);
+                cust.id = users.Count > 0 ? users.Last().Value.id + 1 : 1;
+                users.Add(cust.id, cust);
+                ChangeDetails(cust.id, rights);
 
                 SQLWorker.GetInstance().SqlComm(cust.InsertNewUser);
             }
 
-            ListViewItem itm = new ListViewItem(cust.ID.ToString());
+            ListViewItem itm = new ListViewItem(cust.id.ToString());
             itm.SubItems.Add(NameBox.Text);
             itm.SubItems.Add(PhoneBox.Text);
             itm.SubItems.Add(rights);
 
-            if (IsSelected)
+            if (isSelected)
             {
-                IsSelected = false;
-                listView1.Items[SelectedPos] = itm;
+                isSelected = false;
+                listView1.Items[selectedPos] = itm;
                 Add.Text = "Add";
             }
             else
@@ -159,10 +159,11 @@ namespace MobileApplication
         private void ListView1_SelectedIndexChanged(object sender, EventArgs e)
         {
             ListView lst = sender as ListView;
+
             if (lst.SelectedItems.Count > 0)
             {
-                IsSelected = true;
-                SelectedPos = lst.SelectedIndices[0];
+                isSelected = true;
+                selectedPos = lst.SelectedIndices[0];
 
                 var itm = lst.SelectedItems[0];
                 NameBox.Text = itm.SubItems[1].Text;
@@ -197,10 +198,10 @@ namespace MobileApplication
             }
             else
             {
-                if (IsSelected)
+                if (isSelected)
                 {
                     CleanFields();
-                    IsSelected = false;
+                    isSelected = false;
                     Add.Text = "Add";
                 }
             }
@@ -208,7 +209,7 @@ namespace MobileApplication
 
         private void DelBtn_Click(object sender, EventArgs e)
         {
-            if (!IsSelected)
+            if (!isSelected)
                 return;
 
             string id = listView1.SelectedItems[0].Text;

@@ -42,25 +42,25 @@ namespace MobileApplication
         private void Button1_Click(object sender, EventArgs e)
         {
             MakeInvoicePage mkf = new MakeInvoicePage();
-            mkf.ShowDialog();
+            mkf.Show();
         }
 
         private void Button2_Click(object sender, EventArgs e)
         {
             ObjectsPage page = new ObjectsPage();
-            page.ShowDialog();
+            page.Show();
         }
 
         private void Button3_Click(object sender, EventArgs e)
         {
             UsersPage page = new UsersPage();
-            page.ShowDialog();
+            page.Show();
         }
 
         private void Button4_Click(object sender, EventArgs e)
         {
             LogsPage page = new LogsPage();
-            page.ShowDialog();
+            page.Show();
         }
     }
 }

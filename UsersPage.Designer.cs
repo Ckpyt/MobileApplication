@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.listView1 = new System.Windows.Forms.ListView();
+            this.Id = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.CustName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Phone = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Rights = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -46,7 +47,6 @@
             this.CustomersCheckBox = new System.Windows.Forms.CheckBox();
             this.LogsCheckBox = new System.Windows.Forms.CheckBox();
             this.Add = new System.Windows.Forms.Button();
-            this.Id = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.delBtn = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
@@ -68,6 +68,11 @@
             this.listView1.View = System.Windows.Forms.View.Details;
             this.listView1.SelectedIndexChanged += new System.EventHandler(this.ListView1_SelectedIndexChanged);
             this.listView1.SizeChanged += new System.EventHandler(this.ListView1_SizeChanged);
+            // 
+            // Id
+            // 
+            this.Id.Text = "Id";
+            this.Id.Width = 46;
             // 
             // CustName
             // 
@@ -119,6 +124,7 @@
             this.PhoneBox.Name = "PhoneBox";
             this.PhoneBox.Size = new System.Drawing.Size(100, 20);
             this.PhoneBox.TabIndex = 4;
+            
             // 
             // label3
             // 
@@ -222,11 +228,6 @@
             this.Add.Text = "Add";
             this.Add.UseVisualStyleBackColor = true;
             this.Add.Click += new System.EventHandler(this.Button1_Click);
-            // 
-            // Id
-            // 
-            this.Id.Text = "Id";
-            this.Id.Width = 46;
             // 
             // delBtn
             // 

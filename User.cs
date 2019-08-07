@@ -10,12 +10,12 @@ namespace MobileApplication
 {
     public class User
     {
-        public int ID;
+        public int id;
         //rights into bite system.
-        int Rights;
-        public string Name;
-        public string Phone;
-        byte[] PasswordHash;
+        int rights;
+        public string name;
+        public string phone;
+        byte[] passwordHash;
 
         /// <summary>
         /// Set a new password to customer
@@ -23,7 +23,7 @@ namespace MobileApplication
         /// <param name="Pass">new password</param>
         public void SetPassword(string Pass)
         {
-            PasswordHash = MainForm.ComputeHash(Pass);
+            passwordHash = MainForm.ComputeHash(Pass);
         }
 
         /// <summary>
@@ -33,11 +33,11 @@ namespace MobileApplication
         /// <returns>sql command with parametres</returns>
         SqlCommand SetParams(SqlCommand ret)
         {
-            ret.Parameters.Add(new SqlParameter("Id", ID));
-            ret.Parameters.Add(new SqlParameter("Name", Name));
-            ret.Parameters.Add(new SqlParameter("Phone", Phone));
-            ret.Parameters.Add(new SqlParameter("Rights", Rights));
-            ret.Parameters.Add(new SqlParameter("PassHash", PasswordHash));
+            ret.Parameters.Add(new SqlParameter("Id", id));
+            ret.Parameters.Add(new SqlParameter("Name", name));
+            ret.Parameters.Add(new SqlParameter("Phone", phone));
+            ret.Parameters.Add(new SqlParameter("Rights", rights));
+            ret.Parameters.Add(new SqlParameter("PassHash", passwordHash));
 
             return ret;
         }
@@ -73,11 +73,11 @@ namespace MobileApplication
         /// <param name="result">Result of executing sql command</param>
         public void ReadSqlResult(SqlDataReader result)
         {
-            ID = Convert.ToInt32(result[0]);
-            Name = Convert.ToString(result[1]);
-            Phone = Convert.ToString(result[2]);
-            Rights = Convert.ToInt32(result[3]);
-            PasswordHash = result[4] as byte[];
+            id = Convert.ToInt32(result[0]);
+            name = Convert.ToString(result[1]);
+            phone = Convert.ToString(result[2]);
+            rights = Convert.ToInt32(result[3]);
+            passwordHash = result[4] as byte[];
         }
 
         /// <summary>
@@ -90,11 +90,11 @@ namespace MobileApplication
             byte[] passHash = MainForm.ComputeHash(Pass);
             bool answer = true;
 
-            if (PasswordHash == null || passHash.Length != PasswordHash.Length)
+            if (passwordHash == null || passHash.Length != passwordHash.Length)
                 return false;
 
             for (int i = 0; i < passHash.Length; i++)
-                answer &= (passHash[i] == PasswordHash[i]);
+                answer &= (passHash[i] == passwordHash[i]);
 
             return answer;
         }
@@ -105,38 +105,38 @@ namespace MobileApplication
         public string GetStringRights()
         {
             string result = "";
-            result += (Rights & 1) != 0 ? "I" : "";
-            result += (Rights & 2) != 0 ? "D" : "";
-            result += (Rights & 4) != 0 ? "P" : "";
-            result += (Rights & 8) != 0 ? "C" : "";
-            result += (Rights & 16) != 0 ? "L" : "";
+            result += (rights & 1) != 0 ? "I" : "";
+            result += (rights & 2) != 0 ? "D" : "";
+            result += (rights & 4) != 0 ? "P" : "";
+            result += (rights & 8) != 0 ? "C" : "";
+            result += (rights & 16) != 0 ? "L" : "";
             return result;
         }
 
         /// <summary>
         /// Convert right from string to byte system
         /// </summary>
-        public void SetStringRights(string rights)
+        public void SetStringRights(string rght)
         {
-            Rights = 0;
-            foreach (char c in rights)
+            rights = 0;
+            foreach (char c in rght)
             {
                 switch (c)
                 {
                     case 'I':
-                        Rights += 1;
+                        rights += 1;
                         break;
                     case 'D':
-                        Rights += 2;
+                        rights += 2;
                         break;
                     case 'P':
-                        Rights += 4;
+                        rights += 4;
                         break;
                     case 'C':
-                        Rights += 8;
+                        rights += 8;
                         break;
                     case 'L':
-                        Rights += 16;
+                        rights += 16;
                         break;
                     case ' ': break;
                     default:
