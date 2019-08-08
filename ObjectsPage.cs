@@ -47,8 +47,9 @@ namespace MobileApplication
         {
             foreach (TreeNode node in itm.Nodes)
             {
-                if (node.Tag != null && (int)node.Tag == id)
+                if (node.Tag != null && ((DataObject)node.Tag).id == id)
                     return node;
+
                 if(node.Nodes != null)
                 {
                     var newNode = FindNodeByIdInNode(id, node);
@@ -75,11 +76,11 @@ namespace MobileApplication
         /// <param name="model"> phone </param>
         void AddPhone(PhoneModel model)
         {
-            parentPhoneBox.Items.Add(model.name);
+            parentPhoneBox.Items.Add(model);
             var parent = FindNodeById(model.parentId);
 
             TreeNode node = new TreeNode(model.name);
-            node.Tag = model.id;
+            node.Tag = model;
             parent.Nodes.Add(node);
             lastPhoneId = model.id > lastPhoneId ? model.id : lastPhoneId;
         }
@@ -92,11 +93,9 @@ namespace MobileApplication
         {
             lastFunctionId = func.id > lastFunctionId ? func.id : lastFunctionId;
 
-            operationNameBox.Items.Add(func.name);
+            operationNameBox.Items.Add(func);
             var node = operations.Nodes.Add(func.name);
-            node.Tag = func.id;
-            
-            
+            node.Tag = func;
         }
 
         /// <summary>
@@ -128,7 +127,7 @@ namespace MobileApplication
                 }
             
             var nodeOp = oper.Nodes.Add(func.name);
-            nodeOp.Tag = op.id;
+            nodeOp.Tag = op;
 
             lastOperationId = lastOperationId > op.id ? lastOperationId : op.id;
 
@@ -203,17 +202,23 @@ namespace MobileApplication
 
             int opId = 0;
             string opName = operationNameBox.Text; //it could be changed
+            Function basefnc;
+
             if (operationNameBox.SelectedIndex >= 0)
             {
-                opName = (string)operationNameBox.Items[operationNameBox.SelectedIndex];
+                basefnc = (Function)operationNameBox.Items[operationNameBox.SelectedIndex];
+                opId = basefnc.id;
             }
-
-            foreach (TreeNode node in operations.Nodes)
+            else
             {
-                if (node.Text == opName)
+                foreach (TreeNode node in operations.Nodes)
                 {
-                    opId = (int)node.Tag;
-                    break;
+                    if (node.Text == opName)
+                    {
+                        basefnc = node.Tag as Function;
+                        opId = basefnc.id;
+                        break;
+                    }
                 }
             }
 
@@ -239,43 +244,109 @@ namespace MobileApplication
 
         void AddNewObject()
         {
-            int parent = 0;
-            if (parentPhoneBox.Text.Length != 0)
+            int parentId = 0;
+
+            if (parentPhoneBox.SelectedIndex > 0)
             {
-                foreach (var phone in allPhones)
-                    if (phone.name == parentPhoneBox.Text)
-                    {
-                        parent = phone.id;
-                        break;
-                    }
+                PhoneModel parent = parentPhoneBox.SelectedItem as PhoneModel;
+                parentId = parent.id;
             }
 
-            if (phoneNameBox.TextLength == 0 && parent == 0)
+            if (phoneNameBox.TextLength == 0 && parentId == 0)
             {
                 AddNewFunction();
             }
             else if (operationNameBox.Text.Length == 0)
             {
-                AddNewPhone(parent);
+                AddNewPhone(parentId);
             }
             else
             {
-                AddNewOperation(parent);
+                AddNewOperation(parentId);
             }
         }
 
         void EditFunction()
         {
+            Function func = selectedNode.Tag as Function;
+            func.name = operationNameBox.Text;
+            func.price = (int)(float.Parse(operationPriceBox.Text) * 100.0f);
+            selectedNode.Text = func.name;
+
+            SQLWorker.GetInstance().SqlComm("update tblFunctions set Name='" + func.name + 
+                "', Price=" + func.price +  " where Id=" + func.id + "; ");
 
         }
 
         void EditPhoneModel()
         {
+            PhoneModel phone = selectedNode.Tag as PhoneModel;
+            phone.name = phoneNameBox.Text;
 
+            var node = selectedNode;
+
+            PhoneModel parentModel = (parentPhoneBox.SelectedItem as PhoneModel);
+            if (parentModel.id != phone.parentId)
+            {
+                var parent = FindNodeById(phone.parentId);
+                if (parent != node)
+                {
+                    selectedNode.Parent.Nodes.Remove(node);
+                    phone.parentId = parentModel.id;
+                    parent.Nodes.Add(node);
+                }
+            }
+
+            node.Text = phone.name;
+
+            SQLWorker.GetInstance().SqlComm("update tblPhoneModels set Name='" + phone.name + "' " +  
+                (phone.parentId > 0 ? ", ParentId=" + phone.parentId.ToString()  : " ") +
+                " where Id=" + phone.id + "; ");
+            
         }
 
         void EditOperation()
         {
+            Operation op = selectedNode.Tag as Operation;
+            op.price = (int)(float.Parse(operationPriceBox.Text) * 100.0f);
+
+            PhoneModel parentModel = (parentPhoneBox.SelectedItem as PhoneModel);
+            if(op.deviceID != parentModel.id)
+            {
+                op.deviceID = parentModel.id;
+                var parNode = FindNodeById(op.deviceID);
+
+                var node = selectedNode;
+                selectedNode.Parent.Nodes.Remove(node);
+
+                TreeNode oper = null;
+                foreach (TreeNode opNode in parNode.Nodes)
+                    if (opNode.Text == "Operations")
+                    {
+                        oper = opNode;
+                        break;
+                    }
+
+                if (oper == null)
+                    oper = parNode.Nodes.Add("Operations");
+
+                oper.Nodes.Add(node);
+                
+            }
+
+            Function func = operationNameBox.SelectedItem as Function;
+            if(op.functionID != func.id)
+            {
+                op.functionID = func.id;
+                selectedNode.Text = func.name;
+            }
+
+            phoneNameBox.Enabled = true; ;
+            operationNameBox.DropDownStyle = ComboBoxStyle.DropDown;
+
+            SQLWorker.GetInstance().SqlComm("update tblOperations set DeviceId=" + op.deviceID +
+                ", FunctionId=" + op.functionID + 
+                ", Price=" + op.price + " where Id=" + op.id + "; ");
 
         }
 
@@ -334,23 +405,38 @@ namespace MobileApplication
             return current.Parent != null ? FindParent(current.Parent) : current;
         }
 
-        private void TreeView1_AfterSelect(object sender, TreeViewEventArgs e)
+        void ClearFormBoxes()
         {
-            selectedNode = treeView1.SelectedNode;
+            
 
             selectedType = DataType.none;
             addButton.Text = "Add";
 
-            if (treeView1.SelectedNode == null)
-            {
-                return;
-            }
+            operationNameBox.Enabled = true;
+            phoneNameBox.Enabled = true;
+            operationNameBox.DropDownStyle = ComboBoxStyle.DropDown;
+            operationPriceBox.Enabled = true;
+            parentPhoneBox.Enabled = true;
 
             phoneNameBox.Text = "";
             operationNameBox.Text = "";
             operationPriceBox.Text = "";
             parentPhoneBox.SelectedIndex = -1;
+        }
 
+        private void TreeView1_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            //preparations and clearing
+
+            ClearFormBoxes();
+
+            
+            if (treeView1.SelectedNode == null)
+            {
+                return;
+            }
+
+            selectedNode = treeView1.SelectedNode;
             var parentRoot = FindParent(selectedNode);
             if (parentRoot == selectedNode || selectedNode.Text == "Operations") return;
 
@@ -358,14 +444,15 @@ namespace MobileApplication
 
             if(parentRoot.Text == "Operations")
             {//it is function
-                foreach(Function func in allFunctions)
-                    if(func.id == (int)selectedNode.Tag)
-                    {
-                        operationPriceBox.Text = ((float)func.price / 100.0f).ToString();
-                        operationNameBox.Text = func.name;
-                        break;
-                    }
+                Function func = selectedNode.Tag as Function;
+                    
+                operationPriceBox.Text = ((float)func.price / 100.0f).ToString();
+                operationNameBox.Text = func.name;
+
                 selectedType = DataType.function;
+
+                phoneNameBox.Enabled = false;
+                parentPhoneBox.Enabled = false;
 
             }
             else if(parentRoot.Text == "Phones")
@@ -378,12 +465,14 @@ namespace MobileApplication
                         parentPhoneBox.Text = selectedNode.Parent.Parent.Text;
                     operationNameBox.Text = selectedNode.Text;
 
-                    foreach(Operation op in allOperations)
-                        if(op.id == (int)selectedNode.Tag)
-                        {
-                            operationPriceBox.Text = ((float)op.price / 100.0f).ToString();
-                            break;
-                        }
+                    Operation op = selectedNode.Tag as Operation;
+
+                    operationPriceBox.Text = ((float)op.price / 100.0f).ToString();
+
+                    phoneNameBox.Enabled = false;
+                    operationNameBox.DropDownStyle = ComboBoxStyle.DropDownList;
+
+                    return;
                 }
                 else
                 {
@@ -392,9 +481,30 @@ namespace MobileApplication
                     if(selectedNode.Parent != parentRoot)
                         parentPhoneBox.Text = selectedNode.Parent.Text;
                     phoneNameBox.Text = selectedNode.Text;
+                    operationNameBox.Enabled = false;
+                    operationPriceBox.Enabled = false;
                 }
             }
 
+
+
+        }
+
+        private void ContextMenuStrip1_Opening(object sender, CancelEventArgs e)
+        {
+
+        }
+
+        private void ToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            var msev = treeView1.PointToClient(Cursor.Position);
+            treeView1.SelectedNode = treeView1.GetNodeAt(msev.X, msev.Y - 5);
+        }
+
+        private void DeselectNodeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            selectedNode = null;
+            ClearFormBoxes();
         }
     }
 }

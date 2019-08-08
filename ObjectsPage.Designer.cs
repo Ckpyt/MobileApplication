@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.phoneNameBox = new System.Windows.Forms.TextBox();
             this.parentPhoneBox = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -38,6 +39,10 @@
             this.label4 = new System.Windows.Forms.Label();
             this.treeView1 = new System.Windows.Forms.TreeView();
             this.operationNameBox = new System.Windows.Forms.ComboBox();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.deselectNodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // phoneNameBox
@@ -113,6 +118,7 @@
             // 
             // treeView1
             // 
+            this.treeView1.ContextMenuStrip = this.contextMenuStrip1;
             this.treeView1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.treeView1.FullRowSelect = true;
             this.treeView1.HideSelection = false;
@@ -131,6 +137,31 @@
             this.operationNameBox.TabIndex = 3;
             this.operationNameBox.SelectedIndexChanged += new System.EventHandler(this.OperationNameBox_SelectedIndexChanged);
             // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1,
+            this.deselectNodeToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 70);
+            this.contextMenuStrip1.Text = "Edit menu";
+            this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.ContextMenuStrip1_Opening);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.CheckOnClick = true;
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem1.Text = "Select node";
+            this.toolStripMenuItem1.Click += new System.EventHandler(this.ToolStripMenuItem1_Click);
+            // 
+            // deselectNodeToolStripMenuItem
+            // 
+            this.deselectNodeToolStripMenuItem.Name = "deselectNodeToolStripMenuItem";
+            this.deselectNodeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.deselectNodeToolStripMenuItem.Text = "Deselect node";
+            this.deselectNodeToolStripMenuItem.Click += new System.EventHandler(this.DeselectNodeToolStripMenuItem_Click);
+            // 
             // ObjectsPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -148,6 +179,7 @@
             this.Controls.Add(this.phoneNameBox);
             this.Name = "ObjectsPage";
             this.Text = "ObjectsPage";
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -165,5 +197,8 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TreeView treeView1;
         private System.Windows.Forms.ComboBox operationNameBox;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem deselectNodeToolStripMenuItem;
     }
 }
