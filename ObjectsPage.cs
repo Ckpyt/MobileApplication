@@ -23,8 +23,11 @@ namespace MobileApplication
         TreeNode phones;
         /// <summary> root node of operations </summary>
         TreeNode operations;
+        /// <summary> selected node. If nothing was selected == null </summary>
         TreeNode selectedNode = null;
+        /// <summary> type of object in selected node. Object holds in Tag  </summary>
         DataType selectedType = DataType.none;
+
 
         int lastPhoneId = 0;
         int lastOperationId = 0;
@@ -159,6 +162,10 @@ namespace MobileApplication
             treeView1.ExpandAll();
         }
 
+        /// <summary>
+        /// Add new function from the form.
+        /// Also, save it in the database
+        /// </summary>
         void AddNewFunction()
         {
             if (operationNameBox.Text.Length == 0)
@@ -185,6 +192,11 @@ namespace MobileApplication
             func.name + "'," + func.price + ");");
         }
 
+        /// <summary>
+        /// Add new phone from the form.
+        /// Also, save it in the database
+        /// </summary>
+        /// <param name="parent"> parent phone </param>
         void AddNewPhone(int parent)
         {
             PhoneModel model = new PhoneModel();
@@ -196,6 +208,11 @@ namespace MobileApplication
             AddPhone(model);
         }
 
+        /// <summary>
+        /// Add new operation from the form.
+        /// Also, save it in the database
+        /// </summary>
+        /// <param name="parent">parent phone</param>
         void AddNewOperation(int parent)
         {
             if (parent == 0)
@@ -207,7 +224,7 @@ namespace MobileApplication
 
             if (operationNameBox.SelectedIndex >= 0 )
             {
-                basefnc = (Function)operationNameBox.Items[operationNameBox.SelectedIndex];
+                basefnc = (Function)operationNameBox.SelectedItem;
                 opId = basefnc.id;
             }
             else
@@ -243,6 +260,9 @@ namespace MobileApplication
             allOperations.Add(op);
         }
 
+        /// <summary>
+        /// add new object. All the data god from form's fields
+        /// </summary>
         void AddNewObject()
         {
             int parentId = 0;
@@ -267,6 +287,12 @@ namespace MobileApplication
             }
         }
 
+        /// <summary>
+        /// Set description of operation the same as it holds in the function.
+        /// It should be called after function description was changed
+        /// </summary>
+        /// <param name="tree"> node there is looking the operations </param>
+        /// <param name="func"> parent function </param>
         void ChangeOperationDescription(TreeNode tree, Function func)
         {
             foreach(TreeNode nd in tree.Nodes)
@@ -284,6 +310,10 @@ namespace MobileApplication
 
         }
 
+        /// <summary>
+        /// Change function description and default price
+        /// Also, defaily description will be changed in the all operations
+        /// </summary>
         void EditFunction()
         {
             Function func = selectedNode.Tag as Function;
@@ -297,6 +327,9 @@ namespace MobileApplication
                 "', Price=" + func.price + " where Id=" + func.id + "; ");
         }
 
+        /// <summary>
+        /// Change phone's name and parent model
+        /// </summary>
         void EditPhoneModel()
         {
             PhoneModel phone = selectedNode.Tag as PhoneModel;
@@ -307,13 +340,15 @@ namespace MobileApplication
             PhoneModel parentModel = (parentPhoneBox.SelectedItem as PhoneModel);
             if (parentModel.id != phone.parentId)
             {
-                var parent = FindNodeById(phone.parentId);
-                if (parent != node)
+                var parentNode = FindNodeById(parentModel.id);
+                if (parentNode != node)
                 {
                     selectedNode.Parent.Nodes.Remove(node);
                     phone.parentId = parentModel.id;
-                    parent.Nodes.Add(node);
+                    parentNode.Nodes.Add(node);
                 }
+                else
+                    return;
             }
 
             node.Text = phone.name;
@@ -324,6 +359,9 @@ namespace MobileApplication
 
         }
 
+        /// <summary>
+        /// change operation phone model and price 
+        /// </summary>
         void EditOperation()
         {
             Operation op = selectedNode.Tag as Operation;
@@ -369,6 +407,9 @@ namespace MobileApplication
 
         }
 
+        /// <summary>
+        /// Editing selected node
+        /// </summary>
         void EditObject()
         {
             switch (selectedType)
@@ -385,6 +426,7 @@ namespace MobileApplication
             }
         }
 
+
         private void AddButton_Click(object sender, EventArgs e)
         {
             if (selectedNode != null)
@@ -396,13 +438,7 @@ namespace MobileApplication
                 AddNewObject();
             }
 
-            phoneNameBox.Text = "";
-            operationNameBox.Text = "";
-            operationPriceBox.Text = "";
-            parentPhoneBox.Text = "";
-            addButton.Text = "Add";
-            selectedType = DataType.none;
-            selectedNode = null;
+            ClearFormBoxes();
         }
 
         private void OperationPriceBox_TextChanged(object sender, EventArgs e)
@@ -423,17 +459,27 @@ namespace MobileApplication
             operationPriceBox.Text = ((float)func.price/100).ToString();
         }
 
+        /// <summary>
+        /// Find the first node of the tree
+        /// </summary>
+        /// <param name="current"> started node </param>
+        /// <returns>first node</returns>
         TreeNode FindParent(TreeNode current)
         {
             return current.Parent != null ? FindParent(current.Parent) : current;
         }
 
+        /// <summary>
+        /// Set default values to boxes
+        /// </summary>
         void ClearFormBoxes()
         {
             deleteButton.Visible = false;
 
             selectedType = DataType.none;
             addButton.Text = "Add";
+            selectedNode = null;
+
 
             operationNameBox.Enabled = true;
             phoneNameBox.Enabled = true;
@@ -445,6 +491,8 @@ namespace MobileApplication
             operationNameBox.Text = "";
             operationPriceBox.Text = "";
             parentPhoneBox.SelectedIndex = -1;
+
+            treeView1.ExpandAll();
         }
 
         private void TreeView1_AfterSelect(object sender, TreeViewEventArgs e)
@@ -453,15 +501,16 @@ namespace MobileApplication
 
             ClearFormBoxes();
 
-
             if (treeView1.SelectedNode == null)
-            {
                 return;
-            }
 
             selectedNode = treeView1.SelectedNode;
             var parentRoot = FindParent(selectedNode);
-            if (parentRoot == selectedNode || selectedNode.Text == "Operations") return;
+            if (parentRoot == selectedNode || selectedNode.Text == "Operations")
+            {
+                selectedNode = null;
+                return;
+            }
 
             deleteButton.Visible = true;
             addButton.Text = "Edit";
@@ -509,11 +558,6 @@ namespace MobileApplication
             }
         }
 
-        private void ContextMenuStrip1_Opening(object sender, CancelEventArgs e)
-        {
-
-        }
-
         private void ToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             var msev = treeView1.PointToClient(Cursor.Position);
@@ -526,21 +570,33 @@ namespace MobileApplication
             ClearFormBoxes();
         }
 
+        /// <summary>
+        /// delete current function from all the phones
+        /// </summary>
+        /// <param name="parNode"> start node </param>
+        /// <param name="func"> parent's function </param>
         void DeleteFunctionFromPhone(TreeNode parNode, Function func)
         {
             foreach (TreeNode node in parNode.Nodes)
             {
+                //it could be only operations or phone
                 if (node.Text == "Operations")
                 {
+                    List<TreeNode> remNodes = new List<TreeNode>();
+
+                    //find current operation
                     foreach (TreeNode opNode in node.Nodes)
                     {
                         Operation op = opNode.Tag as Operation;
                         if (op != null && op.functionID == func.id)
                         {
                             DeleteOperation(opNode);
-                            node.Nodes.Remove(opNode);
+                            remNodes.Add(opNode);
                         }
                     }
+
+                    foreach (TreeNode nd in remNodes)
+                        node.Nodes.Remove(nd);
                 }
                 else
                 {
@@ -549,35 +605,47 @@ namespace MobileApplication
             }
         }
 
+        /// <summary>
+        /// delete selected function
+        /// </summary>
         void DeleteFunction()
         {
             Function func = selectedNode.Tag as Function;
             DeleteFunctionFromPhone(phones, func);
 
             SQLWorker.GetInstance().SqlComm("delete from tblFunctions where id=" + func.id);
+            operationNameBox.Items.Remove(func);
         }
 
+        /// <summary>
+        /// delete operation
+        /// </summary>
+        /// <param name="opNode"> target operation </param>
         void DeleteOperation(TreeNode opNode)
         {
-            if (opNode == null)
-                return;
-
             Operation op = opNode.Tag as Operation;
-            SQLWorker.GetInstance().SqlComm("delete from tblOperations where id=" + op.id + ";");
-            
+            SQLWorker.GetInstance().SqlComm("delete from tblOperations where id=" + op.id + ";");   
         }
 
+        /// <summary>
+        /// delete phone and all the childrens and operations
+        /// </summary>
+        /// <param name="phoneNode"> target phone node </param>
         void DeletePhone(TreeNode phoneNode)
         {
             foreach(TreeNode node in phoneNode.Nodes)
             {
                 if(node.Text == "Operations")
                 {
+                    List<TreeNode> rem = new List<TreeNode>();
                     foreach (TreeNode opNode in node.Nodes)
                     {
                         DeleteOperation(opNode);
-                        node.Nodes.Remove(opNode);
+                        rem.Add(opNode);
                     }
+
+                    foreach (TreeNode nds in rem)
+                        node.Nodes.Remove(nds);
                 }
                 else
                 {
@@ -585,13 +653,11 @@ namespace MobileApplication
                 }
             }
 
-            foreach (TreeNode node in phoneNode.Nodes)
-                phoneNode.Nodes.Remove(node);
-
-            
+            phoneNode.Nodes.Clear();
 
             PhoneModel phone = phoneNode.Tag as PhoneModel;
             SQLWorker.GetInstance().SqlComm("delete from tblPhoneModels where id=" + phone.id);
+            parentPhoneBox.Items.Remove(phone);
         }
 
         private void DeleteButton_Click(object sender, EventArgs e)
@@ -608,9 +674,9 @@ namespace MobileApplication
                     DeletePhone(selectedNode);
                     break;
             }
-            ClearFormBoxes();
             selectedNode.Parent.Nodes.Remove(selectedNode);
 
+            ClearFormBoxes();
         }
 
         private void ObjectsPage_SizeChanged(object sender, EventArgs e)

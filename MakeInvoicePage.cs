@@ -21,6 +21,8 @@ namespace MobileApplication
         bool isSelected = false;
         int selectedPos = -1;
 
+
+
         public MakeInvoicePage()
         {
             InitializeComponent();
