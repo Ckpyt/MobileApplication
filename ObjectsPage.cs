@@ -443,7 +443,7 @@ namespace MobileApplication
 
         private void OperationPriceBox_TextChanged(object sender, EventArgs e)
         {
-            MakeInvoicePage.OnlyDecimalCheckerStatic(sender, e);
+            MakeInvoicePage.OnlyFloatCheckerStatic(sender, e);
         }
 
         private void OperationNameBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -477,8 +477,8 @@ namespace MobileApplication
             deleteButton.Visible = false;
 
             selectedType = DataType.none;
-            addButton.Text = "Add";
             selectedNode = null;
+            addButton.Text = "Add";
 
 
             operationNameBox.Enabled = true;

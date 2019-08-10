@@ -21,13 +21,32 @@ namespace MobileApplication
         bool isSelected = false;
         int selectedPos = -1;
 
-
+        List<Function> functions;
+        List<PhoneModel> phoneModels;
+        List<Operation> operations;
 
         public MakeInvoicePage()
         {
             InitializeComponent();
             qtyBox.Text = "0";
             priceBox.Text = "0";
+
+            FillBoxes();
+        }
+
+        void FillBoxes()
+        {
+            deleteButton.Visible = false;
+
+            functions = SQLWorker.GetInstance().ReadFunctions();
+            phoneModels = SQLWorker.GetInstance().ReadPhones();
+            operations = SQLWorker.GetInstance().ReadOperations();
+
+            foreach (PhoneModel phone in phoneModels)
+              deviceBox.Items.Add(phone);
+
+            foreach (Function func in functions)
+                descriptionBox.Items.Add(func);
         }
 
         private void Add_Click(object sender, EventArgs e)
@@ -39,7 +58,7 @@ namespace MobileApplication
             itm.SubItems.Add(priceBox.Text);
 
             if (qtyBox.Text.Length > 0 && priceBox.Text.Length > 0)
-                itm.SubItems.Add((Int32.Parse(qtyBox.Text) * Int32.Parse(priceBox.Text)).ToString());
+                itm.SubItems.Add((Int32.Parse(qtyBox.Text) * float.Parse(priceBox.Text)).ToString());
             else
                 itm.SubItems.Add("0");
 
@@ -58,10 +77,23 @@ namespace MobileApplication
             descriptionBox.Text = "";
             qtyBox.Text = "0";
             priceBox.Text = "0";
+            deleteButton.Visible = false;
         }
 
         private void OnlyDecimalChecker(object sender, EventArgs e)
         {
+            OnlyDecimalCheckerStatic(sender, e);
+        }
+
+        private void OnlyFloatChecker(object sender, EventArgs e)
+        {
+            OnlyFloatCheckerStatic(sender, e);
+        }
+
+        public static void OnlyFloatCheckerStatic(object sender, EventArgs e)
+        {
+            TextBox sd = sender as TextBox;
+            if (sd.Text.Length > 0 && sd.Text[sd.Text.Length - 1] == '.') return;
             OnlyDecimalCheckerStatic(sender, e);
         }
 
@@ -103,8 +135,7 @@ namespace MobileApplication
         {
             ListView lst = sender as ListView;
 
-
-            if(lst.SelectedItems.Count > 0)
+            if (lst.SelectedItems.Count > 0)
             {
                 isSelected = true;
                 selectedPos = lst.SelectedIndices[0];
@@ -115,6 +146,13 @@ namespace MobileApplication
                 qtyBox.Text = itm.SubItems[2].Text;
                 priceBox.Text = itm.SubItems[3].Text;
                 addButton.Text = "Edit";
+                deleteButton.Visible = true;
+            }
+            else
+            {
+                deleteButton.Visible = false;
+                addButton.Text = "Add";
+                isSelected = false;
             }
 
         }
@@ -123,6 +161,33 @@ namespace MobileApplication
         {
             int Height = this.Height - 140;
             listView1.Height = Height;
+        }
+
+        private void DeviceBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            PhoneModel phone = deviceBox.SelectedItem as PhoneModel;
+            Function func = descriptionBox.SelectedItem as Function;
+            if(func != null)
+            {
+                float price = (float)func.price / 100;
+                
+                if(phone != null)
+                {
+                    foreach(Operation op in operations)
+                        if(op.deviceID == phone.id && op.functionID == func.id)
+                            price = (float)op.price / 100;
+                }
+                priceBox.Text = ((price).ToString());
+            }
+        }
+
+        private void DeleteButton_Click(object sender, EventArgs e)
+        {
+
+            foreach (ListViewItem itm in listView1.SelectedItems)
+                listView1.Items.Remove(itm);
+
+            deleteButton.Visible = false;
         }
     }
 }

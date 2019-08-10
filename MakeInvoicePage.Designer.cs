@@ -44,6 +44,7 @@
             this.priceBox = new System.Windows.Forms.TextBox();
             this.addButton = new System.Windows.Forms.Button();
             this.saveInvoiceButton = new System.Windows.Forms.Button();
+            this.deleteButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // listView1
@@ -105,16 +106,11 @@
             // 
             this.deviceBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.deviceBox.FormattingEnabled = true;
-            this.deviceBox.Items.AddRange(new object[] {
-            "1",
-            "2",
-            "3",
-            "4",
-            "5"});
             this.deviceBox.Location = new System.Drawing.Point(100, 12);
             this.deviceBox.Name = "deviceBox";
             this.deviceBox.Size = new System.Drawing.Size(121, 21);
             this.deviceBox.TabIndex = 2;
+            this.deviceBox.SelectedIndexChanged += new System.EventHandler(this.DeviceBox_SelectedIndexChanged);
             // 
             // label1
             // 
@@ -134,6 +130,7 @@
             this.descriptionBox.Name = "descriptionBox";
             this.descriptionBox.Size = new System.Drawing.Size(121, 21);
             this.descriptionBox.TabIndex = 4;
+            this.descriptionBox.SelectedIndexChanged += new System.EventHandler(this.DeviceBox_SelectedIndexChanged);
             // 
             // label2
             // 
@@ -172,7 +169,7 @@
             this.priceBox.Name = "priceBox";
             this.priceBox.Size = new System.Drawing.Size(100, 20);
             this.priceBox.TabIndex = 8;
-            this.priceBox.TextChanged += new System.EventHandler(this.OnlyDecimalChecker);
+            this.priceBox.TextChanged += new System.EventHandler(this.OnlyFloatChecker);
             // 
             // addButton
             // 
@@ -195,12 +192,23 @@
             this.saveInvoiceButton.Text = "Save invoice";
             this.saveInvoiceButton.UseVisualStyleBackColor = true;
             // 
+            // deleteButton
+            // 
+            this.deleteButton.Location = new System.Drawing.Point(591, 41);
+            this.deleteButton.Name = "deleteButton";
+            this.deleteButton.Size = new System.Drawing.Size(75, 23);
+            this.deleteButton.TabIndex = 11;
+            this.deleteButton.Text = "Delete";
+            this.deleteButton.UseVisualStyleBackColor = true;
+            this.deleteButton.Click += new System.EventHandler(this.DeleteButton_Click);
+            // 
             // MakeInvoicePage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(800, 451);
+            this.Controls.Add(this.deleteButton);
             this.Controls.Add(this.saveInvoiceButton);
             this.Controls.Add(this.addButton);
             this.Controls.Add(this.priceBox);
@@ -238,5 +246,6 @@
         private System.Windows.Forms.TextBox priceBox;
         private System.Windows.Forms.Button addButton;
         private System.Windows.Forms.Button saveInvoiceButton;
+        private System.Windows.Forms.Button deleteButton;
     }
 }
