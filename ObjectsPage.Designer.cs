@@ -42,6 +42,7 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.deselectNodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.deleteButton = new System.Windows.Forms.Button();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -82,8 +83,9 @@
             // 
             // label3
             // 
+            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(435, 14);
+            this.label3.Location = new System.Drawing.Point(538, 13);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(82, 13);
             this.label3.TabIndex = 5;
@@ -91,7 +93,8 @@
             // 
             // addButton
             // 
-            this.addButton.Location = new System.Drawing.Point(586, 59);
+            this.addButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.addButton.Location = new System.Drawing.Point(689, 58);
             this.addButton.Name = "addButton";
             this.addButton.Size = new System.Drawing.Size(75, 23);
             this.addButton.TabIndex = 5;
@@ -101,7 +104,8 @@
             // 
             // operationPriceBox
             // 
-            this.operationPriceBox.Location = new System.Drawing.Point(561, 33);
+            this.operationPriceBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.operationPriceBox.Location = new System.Drawing.Point(664, 32);
             this.operationPriceBox.Name = "operationPriceBox";
             this.operationPriceBox.Size = new System.Drawing.Size(100, 20);
             this.operationPriceBox.TabIndex = 4;
@@ -109,8 +113,9 @@
             // 
             // label4
             // 
+            this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(561, 14);
+            this.label4.Location = new System.Drawing.Point(664, 13);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(76, 13);
             this.label4.TabIndex = 8;
@@ -124,14 +129,15 @@
             this.treeView1.HideSelection = false;
             this.treeView1.Location = new System.Drawing.Point(0, 101);
             this.treeView1.Name = "treeView1";
-            this.treeView1.Size = new System.Drawing.Size(800, 349);
+            this.treeView1.Size = new System.Drawing.Size(800, 350);
             this.treeView1.TabIndex = 6;
             this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.TreeView1_AfterSelect);
             // 
             // operationNameBox
             // 
+            this.operationNameBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.operationNameBox.FormattingEnabled = true;
-            this.operationNameBox.Location = new System.Drawing.Point(434, 33);
+            this.operationNameBox.Location = new System.Drawing.Point(537, 32);
             this.operationNameBox.Name = "operationNameBox";
             this.operationNameBox.Size = new System.Drawing.Size(121, 21);
             this.operationNameBox.TabIndex = 3;
@@ -143,7 +149,7 @@
             this.toolStripMenuItem1,
             this.deselectNodeToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 70);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(149, 48);
             this.contextMenuStrip1.Text = "Edit menu";
             this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.ContextMenuStrip1_Opening);
             // 
@@ -151,22 +157,34 @@
             // 
             this.toolStripMenuItem1.CheckOnClick = true;
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(148, 22);
             this.toolStripMenuItem1.Text = "Select node";
             this.toolStripMenuItem1.Click += new System.EventHandler(this.ToolStripMenuItem1_Click);
             // 
             // deselectNodeToolStripMenuItem
             // 
             this.deselectNodeToolStripMenuItem.Name = "deselectNodeToolStripMenuItem";
-            this.deselectNodeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.deselectNodeToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.deselectNodeToolStripMenuItem.Text = "Deselect node";
             this.deselectNodeToolStripMenuItem.Click += new System.EventHandler(this.DeselectNodeToolStripMenuItem_Click);
+            // 
+            // deleteButton
+            // 
+            this.deleteButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.deleteButton.Location = new System.Drawing.Point(583, 59);
+            this.deleteButton.Name = "deleteButton";
+            this.deleteButton.Size = new System.Drawing.Size(75, 23);
+            this.deleteButton.TabIndex = 10;
+            this.deleteButton.Text = "Delete";
+            this.deleteButton.UseVisualStyleBackColor = true;
+            this.deleteButton.Click += new System.EventHandler(this.DeleteButton_Click);
             // 
             // ObjectsPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(800, 451);
+            this.Controls.Add(this.deleteButton);
             this.Controls.Add(this.operationNameBox);
             this.Controls.Add(this.treeView1);
             this.Controls.Add(this.label4);
@@ -177,8 +195,10 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.parentPhoneBox);
             this.Controls.Add(this.phoneNameBox);
+            this.MinimumSize = new System.Drawing.Size(550, 0);
             this.Name = "ObjectsPage";
             this.Text = "ObjectsPage";
+            this.SizeChanged += new System.EventHandler(this.ObjectsPage_SizeChanged);
             this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -200,5 +220,6 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem deselectNodeToolStripMenuItem;
+        private System.Windows.Forms.Button deleteButton;
     }
 }
