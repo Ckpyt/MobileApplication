@@ -194,7 +194,8 @@
             // 
             // deleteButton
             // 
-            this.deleteButton.Location = new System.Drawing.Point(591, 41);
+            this.deleteButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.deleteButton.Location = new System.Drawing.Point(592, 42);
             this.deleteButton.Name = "deleteButton";
             this.deleteButton.Size = new System.Drawing.Size(75, 23);
             this.deleteButton.TabIndex = 11;
@@ -204,8 +205,10 @@
             // 
             // MakeInvoicePage
             // 
+#if DEBUG
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+#endif
             this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(800, 451);
             this.Controls.Add(this.deleteButton);
@@ -221,14 +224,14 @@
             this.Controls.Add(this.labelDevice);
             this.Controls.Add(this.listView1);
             this.Name = "MakeInvoicePage";
-            this.Text = "MakeInvoicePage";
+            this.Text = "Invoices";
             this.Resize += new System.EventHandler(this.MakeInvoicePage_ResizeEnd);
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
-        #endregion
+#endregion
 
         private System.Windows.Forms.ListView listView1;
         private System.Windows.Forms.ColumnHeader Device;

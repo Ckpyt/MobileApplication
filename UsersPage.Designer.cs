@@ -124,7 +124,6 @@
             this.PhoneBox.Name = "PhoneBox";
             this.PhoneBox.Size = new System.Drawing.Size(100, 20);
             this.PhoneBox.TabIndex = 4;
-            
             // 
             // label3
             // 
@@ -202,9 +201,9 @@
             this.CustomersCheckBox.AutoSize = true;
             this.CustomersCheckBox.Location = new System.Drawing.Point(18, 397);
             this.CustomersCheckBox.Name = "CustomersCheckBox";
-            this.CustomersCheckBox.Size = new System.Drawing.Size(179, 17);
+            this.CustomersCheckBox.Size = new System.Drawing.Size(157, 17);
             this.CustomersCheckBox.TabIndex = 12;
-            this.CustomersCheckBox.Text = "Allow to &Customers page access";
+            this.CustomersCheckBox.Text = "Allow to &Users page access";
             this.CustomersCheckBox.UseVisualStyleBackColor = true;
             // 
             // LogsCheckBox
@@ -241,8 +240,6 @@
             // 
             // UsersPage
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.delBtn);
             this.Controls.Add(this.Add);
@@ -261,7 +258,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.listView1);
             this.Name = "UsersPage";
-            this.Text = "UsersPage";
+            this.Text = "Users";
             this.SizeChanged += new System.EventHandler(this.ListView1_SizeChanged);
             this.ResumeLayout(false);
             this.PerformLayout();

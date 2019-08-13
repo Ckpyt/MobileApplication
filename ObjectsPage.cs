@@ -11,7 +11,12 @@ using System.Windows.Forms;
 
 namespace MobileApplication
 {
-    public partial class ObjectsPage : Form
+    public partial class ObjectsPage :
+#if DEBUG
+        Form
+#else
+        TabPage
+#endif
     {
         /// <summary> container for holding phones </summary>
         List<PhoneModel> allPhones;
@@ -28,6 +33,32 @@ namespace MobileApplication
         /// <summary> type of object in selected node. Object holds in Tag  </summary>
         DataType selectedType = DataType.none;
 
+        public delegate void AddFunctionDelegate(Function func);
+        public AddFunctionDelegate addFunctionEvent;
+
+        public delegate void AddPhoneModelDelegate(PhoneModel phone);
+        public AddPhoneModelDelegate addPhoneModelEvent;
+
+        public delegate void AddOperationDelegate(Operation operation);
+        public AddOperationDelegate addOperationEvent;
+
+        public delegate void ChangeFunctionDelegate(Function func);
+        public ChangeFunctionDelegate changeFunctionEvent;
+
+        public delegate void ChangePhoneModelDelegate(PhoneModel phone);
+        public ChangePhoneModelDelegate changePhoneModelEvent;
+
+        public delegate void ChangeOperationDelegate(Operation operation);
+        public ChangeOperationDelegate changeOperationEvent;
+
+        public delegate void DeleteFunctionDelegate(Function func);
+        public DeleteFunctionDelegate deleteFunctionEvent;
+
+        public delegate void DeletePhoneModelDelegate(PhoneModel phone);
+        public DeletePhoneModelDelegate deletePhoneModelEvent;
+
+        public delegate void DeleteOperationDelegate(Operation op);
+        public DeleteOperationDelegate deleteOperationEvent;
 
         int lastPhoneId = 0;
         int lastOperationId = 0;
@@ -39,6 +70,7 @@ namespace MobileApplication
             InitializeComponent();
             FillTables();
             deleteButton.Visible = false;
+            MakeInvoicePage.objectsPage = this;
         }
 
         /// <summary>
@@ -190,6 +222,8 @@ namespace MobileApplication
             allFunctions.Add(func);
             SQLWorker.GetInstance().SqlComm("insert into tblFunctions values(" + func.id + ",'" +
             func.name + "'," + func.price + ");");
+
+            addFunctionEvent?.Invoke(func);
         }
 
         /// <summary>
@@ -206,6 +240,8 @@ namespace MobileApplication
             SQLWorker.GetInstance().SqlComm("insert into tblPhoneModels values("
                     + model.id + ",'" + model.name + "'," + model.parentId + ")");
             AddPhone(model);
+
+            addPhoneModelEvent?.Invoke(model);
         }
 
         /// <summary>
@@ -258,6 +294,8 @@ namespace MobileApplication
 
             AddOperation(op);
             allOperations.Add(op);
+
+            addOperationEvent?.Invoke(op);
         }
 
         /// <summary>
@@ -325,6 +363,8 @@ namespace MobileApplication
 
             SQLWorker.GetInstance().SqlComm("update tblFunctions set Name='" + func.name +
                 "', Price=" + func.price + " where Id=" + func.id + "; ");
+
+            changeFunctionEvent?.Invoke(func);
         }
 
         /// <summary>
@@ -357,6 +397,7 @@ namespace MobileApplication
                 (phone.parentId > 0 ? ", ParentId=" + phone.parentId.ToString() : " ") +
                 " where Id=" + phone.id + "; ");
 
+            changePhoneModelEvent?.Invoke(phone);
         }
 
         /// <summary>
@@ -404,6 +445,8 @@ namespace MobileApplication
             SQLWorker.GetInstance().SqlComm("update tblOperations set DeviceId=" + op.deviceID +
                 ", FunctionId=" + op.functionID +
                 ", Price=" + op.price + " where Id=" + op.id + "; ");
+
+            changeOperationEvent?.Invoke(op);
 
         }
 
@@ -615,6 +658,8 @@ namespace MobileApplication
 
             SQLWorker.GetInstance().SqlComm("delete from tblFunctions where id=" + func.id);
             operationNameBox.Items.Remove(func);
+
+            deleteFunctionEvent?.Invoke(func);
         }
 
         /// <summary>
@@ -624,7 +669,9 @@ namespace MobileApplication
         void DeleteOperation(TreeNode opNode)
         {
             Operation op = opNode.Tag as Operation;
-            SQLWorker.GetInstance().SqlComm("delete from tblOperations where id=" + op.id + ";");   
+            SQLWorker.GetInstance().SqlComm("delete from tblOperations where id=" + op.id + ";");
+
+            deleteOperationEvent?.Invoke(op);
         }
 
         /// <summary>
@@ -658,6 +705,8 @@ namespace MobileApplication
             PhoneModel phone = phoneNode.Tag as PhoneModel;
             SQLWorker.GetInstance().SqlComm("delete from tblPhoneModels where id=" + phone.id);
             parentPhoneBox.Items.Remove(phone);
+
+            deletePhoneModelEvent?.Invoke(phone);
         }
 
         private void DeleteButton_Click(object sender, EventArgs e)

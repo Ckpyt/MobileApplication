@@ -10,7 +10,12 @@ using System.Windows.Forms;
 
 namespace MobileApplication
 {
-    public partial class LogsPage : Form
+    public partial class LogsPage :
+#if DEBUG
+        Form
+#else
+        TabPage
+#endif
     {
         public LogsPage()
         {

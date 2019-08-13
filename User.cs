@@ -108,7 +108,7 @@ namespace MobileApplication
             result += (rights & 1) != 0 ? "I" : "";
             result += (rights & 2) != 0 ? "D" : "";
             result += (rights & 4) != 0 ? "P" : "";
-            result += (rights & 8) != 0 ? "C" : "";
+            result += (rights & 8) != 0 ? "U" : "";
             result += (rights & 16) != 0 ? "L" : "";
             return result;
         }
@@ -132,7 +132,7 @@ namespace MobileApplication
                     case 'P':
                         rights += 4;
                         break;
-                    case 'C':
+                    case 'U':
                         rights += 8;
                         break;
                     case 'L':

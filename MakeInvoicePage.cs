@@ -15,7 +15,12 @@ namespace MobileApplication
     /// Result should be saved to database and invoice.pdf
     /// Later, parent class should be changed to tabPage
     /// </summary>
-    public partial class MakeInvoicePage : Form
+    public partial class MakeInvoicePage :
+#if DEBUG
+        Form
+#else
+        TabPage
+#endif
     {
 
         bool isSelected = false;
@@ -25,13 +30,15 @@ namespace MobileApplication
         List<PhoneModel> phoneModels;
         List<Operation> operations;
 
+        public static ObjectsPage objectsPage = null;
+
         public MakeInvoicePage()
         {
             InitializeComponent();
             qtyBox.Text = "0";
             priceBox.Text = "0";
 
-            FillBoxes();
+            FillBoxes();   
         }
 
         void FillBoxes()
@@ -42,12 +49,90 @@ namespace MobileApplication
             phoneModels = SQLWorker.GetInstance().ReadPhones();
             operations = SQLWorker.GetInstance().ReadOperations();
 
-            foreach (PhoneModel phone in phoneModels)
-              deviceBox.Items.Add(phone);
+            deviceBox.DataSource = phoneModels;
+            descriptionBox.DataSource = functions;
 
-            foreach (Function func in functions)
-                descriptionBox.Items.Add(func);
+            if (objectsPage != null)
+            {
+                objectsPage.addOperationEvent += delegate (Operation op) { operations.Add(op); };
+                objectsPage.addFunctionEvent += delegate (Function func)
+                {
+                    functions.Add(func);
+                    descriptionBox.Items.Add(func);
+                };
+                objectsPage.addPhoneModelEvent += delegate (PhoneModel phone)
+                {
+                    phoneModels.Add(phone);
+                    deviceBox.Items.Add(phone);
+                };
+
+                objectsPage.changeFunctionEvent += delegate (Function func) 
+                {
+                    ChangeObject(functions, func, descriptionBox);
+                };
+
+                objectsPage.changePhoneModelEvent += delegate (PhoneModel phone)
+                {
+                    ChangeObject(phoneModels, phone, deviceBox);
+                };
+
+                objectsPage.changeOperationEvent += delegate (Operation op)
+                 {
+                     ChangeObject(operations, op);
+                 };
+
+                objectsPage.deleteFunctionEvent += delegate (Function func)
+                {
+                    DeleteObject(functions, func, descriptionBox);
+                };
+
+                objectsPage.deletePhoneModelEvent += delegate (PhoneModel phone)
+                {
+                    DeleteObject(phoneModels, phone, deviceBox);
+                };
+
+                objectsPage.deleteOperationEvent += delegate (Operation op)
+                {
+                    DeleteObject(operations, op);
+                };
+            }
         }
+
+        private void ChangeObject<T>(List<T> container, DataObject objct)
+        {
+            foreach(T obj in container)
+            {
+                DataObject dtobj = obj as DataObject;
+                if (dtobj.id == objct.id)
+                    dtobj.CopyFrom(objct);
+            }
+        }
+
+        public void ChangeObject<T>(List<T> container, DataObject objct, ComboBox box)
+        {
+            box.DataSource = null;
+            ChangeObject(container, objct);
+            box.DataSource = container;
+        }
+
+        private void DeleteObject<T>(List<T> container, DataObject dataObject)
+        {
+            foreach(T obj in container)
+            {
+                DataObject dtobj = obj as DataObject;
+                if (dtobj.id == dataObject.id)
+                    container.Remove(obj);
+            }
+        }
+
+        private void DeleteObject<T>(List<T> container, DataObject dataObject, ComboBox box)
+        {
+            box.DataSource = null;
+            DeleteObject(container, dataObject);
+            box.DataSource = container;
+        }
+
+
 
         private void Add_Click(object sender, EventArgs e)
         {
@@ -120,8 +205,6 @@ namespace MobileApplication
                 {
                    
                 }
-                
-
                 sd.SelectionStart = pos;
                 sd.SelectionLength = 0;
             }

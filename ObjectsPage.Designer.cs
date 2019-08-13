@@ -180,8 +180,6 @@
             // 
             // ObjectsPage
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 451);
             this.Controls.Add(this.deleteButton);
             this.Controls.Add(this.operationNameBox);
@@ -196,7 +194,7 @@
             this.Controls.Add(this.phoneNameBox);
             this.MinimumSize = new System.Drawing.Size(550, 0);
             this.Name = "ObjectsPage";
-            this.Text = "ObjectsPage";
+            this.Text = "Keywords";
             this.SizeChanged += new System.EventHandler(this.ObjectsPage_SizeChanged);
             this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);

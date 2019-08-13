@@ -19,12 +19,13 @@ namespace MobileApplication
     {
         /// <summary> id in the database </summary>
         public int id;
+        public virtual void CopyFrom(DataObject obj) { }
     }
 
     /// <summary>
     /// Description of a phome model
     /// </summary>
-    class PhoneModel : DataObject
+    public class PhoneModel : DataObject
     {
         /// <summary> Phone name </summary>
         public string name;
@@ -35,12 +36,19 @@ namespace MobileApplication
         {
             return name;
         }
+
+        public override void CopyFrom(DataObject obj)
+        {
+            PhoneModel phone = obj as PhoneModel;
+            name = phone.name;
+            parentId = phone.parentId;
+        }
     }
 
     /// <summary>
     /// Fixing functions, like "change a battary"
     /// </summary>
-    class Function : DataObject
+    public class Function : DataObject
     {
         /// <summary> Function description like "change a glass" </summary>
         public string name;
@@ -51,12 +59,19 @@ namespace MobileApplication
         {
             return name;
         }
+
+        public override void CopyFrom(DataObject obj)
+        {
+            Function func = obj as Function;
+            name = func.name;
+            price = func.price;
+        }
     }
 
     /// <summary>
     /// Specified functions to phone model. Like "change a battary on iphone 6"
     /// </summary>
-    class Operation : DataObject
+    public class Operation : DataObject
     {
         /// <summary> device id in the database </summary>
         public int deviceID;
@@ -64,6 +79,14 @@ namespace MobileApplication
         public int functionID;
         /// <summary> default price in cents </summary>
         public int price;
+
+        public override void CopyFrom(DataObject obj)
+        {
+            Operation op = obj as Operation;
+            deviceID = op.deviceID;
+            functionID = op.functionID;
+            price = op.price;
+        }
     }
 
 }

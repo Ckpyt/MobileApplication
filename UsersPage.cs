@@ -15,7 +15,12 @@ namespace MobileApplication
     /// Page for creating users or changing users' details
     /// Later, parent class should be changed to tabPage
     /// </summary>
-    public partial class UsersPage : Form
+    public partial class UsersPage :
+#if DEBUG
+        Form
+#else
+        TabPage
+#endif
     {
         /// <summary> Full list of users </summary>
         SortedList<int, User> users;
@@ -112,7 +117,7 @@ namespace MobileApplication
             rights += InvoceCheckBox.Checked ?      "I" :"";
             rights += DeviceCheckBox.Checked ?      "D" : "";
             rights += PriceCheckBox.Checked ?       "P" : "";
-            rights += CustomersCheckBox.Checked ?   "C" : "";
+            rights += CustomersCheckBox.Checked ?   "U" : "";
             rights += LogsCheckBox.Checked ?        "L" : "";
 
 
@@ -182,7 +187,7 @@ namespace MobileApplication
                         case 'P':
                             PriceCheckBox.Checked = true;
                             break;
-                        case 'C':
+                        case 'U':
                             CustomersCheckBox.Checked = true;
                             break;
                         case 'L':
