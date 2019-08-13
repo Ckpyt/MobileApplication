@@ -38,6 +38,8 @@ namespace MobileApplication
             qtyBox.Text = "0";
             priceBox.Text = "0";
 
+            priceBox.Enabled = MainForm.currentUser.GetStringRights().Contains('P');
+
             FillBoxes();   
         }
 

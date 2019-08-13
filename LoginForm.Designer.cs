@@ -40,9 +40,9 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(1, 9);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(35, 13);
+            this.label1.Size = new System.Drawing.Size(33, 13);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Name";
+            this.label1.Text = "Login";
             // 
             // nameBox
             // 
@@ -93,7 +93,7 @@
             this.MaximumSize = new System.Drawing.Size(250, 200);
             this.MinimumSize = new System.Drawing.Size(250, 200);
             this.Name = "LoginForm";
-            this.Text = "LoginForm";
+            this.Text = "Login";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.LoginForm_FormClosed);
             this.ResumeLayout(false);
             this.PerformLayout();

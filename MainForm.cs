@@ -78,32 +78,30 @@ namespace MobileApplication
             this.Controls.Add(this.button1);
 
 #else
-            string userRights = currentUser.GetStringRights();
-            foreach(char c in userRights)
+            if (currentUser != null)
             {
-                switch (c)
-                {
-                    case 'I':
-                        AllTabs.TabPages.Add(new MakeInvoicePage());
-                        break;
-                    case 'D':
-                        AllTabs.TabPages.Add(new ObjectsPage());
-                        break;
-                    case 'P':
-                        AllTabs.TabPages.Add(new ObjectsPage());
-                        break;
-                    case 'U':
-                        AllTabs.TabPages.Add(new UsersPage());
-                        break;
-                    case 'L':
-                        AllTabs.TabPages.Add(new LogsPage());
-                        break;
-                    case ' ': break;
-                    default:
-                        throw new Exception("unexpected char " + c + " founded");
-                }
+                string userRights = currentUser.GetStringRights();
+                ObjectsPage obj = null;
+                MakeInvoicePage invoice = null;
+                UsersPage usersPage = null;
+                LogsPage logs = null;
+
+                if (userRights.Contains('D'))
+                    obj = new ObjectsPage();
+                if (userRights.Contains('I'))
+                    invoice = new MakeInvoicePage();
+                if (userRights.Contains('U'))
+                    usersPage = new UsersPage();
+                if (userRights.Contains('L'))
+                    logs = new LogsPage();
+
+                if (invoice != null) AllTabs.TabPages.Add(invoice);
+                if (obj != null) AllTabs.TabPages.Add(obj);
+                if (usersPage != null) AllTabs.TabPages.Add(usersPage);
+                if (logs != null) AllTabs.TabPages.Add(logs);
+
+                this.Controls.Add(this.AllTabs);
             }
-            this.Controls.Add(this.AllTabs);
 #endif
 
 
