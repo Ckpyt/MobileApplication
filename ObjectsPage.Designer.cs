@@ -38,10 +38,10 @@
             this.operationPriceBox = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.treeView1 = new System.Windows.Forms.TreeView();
-            this.operationNameBox = new System.Windows.Forms.ComboBox();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.deselectNodeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.operationNameBox = new System.Windows.Forms.ComboBox();
             this.deleteButton = new System.Windows.Forms.Button();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -133,16 +133,6 @@
             this.treeView1.TabIndex = 6;
             this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.TreeView1_AfterSelect);
             // 
-            // operationNameBox
-            // 
-            this.operationNameBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.operationNameBox.FormattingEnabled = true;
-            this.operationNameBox.Location = new System.Drawing.Point(537, 32);
-            this.operationNameBox.Name = "operationNameBox";
-            this.operationNameBox.Size = new System.Drawing.Size(121, 21);
-            this.operationNameBox.TabIndex = 3;
-            this.operationNameBox.SelectedIndexChanged += new System.EventHandler(this.OperationNameBox_SelectedIndexChanged);
-            // 
             // contextMenuStrip1
             // 
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -167,6 +157,16 @@
             this.deselectNodeToolStripMenuItem.Text = "Deselect node";
             this.deselectNodeToolStripMenuItem.Click += new System.EventHandler(this.DeselectNodeToolStripMenuItem_Click);
             // 
+            // operationNameBox
+            // 
+            this.operationNameBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.operationNameBox.FormattingEnabled = true;
+            this.operationNameBox.Location = new System.Drawing.Point(537, 32);
+            this.operationNameBox.Name = "operationNameBox";
+            this.operationNameBox.Size = new System.Drawing.Size(121, 21);
+            this.operationNameBox.TabIndex = 3;
+            this.operationNameBox.SelectedIndexChanged += new System.EventHandler(this.OperationNameBox_SelectedIndexChanged);
+            // 
             // deleteButton
             // 
             this.deleteButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -180,6 +180,7 @@
             // 
             // ObjectsPage
             // 
+            this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(800, 451);
             this.Controls.Add(this.deleteButton);
             this.Controls.Add(this.operationNameBox);

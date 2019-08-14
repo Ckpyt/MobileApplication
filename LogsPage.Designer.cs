@@ -28,9 +28,16 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
+            this.SuspendLayout();
+            // 
+            // LogsPage
+            // 
+            this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Name = "LogsPage";
             this.Text = "Logs";
+            this.ResumeLayout(false);
+
         }
 
         #endregion

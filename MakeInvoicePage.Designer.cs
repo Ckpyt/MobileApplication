@@ -45,6 +45,12 @@
             this.addButton = new System.Windows.Forms.Button();
             this.saveInvoiceButton = new System.Windows.Forms.Button();
             this.deleteButton = new System.Windows.Forms.Button();
+            this.label4 = new System.Windows.Forms.Label();
+            this.CustNameBox = new System.Windows.Forms.TextBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.CustPhoneBox = new System.Windows.Forms.TextBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.InvoiceBox = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // listView1
@@ -94,7 +100,6 @@
             // 
             // labelDevice
             // 
-            this.labelDevice.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.labelDevice.AutoSize = true;
             this.labelDevice.Location = new System.Drawing.Point(53, 16);
             this.labelDevice.Name = "labelDevice";
@@ -104,7 +109,6 @@
             // 
             // deviceBox
             // 
-            this.deviceBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.deviceBox.FormattingEnabled = true;
             this.deviceBox.Location = new System.Drawing.Point(100, 12);
             this.deviceBox.Name = "deviceBox";
@@ -114,7 +118,6 @@
             // 
             // label1
             // 
-            this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(227, 16);
             this.label1.Name = "label1";
@@ -124,7 +127,6 @@
             // 
             // descriptionBox
             // 
-            this.descriptionBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.descriptionBox.FormattingEnabled = true;
             this.descriptionBox.Location = new System.Drawing.Point(294, 12);
             this.descriptionBox.Name = "descriptionBox";
@@ -134,7 +136,6 @@
             // 
             // label2
             // 
-            this.label2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(422, 16);
             this.label2.Name = "label2";
@@ -144,17 +145,16 @@
             // 
             // qtyBox
             // 
-            this.qtyBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.qtyBox.Location = new System.Drawing.Point(457, 12);
             this.qtyBox.MaxLength = 10;
             this.qtyBox.Name = "qtyBox";
             this.qtyBox.Size = new System.Drawing.Size(43, 20);
             this.qtyBox.TabIndex = 6;
+            this.qtyBox.Text = "1";
             this.qtyBox.TextChanged += new System.EventHandler(this.OnlyDecimalChecker);
             // 
             // label3
             // 
-            this.label3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(507, 16);
             this.label3.Name = "label3";
@@ -164,7 +164,6 @@
             // 
             // priceBox
             // 
-            this.priceBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.priceBox.Location = new System.Drawing.Point(567, 12);
             this.priceBox.Name = "priceBox";
             this.priceBox.Size = new System.Drawing.Size(100, 20);
@@ -173,7 +172,6 @@
             // 
             // addButton
             // 
-            this.addButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.addButton.Location = new System.Drawing.Point(708, 12);
             this.addButton.Name = "addButton";
             this.addButton.Size = new System.Drawing.Size(80, 23);
@@ -184,18 +182,17 @@
             // 
             // saveInvoiceButton
             // 
-            this.saveInvoiceButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.saveInvoiceButton.Location = new System.Drawing.Point(708, 42);
             this.saveInvoiceButton.Name = "saveInvoiceButton";
             this.saveInvoiceButton.Size = new System.Drawing.Size(80, 23);
             this.saveInvoiceButton.TabIndex = 10;
             this.saveInvoiceButton.Text = "Save invoice";
             this.saveInvoiceButton.UseVisualStyleBackColor = true;
+            this.saveInvoiceButton.Click += new System.EventHandler(this.SaveInvoiceButton_Click);
             // 
             // deleteButton
             // 
-            this.deleteButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.deleteButton.Location = new System.Drawing.Point(592, 42);
+            this.deleteButton.Location = new System.Drawing.Point(425, 43);
             this.deleteButton.Name = "deleteButton";
             this.deleteButton.Size = new System.Drawing.Size(75, 23);
             this.deleteButton.TabIndex = 11;
@@ -203,14 +200,66 @@
             this.deleteButton.UseVisualStyleBackColor = true;
             this.deleteButton.Click += new System.EventHandler(this.DeleteButton_Click);
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(56, 51);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(35, 13);
+            this.label4.TabIndex = 12;
+            this.label4.Text = "Name";
+            // 
+            // CustNameBox
+            // 
+            this.CustNameBox.Location = new System.Drawing.Point(100, 46);
+            this.CustNameBox.Name = "CustNameBox";
+            this.CustNameBox.Size = new System.Drawing.Size(121, 20);
+            this.CustNameBox.TabIndex = 13;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(249, 51);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(38, 13);
+            this.label5.TabIndex = 14;
+            this.label5.Text = "Phone";
+            // 
+            // CustPhoneBox
+            // 
+            this.CustPhoneBox.Location = new System.Drawing.Point(294, 46);
+            this.CustPhoneBox.Name = "CustPhoneBox";
+            this.CustPhoneBox.Size = new System.Drawing.Size(121, 20);
+            this.CustPhoneBox.TabIndex = 15;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(507, 48);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(56, 13);
+            this.label6.TabIndex = 16;
+            this.label6.Text = "Invoice №";
+            // 
+            // InvoiceBox
+            // 
+            this.InvoiceBox.Location = new System.Drawing.Point(567, 44);
+            this.InvoiceBox.Name = "InvoiceBox";
+            this.InvoiceBox.Size = new System.Drawing.Size(100, 20);
+            this.InvoiceBox.TabIndex = 17;
+            this.InvoiceBox.Text = "11111";
+            this.InvoiceBox.TextChanged += new System.EventHandler(this.OnlyDecimalChecker);
+            // 
             // MakeInvoicePage
             // 
-#if DEBUG
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-#endif
             this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(800, 451);
+            this.Controls.Add(this.InvoiceBox);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.CustPhoneBox);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.CustNameBox);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.deleteButton);
             this.Controls.Add(this.saveInvoiceButton);
             this.Controls.Add(this.addButton);
@@ -250,5 +299,11 @@
         private System.Windows.Forms.Button addButton;
         private System.Windows.Forms.Button saveInvoiceButton;
         private System.Windows.Forms.Button deleteButton;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.TextBox CustNameBox;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TextBox CustPhoneBox;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.TextBox InvoiceBox;
     }
 }

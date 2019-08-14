@@ -82,7 +82,7 @@ namespace MobileApplication
             }
             catch (Exception ex)
             {
-                //MessageBox.Show(ex.Message, "SqlException", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(ex.Message, "SqlException", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             if (reader == null)
