@@ -16,7 +16,7 @@ namespace MobileApplication
     /// Later, parent class should be changed to tabPage
     /// </summary>
     public partial class UsersPage :
-#if DEBUG
+#if DEBSYMB
         Form
 #else
         TabPage

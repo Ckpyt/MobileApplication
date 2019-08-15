@@ -1,5 +1,4 @@
-﻿
-using SHA3.Net;
+﻿using SHA3.Net;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -27,7 +26,7 @@ namespace MobileApplication
             SQLWorker.GetInstance();
             LoginForm lg = new LoginForm();
             lg.ShowDialog();
-#if DEBUG
+#if DEBSYMB
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
@@ -122,7 +121,7 @@ namespace MobileApplication
             return hash;
         }
 
-#if DEBUG
+#if DEBSYMB
         //tmp button for testing MakeInvoicePage. Later, should be deleted.
         private void Button1_Click(object sender, EventArgs e)
         {

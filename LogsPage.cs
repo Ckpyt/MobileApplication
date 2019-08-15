@@ -11,7 +11,7 @@ using System.Windows.Forms;
 namespace MobileApplication
 {
     public partial class LogsPage :
-#if DEBUG
+#if DEBSYMB
         Form
 #else
         TabPage

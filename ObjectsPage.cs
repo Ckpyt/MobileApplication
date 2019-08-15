@@ -12,7 +12,7 @@ using System.Windows.Forms;
 namespace MobileApplication
 {
     public partial class ObjectsPage :
-#if DEBUG
+#if DEBSYMB
         Form
 #else
         TabPage
@@ -32,6 +32,9 @@ namespace MobileApplication
         TreeNode selectedNode = null;
         /// <summary> type of object in selected node. Object holds in Tag  </summary>
         DataType selectedType = DataType.none;
+
+        /// <summary> event system for another class  </summary>
+#region Events
 
         public delegate void AddFunctionDelegate(Function func);
         public AddFunctionDelegate addFunctionEvent;
@@ -59,6 +62,8 @@ namespace MobileApplication
 
         public delegate void DeleteOperationDelegate(Operation op);
         public DeleteOperationDelegate deleteOperationEvent;
+
+#endregion 
 
         int lastPhoneId = 0;
         int lastOperationId = 0;
