@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -28,6 +29,7 @@ namespace MobileApplication
 
         bool isSelected = false;
         int selectedPos = -1;
+        int maxInvoice = 0;
 
         List<Function> functions;
         List<PhoneModel> phoneModels;
@@ -43,7 +45,9 @@ namespace MobileApplication
 
             priceBox.Enabled = MainForm.currentUser.GetStringRights().Contains('P');
 
-            FillBoxes();   
+            FillBoxes();
+            maxInvoice = SQLWorker.GetInstance().GetMaxId("tblInvoices");
+            InvoiceBox.Text = (maxInvoice + 1).ToString();
         }
 
         void FillBoxes()
@@ -283,38 +287,95 @@ namespace MobileApplication
             deleteButton.Visible = false;
         }
 
-        void FindAndReplace(word.Application app, string textToFind, string textToReplace)
+        void FindAndReplaceIntoTextBoxes(Document doc, string Findtext, string Replacetext)
         {
-            var matchCase = true;
-            var matchWholeWord = true;
-            var matchWildcards = false;
-            var matchSoundsLike = false;
-            var matchAllWordForms = false;
-            var forward = true;
-            var wrap = 1;
-            var format = false;
-            var replace = 2;
+            
+
+            //First search the main document using the Selection
+            {
+                var myStoryRange = doc.Range();
+                myStoryRange.Find.Text = Findtext;
+                myStoryRange.Find.Replacement.Text = Replacetext;
+                myStoryRange.Find.Forward = true;
+                myStoryRange.Find.Wrap = word.WdFindWrap.wdFindContinue;
+                myStoryRange.Find.Format = false;
+                myStoryRange.Find.MatchCase = false;
+                myStoryRange.Find.MatchWholeWord = false;
+                myStoryRange.Find.MatchWildcards = false;
+                myStoryRange.Find.MatchSoundsLike = false;
+                myStoryRange.Find.MatchAllWordForms = false;
+
+                if (myStoryRange.Find.Execute(Findtext, false, false, false, false, true, true, word.WdFindWrap.wdFindContinue
+                    , false, Replacetext, word.WdReplace.wdReplaceAll))
+                    return;
+            }
+
+            //Now search all other stories using Ranges
+            {
+                foreach (Range myStoryRange in doc.StoryRanges)
+                {
+                    if (myStoryRange.StoryType != word.WdStoryType.wdMainTextStory)
+                    {
+                        {
+                            myStoryRange.Find.Text = Findtext;
+                            myStoryRange.Find.Replacement.Text = Replacetext;
+                            myStoryRange.Find.Wrap = word.WdFindWrap.wdFindContinue;
+                            myStoryRange.Find.Execute(Findtext, false, false, false, false, true, true, word.WdFindWrap.wdFindContinue
+                    , false, Replacetext, word.WdReplace.wdReplaceAll);
+                        }
+                        Range rng = myStoryRange;
+                        while ((rng.NextStoryRange != null))
+                        {
+                            rng = rng.NextStoryRange;
+                            {
+                                rng.Find.Text = Findtext;
+                                rng.Find.Replacement.Text = Replacetext;
+                                rng.Find.Wrap = word.WdFindWrap.wdFindContinue;
+                                rng.Find.Execute(Findtext, false, false, false, false, true, true, word.WdFindWrap.wdFindContinue
+                    , false, Replacetext, word.WdReplace.wdReplaceAll);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        void FindAndReplace(word.Application app, string textToFind, string textToReplace, Document doc)
+        {
             try
             {
-                app.Selection.Find.Execute(
-                    textToFind,
-                    matchCase,
-                    matchWholeWord,
-                    matchWildcards,
-                    matchSoundsLike,
-                    matchAllWordForms,
-                    forward,
-                    wrap,
-                    format,
-                    textToReplace,
-                    replace);
+                //options
+                object matchCase = false;
+                object matchWholeWord = true;
+                object matchWildCards = false;
+                object matchSoundsLike = false;
+                object matchAllWordForms = true;
+                object forward = true;
+                object format = false;
+                object matchKashida = false;
+                object matchDiacritics = false;
+                object matchAlefHamza = false;
+                object matchControl = true;
+                object read_only = true;
+                object visible = true;
+                object replace = 2;
+                object wrap = word.WdFindWrap.wdFindContinue;
+                object text = textToFind;
+                object replText = textToReplace;
+                //execute find and replace
+                if ( !app.Selection.Find.Execute(ref text, ref matchCase, ref matchWholeWord,
+                    ref matchWildCards, ref matchSoundsLike, ref matchAllWordForms, ref forward, ref wrap, ref format, ref replText, ref replace,
+                    ref matchKashida, ref matchDiacritics, ref matchAlefHamza, ref matchControl))
+                {
+                    FindAndReplaceIntoTextBoxes(doc, textToFind, textToReplace);
+                }
             }catch(Exception ex)
             {
                 int i = 0;
             }
         }
 
-        void AddDeviceNames(word.Application app)
+        string AddDeviceNames(word.Application app, Document doc)
         {
             string deviceNames = "";
             List<string> devices = new List<string>();
@@ -338,7 +399,8 @@ namespace MobileApplication
                 else
                     deviceNames += ", " + str;
 
-            FindAndReplace(app, "Device :", "Device : " + deviceNames);
+            FindAndReplace(app, "DeviceText", deviceNames, doc);
+            return deviceNames;
         }
 
         void AddDescription(word.Application app, Document doc)
@@ -389,7 +451,7 @@ namespace MobileApplication
             }
         }
 
-        void SaveSumm(word.Application app)
+        int SaveSumm(word.Application app, Document doc)
         {
             float total = 0;
 
@@ -399,8 +461,31 @@ namespace MobileApplication
             int grd = (int)(total * 100f);
             grd = (grd * 15 / 100) + grd;
 
-            FindAndReplace(app, "TotalSum", total.ToString() + "$");
-            FindAndReplace(app, "GRDSum", ((float)grd / 100f).ToString() + "$");
+            FindAndReplace(app, "TotalSum", total.ToString() + "$", doc);
+            FindAndReplace(app, "GRDSum", ((float)grd / 100f).ToString() + "$", doc);
+            return grd;
+        }
+
+        void SaveInvoiceToDatabase(int price, string devices)
+        {
+            int invoiceId = int.Parse(InvoiceBox.Text);
+            string comm = "insert into tblInvoices values(" + InvoiceBox.Text + ", '" 
+                + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "', '"  + CustNameBox.Text + "', " 
+                + MainForm.currentUser.id.ToString() + ", " + price.ToString() + ", '" + devices + "')";
+            SQLWorker.GetInstance().SqlComm(comm);
+
+
+            int subId = SQLWorker.GetInstance().GetMaxId("tblSubInvoices");
+
+            foreach(ListViewItem itm in listView1.Items)
+            {
+                subId++;
+                string subInvoice = "insert into tblSubInvoices values(" + subId + "," + 
+                    invoiceId + ", '" + itm.Text + "','" + itm.SubItems[1].Text + "'," + (float.Parse(itm.SubItems[3].Text) * 100) +
+                    "," + itm.SubItems[2].Text + ");";
+                SQLWorker.GetInstance().SqlComm(subInvoice);
+            }
+
         }
 
         private void SaveInvoiceButton_Click(object sender, EventArgs e)
@@ -410,7 +495,7 @@ namespace MobileApplication
                 string path = Directory.GetCurrentDirectory();
                 string pdfPath = path + "\\" + InvoiceBox.Text + ".pdf";
                 string tempPath = path + "\\" + "Invoice templete.docx";
-                string tempBlockPath = path + "\\" + "~$voice templete.docx";
+                string tempBlockPath = path + "\\" + "~$voice templete.dotx";
 
                 if (File.Exists(tempBlockPath))
                     File.Delete(tempBlockPath);
@@ -419,23 +504,35 @@ namespace MobileApplication
                 word.Application app = new word.Application();
                 Document doc = app.Documents.Open(tempPath);
 
-                FindAndReplace(app, "Name:", "Name: " + CustNameBox.Text);
-                FindAndReplace(app, "Contact No :", "Contact No : " + CustPhoneBox.Text);
-                FindAndReplace(app, "13. 7. 2019", DateTime.Now.ToString("dd. MM. yyyy"));
-                FindAndReplace(app, "DateText", "000111");
-                FindAndReplace(app, "InvoiceNum", InvoiceBox.Text);
-                AddDeviceNames(app);
+                FindAndReplace(app, "NameText", CustNameBox.Text, doc);
+                FindAndReplace(app, "ContactText", CustPhoneBox.Text, doc);
+                FindAndReplace(app, "DateText", DateTime.Now.ToString("dd. MM. yyyy"), doc);
+                FindAndReplace(app, "InvoiceText", InvoiceBox.Text, doc);
+                string devices = AddDeviceNames(app, doc);
                 AddDescription(app, doc);
-                SaveSumm(app);
+                int summ = SaveSumm(app, doc);
 
                 doc.SaveAs2(pdfPath, word.WdSaveFormat.wdFormatPDF);
                 doc.Close(false);
                 app.Quit(false);
+
+                SaveInvoiceToDatabase(summ, devices);
+
             }catch(Exception ex)
             {
                 MessageBox.Show("Sorry, I couldn't save a file, becouse:\n" + ex.Message, "Word error happens", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             MessageBox.Show("File saved", "File saved", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            int invoiceID = Int32.Parse(InvoiceBox.Text);
+            maxInvoice = (maxInvoice > invoiceID ? maxInvoice : invoiceID);
+        }
+
+        private void Button1_Click(object sender, EventArgs e)
+        {
+            listView1.Items.Clear();
+            CustNameBox.Text = "";
+            CustPhoneBox.Text = "";
+            InvoiceBox.Text = (maxInvoice + 1).ToString();
         }
     }
 }

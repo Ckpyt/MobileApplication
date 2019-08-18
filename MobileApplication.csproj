@@ -36,7 +36,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;-define DEBSYMB</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -207,10 +207,11 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Invoice.cs" />
     <Compile Include="PhoneModel.cs" />
     <Compile Include="User.cs" />
     <Compile Include="UsersPage.cs">
-      <SubType>Component</SubType>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="UsersPage.Designer.cs">
       <DependentUpon>UsersPage.cs</DependentUpon>
@@ -222,7 +223,7 @@
       <DependentUpon>LoginForm.cs</DependentUpon>
     </Compile>
     <Compile Include="LogsPage.cs">
-      <SubType>Component</SubType>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="LogsPage.Designer.cs">
       <DependentUpon>LogsPage.cs</DependentUpon>
@@ -234,13 +235,13 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="MakeInvoicePage.cs">
-      <SubType>Component</SubType>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="MakeInvoicePage.Designer.cs">
       <DependentUpon>MakeInvoicePage.cs</DependentUpon>
     </Compile>
     <Compile Include="ObjectsPage.cs">
-      <SubType>Component</SubType>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="ObjectsPage.Designer.cs">
       <DependentUpon>ObjectsPage.cs</DependentUpon>

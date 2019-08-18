@@ -62,6 +62,26 @@ namespace MobileApplication
                 ";Integrated Security=True;Connect Timeout=30"; 
         }
 
+        public int GetMaxId(string tblName)
+        {
+            SqlConnection conn = new SqlConnection(connectingString);
+            SqlCommand comm = new SqlCommand("select max(Id) from " + tblName, conn);
+            conn.Open();
+            SqlDataReader reader = null;
+            int maxId = 0;
+            try
+            {
+                reader = comm.ExecuteReader();
+                if (reader.HasRows && reader.Read())
+                    maxId = Convert.ToInt32(reader[0]);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Table was not found\n" + ex.Message, "SqlException", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            return maxId;
+        }
+
         /// <summary>
         /// Check has the database a table. If not, it will be created
         /// </summary>
@@ -82,7 +102,7 @@ namespace MobileApplication
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "SqlException", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Table was not found and it will be created:\n" + ex.Message, "SqlException", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
             if (reader == null)
@@ -126,7 +146,9 @@ namespace MobileApplication
             }
             CheckAndCreateTable("select max(Id) from tblFunctions", "CREATE TABLE [dbo].[tblFunctions] ([Id] INT NOT NULL, [Name] varchar(max) NOT NULL, [Price] INT NULL, PRIMARY KEY CLUSTERED ([Id] ASC) );");
             CheckAndCreateTable("select max(Id) from tblOperations", "CREATE TABLE [dbo].[tblOperations] ([Id] INT NOT NULL, [DeviceId] int NOT NULL, [FunctionId] INT NOT NULL, [Price] INT NULL, PRIMARY KEY CLUSTERED ([Id] ASC) );");
-            
+            CheckAndCreateTable("select max(Id) from tblInvoices", "CREATE TABLE [dbo].[tblInvoices] ([Id] INT NOT NULL PRIMARY KEY, [Date] Datetime, [CustName] varchar(max), [UserId] int NOT NULL, [TotalPrice] int, [Devices] varchar(max)); ");
+            CheckAndCreateTable("select max(Id) from tblSubInvoices", "CREATE TABLE [dbo].[tblSubInvoices] ([Id] INT NOT NULL PRIMARY KEY, [InvoiceID] int not null, [Device] varchar(max), [Description] varchar(max), [Price] int, [Count] int); ");
+
 
         }
 
@@ -231,7 +253,7 @@ namespace MobileApplication
             return GetUsersFromDatabase(comm);
         }
 
-        List<T> ReadTable<T>(string command, Func<SqlDataReader, T, T> FillReaded )
+        public List<T> ReadTable<T>(string command, Func<SqlDataReader, T, T> FillReaded )
         {
             SqlConnection conn = new SqlConnection(connectingString);
             SqlCommand comm = new SqlCommand(command, conn);
