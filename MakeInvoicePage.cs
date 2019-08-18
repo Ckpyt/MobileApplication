@@ -527,7 +527,7 @@ namespace MobileApplication
             maxInvoice = (maxInvoice > invoiceID ? maxInvoice : invoiceID);
         }
 
-        private void Button1_Click(object sender, EventArgs e)
+        public void Button1_Click(object sender, EventArgs e)
         {
             listView1.Items.Clear();
             CustNameBox.Text = "";

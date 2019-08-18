@@ -91,6 +91,7 @@
             this.Controls.Add(this.label1);
             this.MaximizeBox = false;
             this.MaximumSize = new System.Drawing.Size(250, 200);
+            this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(250, 200);
             this.Name = "LoginForm";
             this.Text = "Login";

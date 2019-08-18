@@ -35,7 +35,7 @@ namespace MobileApplication
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(-1, 13);
+            this.button1.Location = new System.Drawing.Point(-1, 23);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(98, 23);
             this.button1.TabIndex = 1;
@@ -45,7 +45,7 @@ namespace MobileApplication
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(94, 12);
+            this.button2.Location = new System.Drawing.Point(94, 23);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(84, 23);
             this.button2.TabIndex = 2;
@@ -55,7 +55,7 @@ namespace MobileApplication
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(177, 12);
+            this.button3.Location = new System.Drawing.Point(177, 23);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 23);
             this.button3.TabIndex = 3;
@@ -65,7 +65,7 @@ namespace MobileApplication
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(259, 12);
+            this.button4.Location = new System.Drawing.Point(259, 23);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(75, 23);
             this.button4.TabIndex = 4;
@@ -147,5 +147,25 @@ namespace MobileApplication
             page.Show();
         }
 #endif
+        private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void NewInvoiceToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+#if DEBSYMB
+#else
+            MakeInvoicePage inv = AllTabs.TabPages[0] as MakeInvoicePage;
+            AllTabs.SelectedIndex = 0;
+            AllTabs.SelectedTab = AllTabs.TabPages[0];
+            inv.Button1_Click(sender, e);
+#endif
+        }
+
+        private void AboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            new About().ShowDialog();
+        }
     }
 }
