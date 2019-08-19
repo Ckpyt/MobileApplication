@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.IO;
@@ -17,9 +18,7 @@ namespace MobileApplication
     class SQLWorker
     {
         string connectingString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Cpp\\MobileApplication\\MobileInvoce.mdf;Integrated Security=True;Connect Timeout=30";
-            /*ConfigurationManager.OpenExeConfiguration(
-                    ConfigurationUserLevel.None).ConnectionStrings.
-            ConnectionStrings[0].ConnectionString;*/
+        string dataBasePath = "";
         /// <summary>
         /// store only one object
         /// </summary>
@@ -40,7 +39,28 @@ namespace MobileApplication
         /// </summary>
         void CheckDatabase()
         {
-            string path = Directory.GetCurrentDirectory();
+            var configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            try
+            {
+                dataBasePath = configuration.AppSettings.Settings["dataBaseFile"].Value;
+            }
+            catch (Exception ex)
+            {
+                configuration.AppSettings.Settings.Add("dataBaseFile", "MobileInvoice.mdf");
+                configuration.AppSettings.Settings.Add("invoiceFile", "Invoice tempete.docx");
+                configuration.AppSettings.Settings.Add("outputDirectory", "");
+                configuration.Save(ConfigurationSaveMode.Full, true);
+                ConfigurationManager.RefreshSection("appSettings");
+            }
+            string path = dataBasePath;
+
+            if (File.Exists(path)){
+                connectingString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=" + path +
+               ";Integrated Security=True;Connect Timeout=30";
+                return;
+            }
+
+            path = Directory.GetCurrentDirectory();
             string fileName = "MobileInvoce.mdf";
             string filePath = path + "\\" + fileName;
             while (!File.Exists(filePath))

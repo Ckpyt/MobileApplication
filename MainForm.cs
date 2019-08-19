@@ -167,5 +167,11 @@ namespace MobileApplication
         {
             new About().ShowDialog();
         }
+
+        private void SettingToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Settings stg = new Settings();
+            stg.ShowDialog();
+        }
     }
 }

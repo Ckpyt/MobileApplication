@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
 using System.Data;
 using System.Drawing;
 using System.IO;
@@ -492,9 +493,10 @@ namespace MobileApplication
         {
             try
             {
-                string path = Directory.GetCurrentDirectory();
+                Configuration configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                string path = configuration.AppSettings.Settings["outputDirectory"].Value;
                 string pdfPath = path + "\\" + InvoiceBox.Text + ".pdf";
-                string tempPath = path + "\\" + "Invoice templete.docx";
+                string tempPath = configuration.AppSettings.Settings["invoiceFile"].Value;
                 string tempBlockPath = path + "\\" + "~$voice templete.dotx";
 
                 if (File.Exists(tempBlockPath))
