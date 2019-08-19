@@ -14,10 +14,12 @@ using System.Windows.Forms;
 
 namespace MobileApplication
 {
-
+    /// <summary>
+    /// main class. Hold all the tabs and main menu
+    /// </summary>
     public partial class MainForm : Form
     {
-
+        /// <summary> current user. Choosed in LoginForm </summary>
         public static User currentUser = null;
 
         public MainForm()
@@ -26,6 +28,8 @@ namespace MobileApplication
             SQLWorker.GetInstance();
             LoginForm lg = new LoginForm();
             lg.ShowDialog();
+            /// TabPage class cannot be designed by designManager. For this reason, in the debug mode, 
+            /// ..Page classes inherited from Form page and can be launched by pressing buttons
 #if DEBSYMB
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
@@ -81,33 +85,45 @@ namespace MobileApplication
 #else
             if (currentUser != null)
             {
-                string userRights = currentUser.GetStringRights();
-                ObjectsPage obj = null;
-                MakeInvoicePage invoice = null;
-                UsersPage usersPage = null;
-                LogsPage logs = null;
 
-                if (userRights.Contains('D'))
-                    obj = new ObjectsPage();
-                if (userRights.Contains('I'))
-                    invoice = new MakeInvoicePage();
-                if (userRights.Contains('U'))
-                    usersPage = new UsersPage();
-                if (userRights.Contains('L'))
-                    logs = new LogsPage();
-
-                if (invoice != null) AllTabs.TabPages.Add(invoice);
-                if (obj != null) AllTabs.TabPages.Add(obj);
-                if (usersPage != null) AllTabs.TabPages.Add(usersPage);
-                if (logs != null) AllTabs.TabPages.Add(logs);
-
+                FillTabs();
                 this.Controls.Add(this.AllTabs);
             }
 #endif
 
 
         }
+        /// <summary>
+        /// reading user rights and set them
+        /// </summary>
+        void FillTabs()
+        {
+            string userRights = currentUser.GetStringRights();
+            ObjectsPage obj = null;
+            MakeInvoicePage invoice = null;
+            UsersPage usersPage = null;
+            LogsPage logs = null;
 
+            if (userRights.Contains('D'))
+                obj = new ObjectsPage();
+            if (userRights.Contains('I'))
+                invoice = new MakeInvoicePage();
+            if (userRights.Contains('U'))
+                usersPage = new UsersPage();
+            if (userRights.Contains('L'))
+                logs = new LogsPage();
+
+            if (invoice != null) AllTabs.TabPages.Add(invoice);
+            if (obj != null) AllTabs.TabPages.Add(obj);
+            if (usersPage != null) AllTabs.TabPages.Add(usersPage);
+            if (logs != null) AllTabs.TabPages.Add(logs);
+        }
+
+        /// <summary>
+        /// Making SHA3-256 hash for password.
+        /// </summary>
+        /// <param name="input"> password in string </param>
+        /// <returns> hash SHA3-256 </returns>
         public static byte[] ComputeHash(string input)
         {
             byte[] byteArray = Encoding.UTF32.GetBytes(input);
@@ -147,11 +163,18 @@ namespace MobileApplication
             page.Show();
         }
 #endif
+
+        /// <summary>
+        /// Closing application
+        /// </summary>
         private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
 
+        /// <summary>
+        /// switch on MakeInvoice tab and clear it
+        /// </summary>
         private void NewInvoiceToolStripMenuItem_Click(object sender, EventArgs e)
         {
 #if DEBSYMB
@@ -163,15 +186,29 @@ namespace MobileApplication
 #endif
         }
 
+        /// <summary>
+        /// Show About dialog
+        /// </summary>
         private void AboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             new About().ShowDialog();
         }
 
+        /// <summary>
+        /// show settings dialog
+        /// </summary>
         private void SettingToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Settings stg = new Settings();
             stg.ShowDialog();
+        }
+
+        private void LogoutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            LoginForm lgf = new LoginForm();
+            lgf.ShowDialog();
+            AllTabs.TabPages.Clear();
+            FillTabs();
         }
     }
 }

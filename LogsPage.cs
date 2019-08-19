@@ -10,6 +10,9 @@ using System.Windows.Forms;
 
 namespace MobileApplication
 {
+    /// <summary>
+    /// class for showing stored invoices in the database
+    /// </summary>
     public partial class LogsPage :
 #if DEBSYMB
         Form
@@ -17,8 +20,9 @@ namespace MobileApplication
         TabPage
 #endif
     {
-
-        List<Invoice> selectedInvoces = null;
+        /// <summary> list of selected invoices. Changed when search button pressed </summary>
+        List<Invoice> selectedInvoices = null;
+        /// <summary> list of selected subInvoices. Changed when selected index in  the list of invoices changed </summary>
         List<SubInvoice> selectedSubInvoices = null;
 
         public LogsPage()
@@ -26,6 +30,9 @@ namespace MobileApplication
             InitializeComponent();
         }
 
+        /// <summary>
+        /// holds the same proportions of views everytime
+        /// </summary>
         private void LogsPage_SizeChanged(object sender, EventArgs e)
         {
             int elemHeight = (Height - 60) / 2;
@@ -36,6 +43,9 @@ namespace MobileApplication
             listView1.Width = Width;
         }
 
+        /// <summary>
+        /// search button click. Load invoices from database
+        /// </summary>
         private void Button1_Click(object sender, EventArgs e)
         {
             int selected = searchCondBox.SelectedIndex;
@@ -59,7 +69,7 @@ namespace MobileApplication
                     break;
             }
 
-            selectedInvoces =  SQLWorker.GetInstance().ReadTable<Invoice>(comm, (result, invoice) =>
+            selectedInvoices =  SQLWorker.GetInstance().ReadTable<Invoice>(comm, (result, invoice) =>
             {
                 invoice.id =        Convert.ToInt32(result[0]);
                 invoice.date =      Convert.ToString(result[1]);
@@ -72,7 +82,7 @@ namespace MobileApplication
             });
 
             listView1.Items.Clear();
-            foreach(Invoice inv in selectedInvoces)
+            foreach(Invoice inv in selectedInvoices)
             {
                 ListViewItem itm = new ListViewItem();
                 itm.Text = inv.id.ToString();
@@ -87,6 +97,9 @@ namespace MobileApplication
 
         }
 
+        /// <summary>
+        /// loading subiInvoices
+        /// </summary>
         private void ListView1_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (listView1.SelectedItems.Count < 1) return;
