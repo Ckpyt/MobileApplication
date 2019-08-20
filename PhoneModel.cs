@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace MobileApplication
 {
+    /// <summary>
+    /// Enumeration of objects types
+    /// </summary>
     enum DataType
     {
         none,
@@ -14,11 +17,18 @@ namespace MobileApplication
         operation
     }
 
-
+    /// <summary>
+    /// Parent class for all the objects. Has only id and base virtual methods
+    /// </summary>
     public class DataObject
     {
         /// <summary> id in the database </summary>
         public int id;
+
+        /// <summary>
+        /// virtual method for copying objects
+        /// </summary>
+        /// <param name="obj">source</param>
         public virtual void CopyFrom(DataObject obj) { }
     }
 
@@ -32,11 +42,19 @@ namespace MobileApplication
         /// <summary> Parent id. like iphone 6s --> iphone 6 --> iphone </summary>
         public int parentId;
 
+        /// <summary>
+        /// convert object to string. Returns name. used into comboboxes and treeview
+        /// </summary>
+        /// <returns> name </returns>
         public override string ToString()
         {
             return name;
         }
 
+        /// <summary>
+        /// virtual method for copying objects
+        /// </summary>
+        /// <param name="obj">source</param>
         public override void CopyFrom(DataObject obj)
         {
             PhoneModel phone = obj as PhoneModel;
@@ -55,11 +73,19 @@ namespace MobileApplication
         /// <summary> default price in cents </summary>
         public int price;
 
+        /// <summary>
+        /// convert object to string. Returns name. used into comboboxes and treeview
+        /// </summary>
+        /// <returns> name </returns>
         public override string ToString()
         {
             return name;
         }
 
+        /// <summary>
+        /// virtual method for copying objects
+        /// </summary>
+        /// <param name="obj">source</param>
         public override void CopyFrom(DataObject obj)
         {
             Function func = obj as Function;
@@ -80,6 +106,11 @@ namespace MobileApplication
         /// <summary> default price in cents </summary>
         public int price;
 
+
+        /// <summary>
+        /// virtual method for copying objects
+        /// </summary>
+        /// <param name="obj">source</param>
         public override void CopyFrom(DataObject obj)
         {
             Operation op = obj as Operation;

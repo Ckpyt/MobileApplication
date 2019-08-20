@@ -28,15 +28,21 @@ namespace MobileApplication
         TabPage
 #endif
     {
-
+        /// <summary> is invoice selected? </summary>
         bool isSelected = false;
+        /// <summary> selected invoice position </summary>
         int selectedPos = -1;
+        /// <summary> last invoice id </summary>
         int maxInvoice = 0;
 
+        /// <summary> all the functions in the database. Source for description combobox </summary>
         List<Function> functions;
+        /// <summary> all the phonemodel in the database. Source for phone combobox </summary>
         List<PhoneModel> phoneModels;
+        /// <summary> all the operations. Used for storing specified price </summary>
         List<Operation> operations;
 
+        /// <summary> Link to objectsPage. Used for making events </summary>
         public static ObjectsPage objectsPage = null;
 
         public MakeInvoicePage()
@@ -52,6 +58,9 @@ namespace MobileApplication
             InvoiceBox.Text = (maxInvoice + 1).ToString();
         }
 
+        /// <summary>
+        /// Fiiling comboboxes and making events
+        /// </summary>
         void FillBoxes()
         {
             deleteButton.Visible = false;
@@ -111,23 +120,43 @@ namespace MobileApplication
             }
         }
 
-        private void ChangeObject<T>(List<T> container, DataObject objct)
+        /// <summary>
+        /// part of events. Change phonemodel, function, operations
+        /// </summary>
+        /// <typeparam name="T">phonemodel, function, operations</typeparam>
+        /// <param name="container">list of objects</param>
+        /// <param name="dataObject"> source object </param>
+        private void ChangeObject<T>(List<T> container, DataObject dataObject)
         {
             foreach(T obj in container)
             {
                 DataObject dtobj = obj as DataObject;
-                if (dtobj.id == objct.id)
-                    dtobj.CopyFrom(objct);
+                if (dtobj.id == dataObject.id)
+                    dtobj.CopyFrom(dataObject);
             }
         }
 
-        public void ChangeObject<T>(List<T> container, DataObject objct, ComboBox box)
+        /// <summary>
+        /// part of events. Change  phonemodel and function
+        /// </summary>
+        /// <typeparam name="T"> phonemodel or function </typeparam>
+        /// <param name="container">list of objects </param>
+        /// <param name="dataObject"> link to source </param>
+        /// <param name="box"> combobox of phonemodel or function</param>
+        public void ChangeObject<T>(List<T> container, DataObject dataObject, ComboBox box)
         {
             box.DataSource = null;
-            ChangeObject(container, objct);
+            ChangeObject(container, dataObject);
             box.DataSource = container;
         }
 
+        /// <summary>
+        /// delete object from list. Part of events. 
+        /// used for deleting phonemodel, function, operations
+        /// </summary>
+        /// <typeparam name="T">phonemodel, function, operations</typeparam>
+        /// <param name="container"> link to list </param>
+        /// <param name="dataObject"> link to deleting object </param>
         private void DeleteObject<T>(List<T> container, DataObject dataObject)
         {
             foreach(T obj in container)
@@ -141,6 +170,14 @@ namespace MobileApplication
             }
         }
 
+        /// <summary>
+        /// delete object from list. Part of events. 
+        /// used for deleting phonemodel, function, operations
+        /// </summary>
+        /// <typeparam name="T">phonemodel, function</typeparam>
+        /// <param name="container"> link to list </param>
+        /// <param name="dataObject"> link to deleting object </param>
+        /// <param name="box"> combobox of phonemodel or function</param>
         private void DeleteObject<T>(List<T> container, DataObject dataObject, ComboBox box)
         {
             box.DataSource = null;
@@ -148,8 +185,9 @@ namespace MobileApplication
             box.DataSource = container;
         }
 
-
-
+        /// <summary>
+        /// add string to invoice form.
+        /// </summary>
         private void Add_Click(object sender, EventArgs e)
         {
             ListViewItem itm = new ListViewItem(deviceBox.Text);
@@ -181,16 +219,26 @@ namespace MobileApplication
             deleteButton.Visible = false;
         }
 
+        /// <summary>
+        /// used for checking entered values in textboxes
+        /// </summary>
         private void OnlyDecimalChecker(object sender, EventArgs e)
         {
             OnlyDecimalCheckerStatic(sender, e);
         }
 
+        /// <summary>
+        /// used for checking entered values in textboxes
+        /// </summary>
         private void OnlyFloatChecker(object sender, EventArgs e)
         {
             OnlyFloatCheckerStatic(sender, e);
         }
 
+        /// <summary>
+        /// used for checking entered values in textboxes
+        /// Check float structure
+        /// </summary>
         public static void OnlyFloatCheckerStatic(object sender, EventArgs e)
         {
             TextBox sd = sender as TextBox;
@@ -198,6 +246,10 @@ namespace MobileApplication
             OnlyDecimalCheckerStatic(sender, e);
         }
 
+        /// <summary>
+        /// used for checking entered values in textboxes
+        /// check decimal structure
+        /// </summary>
         public static void OnlyDecimalCheckerStatic(object sender, EventArgs e)
         {
             TextBox sd = sender as TextBox;
@@ -230,6 +282,9 @@ namespace MobileApplication
             }
         }
 
+        /// <summary>
+        /// select a string for editing into invoice list view
+        /// </summary>
         private void ListView1_SelectedIndexChanged(object sender, EventArgs e)
         {
             ListView lst = sender as ListView;
@@ -256,12 +311,18 @@ namespace MobileApplication
 
         }
 
+        /// <summary>
+        /// holding the same percentage of using space for listview1
+        /// </summary>
         private void MakeInvoicePage_ResizeEnd(object sender, EventArgs e)
         {
             int Height = this.Height - 140;
             listView1.Height = Height;
         }
 
+        /// <summary>
+        /// looking for a price then device is changed
+        /// </summary>
         private void DeviceBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             PhoneModel phone = deviceBox.SelectedItem as PhoneModel;
@@ -280,6 +341,9 @@ namespace MobileApplication
             }
         }
 
+        /// <summary>
+        /// delete string from invoice list view
+        /// </summary>
         private void DeleteButton_Click(object sender, EventArgs e)
         {
 
@@ -289,6 +353,12 @@ namespace MobileApplication
             deleteButton.Visible = false;
         }
 
+        /// <summary>
+        /// Find and replace text everythere in word document
+        /// </summary>
+        /// <param name="doc"> link to document </param>
+        /// <param name="Findtext"> source text </param>
+        /// <param name="Replacetext"> replace text </param>
         void FindAndReplaceIntoTextBoxes(Document doc, string Findtext, string Replacetext)
         {
             Logger.GetInstance().SaveLog("FindAndReplaceIntoTextBoxes entered ");
@@ -343,6 +413,13 @@ namespace MobileApplication
             Logger.GetInstance().SaveLog("FindAndReplaceIntoTextBoxes exit ");
         }
 
+        /// <summary>
+        /// Find and replace text everythere in word document
+        /// </summary>
+        /// <param name="doc"> link to document </param>
+        /// <param name="Findtext"> source text </param>
+        /// <param name="Replacetext"> replace text </param>
+        /// <param name="app"> link to application </param>
         void FindAndReplace(word.Application app, string textToFind, string textToReplace, Document doc)
         {
             Logger.GetInstance().SaveLog("FindAndReplace entered " + textToReplace);
@@ -380,6 +457,12 @@ namespace MobileApplication
             Logger.GetInstance().SaveLog("FindAndReplace exit ");
         }
 
+        /// <summary>
+        /// Get device names from invoice list view and store them into document
+        /// </summary>
+        /// <param name="app"> Word application </param>
+        /// <param name="doc"> opened word document </param>
+        /// <returns> string with all the devices </returns>
         string AddDeviceNames(word.Application app, Document doc)
         {
             Logger.GetInstance().SaveLog("AddDeviceNames entered ");
@@ -410,6 +493,11 @@ namespace MobileApplication
             return deviceNames;
         }
 
+        /// <summary>
+        /// filling the table in the document from invoice listview
+        /// </summary>
+        /// <param name="app"> word application </param>
+        /// <param name="doc"> opened document </param>
         void AddDescription(word.Application app, Document doc)
         {
             Logger.GetInstance().SaveLog("AddDescription entered ");
@@ -460,6 +548,12 @@ namespace MobileApplication
             Logger.GetInstance().SaveLog("AddDescription exit ");
         }
 
+        /// <summary>
+        /// claculate total summ of all the items in invoice list view and save it in the document
+        /// </summary>
+        /// <param name="app"> word application </param>
+        /// <param name="doc"> opened document </param>
+        /// <returns> return summ with grd </returns>
         int SaveSumm(word.Application app, Document doc)
         {
             Logger.GetInstance().SaveLog("SaveSumm entered ");
@@ -477,6 +571,11 @@ namespace MobileApplication
             return grd;
         }
 
+        /// <summary>
+        /// save invoice from the form to database
+        /// </summary>
+        /// <param name="price"> summ with grd </param>
+        /// <param name="devices">  string with all the devices </param>
         void SaveInvoiceToDatabase(int price, string devices)
         {
             Logger.GetInstance().SaveLog("SaveInvoiceToDatabase entered ");
@@ -500,6 +599,9 @@ namespace MobileApplication
             Logger.GetInstance().SaveLog("SaveInvoiceToDatabase exit ");
         }
 
+        /// <summary>
+        /// Saving invoice to pdf file with preselected word template
+        /// </summary>
         private void SaveInvoiceButton_Click(object sender, EventArgs e)
         {
             Logger.GetInstance().SaveLog("SaveInvoiceButton_Click entered ");
@@ -586,6 +688,9 @@ namespace MobileApplication
             Logger.GetInstance().SaveLog("SaveInvoiceButton_Click exit ");
         }
 
+        /// <summary>
+        /// clear all the form for making new invoice
+        /// </summary>
         public void Button1_Click(object sender, EventArgs e)
         {
             listView1.Items.Clear();
@@ -594,18 +699,23 @@ namespace MobileApplication
             InvoiceBox.Text = (maxInvoice + 1).ToString();
         }
 
+        /// <summary>
+        /// Saving invoice to pdf and print it
+        /// </summary>
         private void SaveAndPrintButton_Click(object sender, EventArgs e)
         {
-            Configuration configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             SaveInvoiceButton_Click(sender, e);
+
+            Configuration configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             string path = configuration.AppSettings.Settings["outputDirectory"].Value;
             string pdfPath = path + "\\" + InvoiceBox.Text + ".pdf";
+
             Process p = new Process();
             p.StartInfo = new ProcessStartInfo()
             {
                 CreateNoWindow = true,
                 Verb = "print",
-                FileName = pdfPath //put the correct path here
+                FileName = pdfPath 
             };
             p.Start();
         }

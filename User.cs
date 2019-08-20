@@ -8,13 +8,18 @@ using System.Threading.Tasks;
 
 namespace MobileApplication
 {
+    /// <summary>
+    /// Class of the user. Holds all the users details, include rights
+    /// </summary>
     public class User
     {
+
         public int id;
-        //rights into bite system.
+        /// <summary>rights into bite system. </summary>
         int rights;
         public string name;
         public string phone;
+        /// <summary>sha3-256 hash of the password. </summary>
         byte[] passwordHash;
 
         /// <summary>

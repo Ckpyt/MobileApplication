@@ -98,7 +98,7 @@ namespace MobileApplication
         }
 
         /// <summary>
-        /// loading subiInvoices
+        /// loading subInvoices then invoice is selected
         /// </summary>
         private void ListView1_SelectedIndexChanged(object sender, EventArgs e)
         {

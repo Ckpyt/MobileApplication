@@ -13,7 +13,6 @@ namespace MobileApplication
 {
     /// <summary>
     /// Page for creating users or changing users' details
-    /// Later, parent class should be changed to tabPage
     /// </summary>
     public partial class UsersPage :
 #if DEBSYMB
@@ -212,6 +211,9 @@ namespace MobileApplication
             }
         }
 
+        /// <summary>
+        /// Delete selected user from listview and database
+        /// </summary>
         private void DelBtn_Click(object sender, EventArgs e)
         {
             if (!isSelected)

@@ -142,25 +142,28 @@ namespace MobileApplication
         }
 
 #if DEBSYMB
-        //tmp button for testing MakeInvoicePage. Later, should be deleted.
+        //tmp button for testing MakeInvoicePage. 
         private void Button1_Click(object sender, EventArgs e)
         {
             MakeInvoicePage mkf = new MakeInvoicePage();
             mkf.Show();
         }
 
+        //tmp button for testing ObjectsPage. 
         private void Button2_Click(object sender, EventArgs e)
         {
             ObjectsPage page = new ObjectsPage();
             page.Show();
         }
 
+        //tmp button for testing UsersPage. 
         private void Button3_Click(object sender, EventArgs e)
         {
             UsersPage page = new UsersPage();
             page.Show();
         }
 
+        //tmp button for testing LogsPage. 
         private void Button4_Click(object sender, EventArgs e)
         {
             LogsPage page = new LogsPage();
@@ -199,7 +202,7 @@ namespace MobileApplication
         }
 
         /// <summary>
-        /// show settings dialog
+        /// Show settings dialog
         /// </summary>
         private void SettingToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -207,6 +210,10 @@ namespace MobileApplication
             stg.ShowDialog();
         }
 
+        /// <summary>
+        /// Logout from applocation. 
+        /// In release it also readded tabpages into AllTabs
+        /// </summary>
         private void LogoutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             LoginForm lgf = new LoginForm();
