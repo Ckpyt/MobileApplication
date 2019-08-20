@@ -93,6 +93,9 @@ namespace MobileApplication
 
 
         }
+
+#if DEBSYMB
+#else
         /// <summary>
         /// reading user rights and set them
         /// </summary>
@@ -118,6 +121,7 @@ namespace MobileApplication
             if (usersPage != null) AllTabs.TabPages.Add(usersPage);
             if (logs != null) AllTabs.TabPages.Add(logs);
         }
+#endif
 
         /// <summary>
         /// Making SHA3-256 hash for password.
@@ -207,8 +211,11 @@ namespace MobileApplication
         {
             LoginForm lgf = new LoginForm();
             lgf.ShowDialog();
+#if DEBSYMB
+#else
             AllTabs.TabPages.Clear();
             FillTabs();
+#endif
         }
     }
 }

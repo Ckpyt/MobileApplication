@@ -30,19 +30,30 @@ namespace MobileApplication
         /// </summary>
         private SQLWorker()
         {
-            CheckDatabase();
-            CheckAndCreateTables();
+            Logger.GetInstance().SaveLog("SQLWorker const enter");
+            if(CheckDatabase())
+                CheckAndCreateTables();
+            Logger.GetInstance().SaveLog("SQLWorker const exit");
         }
 
         /// <summary>
         /// check where is database file located. It could be in the same directory or higher
         /// </summary>
-        void CheckDatabase()
+        bool CheckDatabase()
         {
+            bool result = false;
+            Logger.GetInstance().SaveLog("SQLWorker CheckDatabase() enter");
             var configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
             try
             {
                 dataBasePath = configuration.AppSettings.Settings["dataBaseFile"].Value;
+                if (dataBasePath[1] != ':')
+                {
+                    dataBasePath = Directory.GetCurrentDirectory() + "\\" + dataBasePath;
+                    configuration.AppSettings.Settings["dataBaseFile"].Value = dataBasePath;
+                    configuration.Save(ConfigurationSaveMode.Full, true);
+                    ConfigurationManager.RefreshSection("appSettings");
+                }
             }
             catch (Exception ex)
             {
@@ -57,33 +68,36 @@ namespace MobileApplication
             if (File.Exists(path)){
                 connectingString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=" + path +
                ";Integrated Security=True;Connect Timeout=30";
-                return;
+                Logger.GetInstance().SaveLog("SQLWorker CheckDatabase() exit 1");
+                return true;
             }
-
-            path = Directory.GetCurrentDirectory();
-            string fileName = "MobileInvoce.mdf";
-            string filePath = path + "\\" + fileName;
-            while (!File.Exists(filePath))
+            else
             {
-                int i = path.Length - 2;
-                for (; i > 0; i--)
+                Settings stg = new Settings();
+                var dialRes = stg.ShowDialog();
+                if (dialRes != DialogResult.OK)
                 {
-                    if (path[i] == '\\')
-                    {
-                        path = path.Substring(0, i + 1);
-                        filePath = path + fileName;
-                        break;
-                    }
+                    Logger.GetInstance().SaveLog("SQLWorker CheckDatabase() exit noOk");
+                    return false;
                 }
-                if (i == 0)
-                    return;
+
+                configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+                path = configuration.AppSettings.Settings["dataBaseFile"].Value;
+
+                Logger.GetInstance().SaveLog("SQLWorker CheckDatabase() createDatabase");
+
+                string dbname = Path.GetFileNameWithoutExtension(path);
+
+                CreateDatabase(dbname, path);
+                result |=CheckDatabase();
             }
-            connectingString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=" + filePath +
-                ";Integrated Security=True;Connect Timeout=30"; 
+            Logger.GetInstance().SaveLog("SQLWorker CheckDatabase() exit 2");
+            return result;
         }
 
         public int GetMaxId(string tblName)
         {
+            Logger.GetInstance().SaveLog("SQLWorker GetMaxId() enter");
             SqlConnection conn = new SqlConnection(connectingString);
             SqlCommand comm = new SqlCommand("select max(Id) from " + tblName, conn);
             conn.Open();
@@ -99,20 +113,90 @@ namespace MobileApplication
             {
                 MessageBox.Show("Table was not found\n" + ex.Message, "SqlException", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            Logger.GetInstance().SaveLog("SQLWorker GetMaxId() exit");
             return maxId;
         }
 
-        /// <summary>
-        /// Check has the database a table. If not, it will be created
-        /// </summary>
-        /// <param name="checkingCommand"> command for checking table. it could be ""select max(Id) from Table"" </param>
-        /// <param name="creatingCommand"> command for create a table. It could be copyed from Table Definition </param>
-        /// /// <returns>retirns true if table was created</returns>
-        bool CheckAndCreateTable(string checkingCommand, string creatingCommand)
+        public static bool DetachDatabase(string dbName)
         {
+            try
+            {
+                string connectionString = String.Format(@"Data Source=(LocalDB)\v11.0;Initial Catalog=master;Integrated Security=True");
+                using (var connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    SqlCommand cmd = connection.CreateCommand();
+                    cmd.CommandText = String.Format("exec sp_detach_db '{0}'", dbName);
+                    cmd.ExecuteNonQuery();
+
+                    return true;
+                }
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public static void CreateDatabase(string dbName, string dbFileName)
+        {
+            if (dbFileName[1] != ':')
+                dbFileName = Directory.GetCurrentDirectory() + "\\" + dbFileName;
+
+            String str;
+            SqlConnection myConn = new SqlConnection("Data Source=(LocalDB)\\MSSQLLocalDB;Integrated security=SSPI");
+
+            string logDbFile =  Directory.GetParent(dbFileName) + "\\" + dbName + ".ldf";
+
+            str = "CREATE DATABASE " + dbName + " ON PRIMARY " +
+                "(NAME =  "+ dbName + "_data, " +
+                "FILENAME =  '" + dbFileName + "', " +
+                "SIZE = 5MB, MAXSIZE = 20MB, FILEGROWTH = 10%) " +
+                "LOG ON (NAME =" + dbName + "_log, " +
+                "FILENAME = '"+ logDbFile + "', " +
+                "SIZE = 5MB, " +
+                "MAXSIZE = 10MB, " +
+                "FILEGROWTH = 10%)";
+
+            SqlCommand alter = new SqlCommand("ALTER DATABASE tempdb MODIFY FILE ( NAME = N'DDAS_log', FILENAME = N'DDAS_log.ldf')", myConn);
+            SqlCommand myCommand = new SqlCommand(str, myConn);
+            try
+            {
+                myConn.Open();
+                alter.ExecuteNonQuery();
+            }
+            catch (System.Exception ex)
+            { myConn.Close(); }
+
+            try { 
+                
+                myConn.Open();
+                myCommand.ExecuteNonQuery();
+                MessageBox.Show("DataBase is Created Successfully", "Sql created", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            catch (System.Exception ex)
+            {
+                MessageBox.Show(ex.ToString(), "MyProgram", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+            /// <summary>
+            /// Check has the database a table. If not, it will be created
+            /// </summary>
+            /// <param name="checkingCommand"> command for checking table. it could be ""select max(Id) from Table"" </param>
+            /// <param name="creatingCommand"> command for create a table. It could be copyed from Table Definition </param>
+            /// /// <returns>retirns true if table was created</returns>
+            bool CheckAndCreateTable(string checkingCommand, string creatingCommand)
+        {
+            Logger.GetInstance().SaveLog("SQLWorker CheckAndCreateTable() enter " + checkingCommand + " " 
+                + creatingCommand + " " + connectingString);
+
+            if (connectingString == null || connectingString == "")
+                CheckDatabase();
+
             SqlConnection conn = new SqlConnection(connectingString);
             SqlCommand comm = new SqlCommand(checkingCommand, conn);
             conn.Open();
+
             SqlDataReader reader = null;
             try
             {
@@ -133,8 +217,10 @@ namespace MobileApplication
                 comm = new SqlCommand(creatingCommand, conn);
 
                 comm.ExecuteNonQuery();
+                Logger.GetInstance().SaveLog("SQLWorker CheckAndCreateTable() exit1");
                 return true;
             }
+            Logger.GetInstance().SaveLog("SQLWorker CheckAndCreateTable() exit2");
             return false;
         }
 
@@ -143,13 +229,15 @@ namespace MobileApplication
         /// </summary>
         void CheckAndCreateTables()
         {
-            if(CheckAndCreateTable("select max(Id) from tblUsers", "CREATE TABLE [dbo].[tblUsers] ([Id] INT NOT NULL, [Name] varchar(max) NOT NULL, [Phone] varchar(20) NOT NULL, [Rights] INT NULL, [PassHash] VARBINARY (32) NULL, PRIMARY KEY CLUSTERED ([Id] ASC) );"))
+            bool check = CheckAndCreateTable("select max(Id) from tblUsers", 
+                "CREATE TABLE [dbo].[tblUsers] ([Id] INT NOT NULL, [Name] varchar(max) NOT NULL, [Phone] varchar(20) NOT NULL, [Rights] INT NULL, [PassHash] VARBINARY (32) NULL, PRIMARY KEY CLUSTERED ([Id] ASC) );");
+            if (check)
             {
                 User user = new User();
                 user.name = "Adm";
                 user.id = 1;
                 user.SetPassword("adm");
-                user.SetStringRights("IDPCL");
+                user.SetStringRights("IDPUL");
                 user.phone = "1111";
                 SqlComm(user.InsertNewUser);
             }
