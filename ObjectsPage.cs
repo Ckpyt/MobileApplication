@@ -11,6 +11,9 @@ using System.Windows.Forms;
 
 namespace MobileApplication
 {
+    /// <summary>
+    /// Form for creating and editing phoneModel, functions and operations
+    /// </summary>
     public partial class ObjectsPage :
 #if DEBSYMB
         Form
@@ -35,7 +38,6 @@ namespace MobileApplication
 
         /// <summary> event system for another class  </summary>
 #region Events
-
         public delegate void AddFunctionDelegate(Function func);
         public AddFunctionDelegate addFunctionEvent;
 
@@ -63,10 +65,13 @@ namespace MobileApplication
         public delegate void DeleteOperationDelegate(Operation op);
         public DeleteOperationDelegate deleteOperationEvent;
 
-#endregion 
+        #endregion
 
+        /// <summary> last id for phoneModel  </summary>
         int lastPhoneId = 0;
+        /// <summary> last id for Functions   </summary>
         int lastOperationId = 0;
+        /// <summary> last id for Operations  </summary>
         int lastFunctionId = 0;
 
 
@@ -474,7 +479,9 @@ namespace MobileApplication
             }
         }
 
-
+        /// <summary>
+        /// add or edit object
+        /// </summary>
         private void AddButton_Click(object sender, EventArgs e)
         {
             if (selectedNode != null)
@@ -489,11 +496,17 @@ namespace MobileApplication
             ClearFormBoxes();
         }
 
+        /// <summary>
+        /// check entered value for float format
+        /// </summary>
         private void OperationPriceBox_TextChanged(object sender, EventArgs e)
         {
             MakeInvoicePage.OnlyFloatCheckerStatic(sender, e);
         }
 
+        /// <summary>
+        /// add a new operation, if model is selected
+        /// </summary>
         private void OperationNameBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (selectedType == DataType.operation && operationNameBox.Text != selectedNode.Text)
@@ -543,6 +556,9 @@ namespace MobileApplication
             treeView1.ExpandAll();
         }
 
+        /// <summary>
+        /// select an object from treeView
+        /// </summary>
         private void TreeView1_AfterSelect(object sender, TreeViewEventArgs e)
         {
             //preparations and clearing
@@ -606,12 +622,19 @@ namespace MobileApplication
             }
         }
 
+        /// <summary>
+        /// select node under cursor. menu of treeview
+        /// </summary>
         private void ToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             var msev = treeView1.PointToClient(Cursor.Position);
             treeView1.SelectedNode = treeView1.GetNodeAt(msev.X, msev.Y - 5);
         }
 
+        /// <summary>
+        /// Desect node into treeview
+        /// Treeveiew menu
+        /// </summary>
         private void DeselectNodeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             selectedNode = null;
@@ -714,6 +737,9 @@ namespace MobileApplication
             deletePhoneModelEvent?.Invoke(phone);
         }
 
+        /// <summary>
+        /// Delete object from treeview and database
+        /// </summary>
         private void DeleteButton_Click(object sender, EventArgs e)
         {
             switch (selectedType)
@@ -733,6 +759,9 @@ namespace MobileApplication
             ClearFormBoxes();
         }
 
+        /// <summary>
+        /// holding the same proportions of treeview then size changed
+        /// </summary>
         private void ObjectsPage_SizeChanged(object sender, EventArgs e)
         {
             treeView1.Height = this.Height - 140;

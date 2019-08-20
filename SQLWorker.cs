@@ -17,7 +17,9 @@ namespace MobileApplication
     /// </summary>
     class SQLWorker
     {
+        /// <summary> connection string to database </summary>
         string connectingString = "Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Cpp\\MobileApplication\\MobileInvoce.mdf;Integrated Security=True;Connect Timeout=30";
+        /// <summary> where database is located </summary>
         string dataBasePath = "";
         /// <summary>
         /// store only one object
@@ -38,6 +40,7 @@ namespace MobileApplication
 
         /// <summary>
         /// check where is database file located. It could be in the same directory or higher
+        /// if it was not founded, it will be created
         /// </summary>
         bool CheckDatabase()
         {
@@ -95,6 +98,11 @@ namespace MobileApplication
             return result;
         }
 
+        /// <summary>
+        /// return max id into table
+        /// </summary>
+        /// <param name="tblName"> name of the table </param>
+        /// <returns> max id </returns>
         public int GetMaxId(string tblName)
         {
             Logger.GetInstance().SaveLog("SQLWorker GetMaxId() enter");
@@ -117,29 +125,12 @@ namespace MobileApplication
             return maxId;
         }
 
-        public static bool DetachDatabase(string dbName)
-        {
-            try
-            {
-                string connectionString = String.Format(@"Data Source=(LocalDB)\v11.0;Initial Catalog=master;Integrated Security=True");
-                using (var connection = new SqlConnection(connectionString))
-                {
-                    connection.Open();
-                    SqlCommand cmd = connection.CreateCommand();
-                    cmd.CommandText = String.Format("exec sp_detach_db '{0}'", dbName);
-                    cmd.ExecuteNonQuery();
-
-                    return true;
-                }
-            }
-            catch
-            {
-                return false;
-            }
-        }
-
-
-        public static void CreateDatabase(string dbName, string dbFileName)
+        /// <summary>
+        /// create database from application settings
+        /// </summary>
+        /// <param name="dbName"> the name of database </param>
+        /// <param name="dbFileName"> there is located </param>
+        void CreateDatabase(string dbName, string dbFileName)
         {
             if (dbFileName[1] != ':')
                 dbFileName = Directory.GetCurrentDirectory() + "\\" + dbFileName;
@@ -364,6 +355,13 @@ namespace MobileApplication
             return GetUsersFromDatabase(comm);
         }
 
+        /// <summary>
+        /// read table and fill the table
+        /// </summary>
+        /// <typeparam name="T"> objects class. can be anything </typeparam>
+        /// <param name="command"> command of selecting row from database </param>
+        /// <param name="FillReaded"> function for reading result </param>
+        /// <returns></returns>
         public List<T> ReadTable<T>(string command, Func<SqlDataReader, T, T> FillReaded )
         {
             SqlConnection conn = new SqlConnection(connectingString);
@@ -393,6 +391,10 @@ namespace MobileApplication
             return answ;
         }
 
+        /// <summary>
+        /// read phone model from database to a list
+        /// </summary>
+        /// <returns> a  list with phone models </returns>
         public List<PhoneModel> ReadPhones()
         {
             return ReadTable<PhoneModel>("select * from tblPhoneModels", (result, phmd) =>
@@ -404,6 +406,10 @@ namespace MobileApplication
             });
         }
 
+        /// <summary>
+        /// read operations from database to list
+        /// </summary>
+        /// <returns> list of operations </returns>
         public List<Operation> ReadOperations()
         {
             return ReadTable<Operation>("select * from tblOperations", (result, phmd) =>
@@ -416,6 +422,10 @@ namespace MobileApplication
             });
         }
 
+        /// <summary>
+        /// read functions from database to a list
+        /// </summary>
+        /// <returns> list of functions </returns>
         public List<Function> ReadFunctions()
         {
             return ReadTable<Function>("select * from tblFunctions", (result, phmd) =>

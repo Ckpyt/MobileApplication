@@ -13,6 +13,9 @@ using System.Windows.Forms;
 
 namespace MobileApplication
 {
+    /// <summary>
+    /// settings form. Can set database file name, invoice file name and output directory path
+    /// </summary>
     public partial class Settings : Form
     {
         public Settings()
@@ -28,6 +31,10 @@ namespace MobileApplication
             
         }
 
+        /// <summary>
+        /// Ok button presed
+        /// Close form and save results
+        /// </summary>
         private void Button4_Click(object sender, EventArgs e)
         {
             Configuration configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
@@ -44,6 +51,9 @@ namespace MobileApplication
             
         }
 
+        /// <summary>
+        /// set database file path to text box
+        /// </summary>
         private void Button1_Click(object sender, EventArgs e)
         {
             openFileDialog1.FileName = textBox1.Text;
@@ -59,6 +69,9 @@ namespace MobileApplication
             }
         }
 
+        /// <summary>
+        /// set invoice file path to text box
+        /// </summary>
         private void Button2_Click(object sender, EventArgs e)
         {
             openFileDialog1.FileName = textBox2.Text;
@@ -74,6 +87,9 @@ namespace MobileApplication
             }
         }
 
+        /// <summary>
+        /// set output path to text box
+        /// </summary>
         private void Button3_Click(object sender, EventArgs e)
         {
             folderBrowserDialog1.SelectedPath = textBox3.Text;
