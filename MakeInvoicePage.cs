@@ -290,7 +290,7 @@ namespace MobileApplication
 
         void FindAndReplaceIntoTextBoxes(Document doc, string Findtext, string Replacetext)
         {
-            
+            Logger.GetInstance().SaveLog("FindAndReplaceIntoTextBoxes entered ");
 
             //First search the main document using the Selection
             {
@@ -310,7 +310,7 @@ namespace MobileApplication
                     , false, Replacetext, word.WdReplace.wdReplaceAll))
                     return;
             }
-
+            Logger.GetInstance().SaveLog("FindAndReplaceIntoTextBoxes 1 ");
             //Now search all other stories using Ranges
             {
                 foreach (Range myStoryRange in doc.StoryRanges)
@@ -339,10 +339,12 @@ namespace MobileApplication
                     }
                 }
             }
+            Logger.GetInstance().SaveLog("FindAndReplaceIntoTextBoxes exit ");
         }
 
         void FindAndReplace(word.Application app, string textToFind, string textToReplace, Document doc)
         {
+            Logger.GetInstance().SaveLog("FindAndReplace entered " + textToReplace);
             try
             {
                 //options
@@ -374,10 +376,12 @@ namespace MobileApplication
             {
                 int i = 0;
             }
+            Logger.GetInstance().SaveLog("FindAndReplace exit ");
         }
 
         string AddDeviceNames(word.Application app, Document doc)
         {
+            Logger.GetInstance().SaveLog("AddDeviceNames entered ");
             string deviceNames = "";
             List<string> devices = new List<string>();
             foreach (ListViewItem itm in listView1.Items)
@@ -401,11 +405,13 @@ namespace MobileApplication
                     deviceNames += ", " + str;
 
             FindAndReplace(app, "DeviceText", deviceNames, doc);
+            Logger.GetInstance().SaveLog("AddDeviceNames exit ");
             return deviceNames;
         }
 
         void AddDescription(word.Application app, Document doc)
         {
+            Logger.GetInstance().SaveLog("AddDescription entered ");
             Table dataTbl = null;
             foreach(Table tbl in doc.Tables)
             {
@@ -450,10 +456,12 @@ namespace MobileApplication
                 dataTbl.Cell(i + 2, 5).Range.Text = itm.SubItems[4].Text;
 
             }
+            Logger.GetInstance().SaveLog("AddDescription exit ");
         }
 
         int SaveSumm(word.Application app, Document doc)
         {
+            Logger.GetInstance().SaveLog("SaveSumm entered ");
             float total = 0;
 
             foreach (ListViewItem itm in listView1.Items)
@@ -464,11 +472,13 @@ namespace MobileApplication
 
             FindAndReplace(app, "TotalSum", total.ToString() + "$", doc);
             FindAndReplace(app, "GRDSum", ((float)grd / 100f).ToString() + "$", doc);
+            Logger.GetInstance().SaveLog("SaveSumm exit ");
             return grd;
         }
 
         void SaveInvoiceToDatabase(int price, string devices)
         {
+            Logger.GetInstance().SaveLog("SaveInvoiceToDatabase entered ");
             int invoiceId = int.Parse(InvoiceBox.Text);
             string comm = "insert into tblInvoices values(" + InvoiceBox.Text + ", '" 
                 + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "', '"  + CustNameBox.Text + "', " 
@@ -486,25 +496,37 @@ namespace MobileApplication
                     "," + itm.SubItems[2].Text + ");";
                 SQLWorker.GetInstance().SqlComm(subInvoice);
             }
-
+            Logger.GetInstance().SaveLog("SaveInvoiceToDatabase exit ");
         }
 
         private void SaveInvoiceButton_Click(object sender, EventArgs e)
         {
+            Logger.GetInstance().SaveLog("SaveInvoiceButton_Click entered ");
             try
             {
                 Configuration configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
                 string path = configuration.AppSettings.Settings["outputDirectory"].Value;
                 string pdfPath = path + "\\" + InvoiceBox.Text + ".pdf";
                 string tempPath = configuration.AppSettings.Settings["invoiceFile"].Value;
-                string tempBlockPath = path + "\\" + "~$voice templete.dotx";
+                string tmpfilename = "~&" + Path.GetFileName(path).Substring(2);
+                
+                string tempBlockPath = path + "\\" + tmpfilename;
 
                 if (File.Exists(tempBlockPath))
                     File.Delete(tempBlockPath);
 
+                string tmpdocFile = "";
+                do
+                {
+                    Random rnd = new Random(DateTime.Now.Millisecond);
+                    int k = rnd.Next(1000);
+                    tmpdocFile = path + "\\" + InvoiceBox.Text + k + ".docx";
+                } while (File.Exists(tmpdocFile));
+
+                File.Copy(tempPath, tmpdocFile);
 
                 word.Application app = new word.Application();
-                Document doc = app.Documents.Open(tempPath);
+                Document doc = app.Documents.Open(tmpdocFile);
 
                 FindAndReplace(app, "NameText", CustNameBox.Text, doc);
                 FindAndReplace(app, "ContactText", CustPhoneBox.Text, doc);
@@ -513,20 +535,54 @@ namespace MobileApplication
                 string devices = AddDeviceNames(app, doc);
                 AddDescription(app, doc);
                 int summ = SaveSumm(app, doc);
+                bool saved = false;
 
-                doc.SaveAs2(pdfPath, word.WdSaveFormat.wdFormatPDF);
+                //different methods for differnt versions of Word ;-(
+
+                try
+                {
+                    Logger.GetInstance().SaveLog("word version = " + app.Version);
+                    float ver = 0;
+                    bool res = float.TryParse(app.Version, out ver);
+                    Logger.GetInstance().SaveLog("word version = " + ver);
+
+                    if(ver > 14)
+                        doc.SaveAs2(pdfPath, word.WdSaveFormat.wdFormatPDF);
+                    else
+                    {
+                        Object objpath = pdfPath;
+                        object oMissing = System.Reflection.Missing.Value;
+                        doc.SaveAs(ref objpath, WdSaveFormat.wdFormatPDF,
+                        ref oMissing, ref oMissing, ref oMissing, ref oMissing, ref oMissing,
+                        ref oMissing, ref oMissing, ref oMissing, ref oMissing, ref oMissing,
+                        ref oMissing, ref oMissing, ref oMissing, ref oMissing);
+                    }
+                    saved = true;
+                }catch(AccessViolationException ex) { }
+                try
+                {
+                    if(!saved)
+                        doc.SaveAs(pdfPath, word.WdSaveFormat.wdFormatPDF);
+                }
+                catch (AccessViolationException ex) { }
+
                 doc.Close(false);
                 app.Quit(false);
 
                 SaveInvoiceToDatabase(summ, devices);
 
-            }catch(Exception ex)
+                File.Delete(tmpdocFile);
+
+            }
+            catch(Exception ex)
             {
                 MessageBox.Show("Sorry, I couldn't save a file, becouse:\n" + ex.Message, "Word error happens", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             MessageBox.Show("File saved", "File saved", MessageBoxButtons.OK, MessageBoxIcon.Information);
             int invoiceID = Int32.Parse(InvoiceBox.Text);
             maxInvoice = (maxInvoice > invoiceID ? maxInvoice : invoiceID);
+
+            Logger.GetInstance().SaveLog("SaveInvoiceButton_Click exit ");
         }
 
         public void Button1_Click(object sender, EventArgs e)

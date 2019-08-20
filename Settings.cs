@@ -39,8 +39,9 @@ namespace MobileApplication
             configuration.Save(ConfigurationSaveMode.Full, true);
             ConfigurationManager.RefreshSection("appSettings");
 
-
+            DialogResult = DialogResult.OK;
             Close();
+            
         }
 
         private void Button1_Click(object sender, EventArgs e)
