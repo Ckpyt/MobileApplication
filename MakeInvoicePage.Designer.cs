@@ -52,6 +52,7 @@
             this.label6 = new System.Windows.Forms.Label();
             this.InvoiceBox = new System.Windows.Forms.TextBox();
             this.newInvoiceBtn = new System.Windows.Forms.Button();
+            this.saveAndPrintButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // listView1
@@ -253,7 +254,7 @@
             // 
             // newInvoiceBtn
             // 
-            this.newInvoiceBtn.Location = new System.Drawing.Point(708, 71);
+            this.newInvoiceBtn.Location = new System.Drawing.Point(587, 72);
             this.newInvoiceBtn.Name = "newInvoiceBtn";
             this.newInvoiceBtn.Size = new System.Drawing.Size(80, 23);
             this.newInvoiceBtn.TabIndex = 18;
@@ -261,10 +262,21 @@
             this.newInvoiceBtn.UseVisualStyleBackColor = true;
             this.newInvoiceBtn.Click += new System.EventHandler(this.Button1_Click);
             // 
+            // saveAndPrintButton
+            // 
+            this.saveAndPrintButton.Location = new System.Drawing.Point(708, 71);
+            this.saveAndPrintButton.Name = "saveAndPrintButton";
+            this.saveAndPrintButton.Size = new System.Drawing.Size(80, 23);
+            this.saveAndPrintButton.TabIndex = 19;
+            this.saveAndPrintButton.Text = "Save && Print";
+            this.saveAndPrintButton.UseVisualStyleBackColor = true;
+            this.saveAndPrintButton.Click += new System.EventHandler(this.SaveAndPrintButton_Click);
+            // 
             // MakeInvoicePage
             // 
             this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(800, 451);
+            this.Controls.Add(this.saveAndPrintButton);
             this.Controls.Add(this.newInvoiceBtn);
             this.Controls.Add(this.InvoiceBox);
             this.Controls.Add(this.label6);
@@ -318,5 +330,6 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.TextBox InvoiceBox;
         private System.Windows.Forms.Button newInvoiceBtn;
+        private System.Windows.Forms.Button saveAndPrintButton;
     }
 }

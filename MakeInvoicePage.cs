@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -591,6 +592,22 @@ namespace MobileApplication
             CustNameBox.Text = "";
             CustPhoneBox.Text = "";
             InvoiceBox.Text = (maxInvoice + 1).ToString();
+        }
+
+        private void SaveAndPrintButton_Click(object sender, EventArgs e)
+        {
+            Configuration configuration = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            SaveInvoiceButton_Click(sender, e);
+            string path = configuration.AppSettings.Settings["outputDirectory"].Value;
+            string pdfPath = path + "\\" + InvoiceBox.Text + ".pdf";
+            Process p = new Process();
+            p.StartInfo = new ProcessStartInfo()
+            {
+                CreateNoWindow = true,
+                Verb = "print",
+                FileName = pdfPath //put the correct path here
+            };
+            p.Start();
         }
     }
 }

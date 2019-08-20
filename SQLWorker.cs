@@ -138,6 +138,7 @@ namespace MobileApplication
             }
         }
 
+
         public static void CreateDatabase(string dbName, string dbFileName)
         {
             if (dbFileName[1] != ':')
@@ -179,6 +180,8 @@ namespace MobileApplication
                 MessageBox.Show(ex.ToString(), "MyProgram", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
+
+
             /// <summary>
             /// Check has the database a table. If not, it will be created
             /// </summary>
