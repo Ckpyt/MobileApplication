@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
 using System.Data;
+using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -580,21 +581,35 @@ namespace MobileApplication
         {
             Logger.GetInstance().SaveLog("SaveInvoiceToDatabase entered ");
             int invoiceId = int.Parse(InvoiceBox.Text);
-            string comm = "insert into tblInvoices values(" + InvoiceBox.Text + ", '" 
-                + DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss") + "', '"  + CustNameBox.Text + "', " 
-                + MainForm.currentUser.id.ToString() + ", " + price.ToString() + ", '" + devices + "')";
-            SQLWorker.GetInstance().SqlComm(comm);
 
+            {
+                string comm = "insert into tblInvoices values( @InvoiceId, @Date, @CustomName, @UserID, @TotalPrice, @devices)";
+                SqlCommand command = new SqlCommand(comm);
+                command.Parameters.Add(new SqlParameter("InvoiceId", invoiceId));
+                command.Parameters.Add(new SqlParameter("Date", DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss")));
+                command.Parameters.Add(new SqlParameter("CustomName", CustNameBox.Text));
+                command.Parameters.Add(new SqlParameter("UserID", MainForm.currentUser.id));
+                command.Parameters.Add(new SqlParameter("TotalPrice", price));
+                command.Parameters.Add(new SqlParameter("devices", devices));
+
+                SQLWorker.GetInstance().SqlComm(command);
+            }
 
             int subId = SQLWorker.GetInstance().GetMaxId("tblSubInvoices");
 
             foreach(ListViewItem itm in listView1.Items)
             {
                 subId++;
-                string subInvoice = "insert into tblSubInvoices values(" + subId + "," + 
-                    invoiceId + ", '" + itm.Text + "','" + itm.SubItems[1].Text + "'," + (float.Parse(itm.SubItems[3].Text) * 100) +
-                    "," + itm.SubItems[2].Text + ");";
-                SQLWorker.GetInstance().SqlComm(subInvoice);
+                string subInvoice = "insert into tblSubInvoices values(@Id,@InvoiceId, @device,@description,@price, @count);";
+                SqlCommand command = new SqlCommand(subInvoice);
+                command.Parameters.Add(new SqlParameter("Id", subId));
+                command.Parameters.Add(new SqlParameter("InvoiceId", invoiceId));
+                command.Parameters.Add(new SqlParameter("device", itm.Text));
+                command.Parameters.Add(new SqlParameter("description", itm.SubItems[1].Text));
+                command.Parameters.Add(new SqlParameter("price", (float.Parse(itm.SubItems[3].Text) * 100)));
+                command.Parameters.Add(new SqlParameter("count", itm.SubItems[2].Text));
+
+                SQLWorker.GetInstance().SqlComm(command);
             }
             Logger.GetInstance().SaveLog("SaveInvoiceToDatabase exit ");
         }

@@ -223,7 +223,9 @@ namespace MobileApplication
 
             SQLWorker.GetInstance().SqlComm(() =>
             {
-                return new SqlCommand("delete from tblUsers where(ID=" + id + ")");
+                SqlCommand comm = new SqlCommand("delete from tblUsers where(ID=@id)");
+                comm.Parameters.Add(new SqlParameter("@id", id));
+                return comm
             });
 
             listView1.Items.Remove(listView1.SelectedItems[0]);

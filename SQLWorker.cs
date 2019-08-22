@@ -351,7 +351,8 @@ namespace MobileApplication
         /// <returns>collection of all the users with the same name</returns>
         public SortedList<int, User> ReadUser(string name)
         {
-            SqlCommand comm = new SqlCommand("select * from tblUsers where(Name='" + name + "')");
+            SqlCommand comm = new SqlCommand("select * from tblUsers where(Name=@name)");
+            comm.Parameters.Add(new SqlParameter("@name", name));
             return GetUsersFromDatabase(comm);
         }
 
