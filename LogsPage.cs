@@ -50,7 +50,7 @@ namespace MobileApplication
         {
             int selected = searchCondBox.SelectedIndex;
             selected = selected > -1 ? selected : 0;
-            string comm = "select*from tblInvoices,tblUsers where (UserId = tblUsers.Id and ";
+            string comm = "select * from tblInvoices,tblUsers where (UserId = tblUsers.Id and ";
             switch (selected)
             {
                 case 0:

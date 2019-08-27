@@ -242,23 +242,45 @@ namespace MobileApplication
         /// </summary>
         public static void OnlyFloatCheckerStatic(object sender, EventArgs e)
         {
+            
+            int dotPos = -1;
             TextBox sd = sender as TextBox;
+            string txt = sd.Text;
+            int selPos = sd.SelectionStart;
+
+            for (int i = 0; i < txt.Length; i++)
+            {
+                if (txt[i] == '.')
+                    if (dotPos == -1)
+                        dotPos = i;
+                    else
+                    {
+                        sd.Text = txt.Substring(0, i);
+                        break;
+                    }
+            }
+            if (dotPos >-1 && txt.Length > dotPos + 3)
+                sd.Text = txt.Substring(0, dotPos + 3);
+
+            sd.SelectionStart = selPos;
+            sd.SelectionLength = 0;
+
             if (sd.Text.Length > 0 && sd.Text[sd.Text.Length - 1] == '.') return;
-            OnlyDecimalCheckerStatic(sender, e);
+            OnlyDecimalCheckerStatic(sender, e, false);
         }
 
         /// <summary>
         /// used for checking entered values in textboxes
         /// check decimal structure
         /// </summary>
-        public static void OnlyDecimalCheckerStatic(object sender, EventArgs e)
+        public static void OnlyDecimalCheckerStatic(object sender, EventArgs e, bool deci = true)
         {
             TextBox sd = sender as TextBox;
             string txt = "";
             int pos = sd.SelectionStart;
 
             foreach (char t in sd.Text)
-                if ((t >= '0' && t <= '9') || t=='.' )
+                if ((t >= '0' && t <= '9') || (! deci && t=='.') )
                     txt += t;
                 else
                     pos--;

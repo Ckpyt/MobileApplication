@@ -110,6 +110,14 @@ namespace MobileApplication
                 MessageBox.Show("Sorry, password cannot be empty", "Password Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+
+            if (NameBox.TextLength == 0 && !isSelected)
+            {
+                MessageBox.Show("Sorry, user name cannot be empty", "Name Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+
             User cust = null;
 
             string rights = "";
@@ -225,7 +233,7 @@ namespace MobileApplication
             {
                 SqlCommand comm = new SqlCommand("delete from tblUsers where(ID=@id)");
                 comm.Parameters.Add(new SqlParameter("@id", id));
-                return comm
+                return comm;
             });
 
             listView1.Items.Remove(listView1.SelectedItems[0]);
