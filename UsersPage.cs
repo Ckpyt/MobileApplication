@@ -71,15 +71,27 @@ namespace MobileApplication
         /// <param name="id"> user's id </param>
         /// <param name="rights">user's rights</param>
         /// <returns> the user with new parametres </returns>
-        User ChangeDetails(int id, string rights)
+        bool ChangeDetails(int id, string rights, out User cust)
         {
-            User cust = users[id];
+            cust = users[id];
+
+            foreach (var usr in users)
+            {
+                if (usr.Value.name == NameBox.Text && usr.Value.id != id)
+                {
+                    MessageBox.Show("Sorry, user name is used", "Name Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                }
+            }
+
+
+            
             cust.name = NameBox.Text;
             cust.phone = PhoneBox.Text;
             cust.SetStringRights(rights);
             if(PassBox.Text.Length > 0)
                 cust.SetPassword(PassBox.Text);
-            return cust;
+            return true;
         }
 
         /// <summary>
@@ -132,15 +144,30 @@ namespace MobileApplication
             if (isSelected)
             {
                 int id = Int32.Parse(listView1.Items[selectedPos].Text);
-                cust = ChangeDetails(id, rights);
-                SQLWorker.GetInstance().SqlComm(cust.UpdateSqlCommand);
+                if (ChangeDetails(id, rights, out cust))
+                {
+                    SQLWorker.GetInstance().SqlComm(cust.UpdateSqlCommand);
+                }
+                else
+                    return;
             }
             else
             {
+
+                foreach(var usr in users)
+                {
+                    if(usr.Value.name == NameBox.Text)
+                    {
+                        MessageBox.Show("Sorry, user name is used", "Name Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                }
+
                 cust = new User();
                 cust.id = users.Count > 0 ? users.Last().Value.id + 1 : 1;
                 users.Add(cust.id, cust);
-                ChangeDetails(cust.id, rights);
+
+                ChangeDetails(cust.id, rights, out cust);
 
                 SQLWorker.GetInstance().SqlComm(cust.InsertNewUser);
             }
