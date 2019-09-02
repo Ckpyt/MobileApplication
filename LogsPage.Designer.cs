@@ -100,13 +100,14 @@
             this.searchCondBox.Items.AddRange(new object[] {
             "Date",
             "Customer name",
-            "Invoice number",
-            "User name"});
+            "User name",
+            "Invoice number"});
             this.searchCondBox.Location = new System.Drawing.Point(581, 34);
             this.searchCondBox.Name = "searchCondBox";
             this.searchCondBox.Size = new System.Drawing.Size(121, 21);
             this.searchCondBox.TabIndex = 6;
             this.searchCondBox.Text = "Date";
+            this.searchCondBox.SelectedIndexChanged += new System.EventHandler(this.SearchCondBox_SelectedIndexChanged);
             // 
             // searchBox
             // 
@@ -114,6 +115,7 @@
             this.searchBox.Name = "searchBox";
             this.searchBox.Size = new System.Drawing.Size(100, 20);
             this.searchBox.TabIndex = 7;
+            this.searchBox.TextChanged += new System.EventHandler(this.SearchBox_TextChanged);
             // 
             // label3
             // 

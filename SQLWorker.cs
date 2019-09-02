@@ -351,7 +351,8 @@ namespace MobileApplication
         /// <returns>collection of all the users with the same name</returns>
         public SortedList<int, User> ReadUser(string name)
         {
-            SqlCommand comm = new SqlCommand("select * from tblUsers where(Name='" + name + "')");
+            SqlCommand comm = new SqlCommand("select * from tblUsers where(Name=@name)");
+            comm.Parameters.Add(new SqlParameter("@name", name));
             return GetUsersFromDatabase(comm);
         }
 
@@ -359,20 +360,33 @@ namespace MobileApplication
         /// read table and fill the table
         /// </summary>
         /// <typeparam name="T"> objects class. can be anything </typeparam>
-        /// <param name="command"> command of selecting row from database </param>
+        /// <param name="command"> command for selecting row from database </param>
         /// <param name="FillReaded"> function for reading result </param>
         /// <returns></returns>
-        public List<T> ReadTable<T>(string command, Func<SqlDataReader, T, T> FillReaded )
+        public List<T> ReadTable<T>(string command, Func<SqlDataReader, T, T> FillReaded)
+        {
+            SqlCommand comm = new SqlCommand(command);
+            return ReadTable(comm, FillReaded);
+        }
+
+        /// <summary>
+        /// read table and fill the table
+        /// </summary>
+        /// <typeparam name="T"> objects class. can be anything </typeparam>
+        /// <param name="command"> command for selecting row from database </param>
+        /// <param name="FillReaded"> function for reading result </param>
+        /// <returns></returns>
+        public List<T> ReadTable<T>(SqlCommand command, Func<SqlDataReader, T, T> FillReaded )
         {
             SqlConnection conn = new SqlConnection(connectingString);
-            SqlCommand comm = new SqlCommand(command, conn);
+            command.Connection = conn;
             List<T> answ = new List<T>();
             SqlDataReader result = null;
             conn.Open();
 
             try
             {
-                result = comm.ExecuteReader();
+                result = command.ExecuteReader();
                 while (result.HasRows && result.Read())
                 {
                     T readed = (T)Activator.CreateInstance(typeof(T));

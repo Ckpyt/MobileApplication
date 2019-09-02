@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -48,28 +49,38 @@ namespace MobileApplication
         /// </summary>
         private void Button1_Click(object sender, EventArgs e)
         {
+            if(searchCondBox.SelectedIndex > 1 && searchBox.Text == "")
+            {
+                MessageBox.Show("Sorry, search box could not be empty", "Search error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
             int selected = searchCondBox.SelectedIndex;
+            SqlCommand command = new SqlCommand();
             selected = selected > -1 ? selected : 0;
-            string comm = "select*from tblInvoices,tblUsers where (UserId = tblUsers.Id and ";
+            string comm = "select * from tblInvoices,tblUsers where (UserId = tblUsers.Id and ";
             switch (selected)
             {
                 case 0:
-                    comm += "Date >='" 
-                        + fromDateTimePicker.Value.ToString("yyyy-MM-dd") + 
-                        "' and Date <='" + toDateTimePicker.Value.ToString("yyyy-MM-dd") + "');";
+                    comm += "Date >=@DateFrom and Date <=@DateTo);";
+                    command.Parameters.Add(new SqlParameter("DateFrom", fromDateTimePicker.Value.ToString("yyyy-MM-dd")));
+                    command.Parameters.Add(new SqlParameter("DateTo", toDateTimePicker.Value.ToString("yyyy-MM-dd")));
                     break;
                 case 1:
-                    comm += "CustName='" + searchBox.Text + "')";
+                    comm += "CustName=@CustomerName)";
+                    command.Parameters.Add(new SqlParameter("CustomerName", searchBox.Text));
                     break;
                 case 2:
-                    comm += "tblInvoices.Id=" + searchBox.Text + ")";
+                    comm += "tblUsers.Name=@UserName)";
+                    command.Parameters.Add(new SqlParameter("UserName", searchBox.Text));
                     break;
                 case 3:
-                    comm += "tblUsers.Name='" + searchBox.Text + "')";
+                    comm += "tblInvoices.Id=@InvoiceId)";
+                    command.Parameters.Add(new SqlParameter("InvoiceId", searchBox.Text));
                     break;
             }
 
-            selectedInvoices =  SQLWorker.GetInstance().ReadTable<Invoice>(comm, (result, invoice) =>
+            command.CommandText = comm;
+            selectedInvoices =  SQLWorker.GetInstance().ReadTable<Invoice>(command, (result, invoice) =>
             {
                 invoice.id =        Convert.ToInt32(result[0]);
                 invoice.date =      Convert.ToString(result[1]);
@@ -130,6 +141,24 @@ namespace MobileApplication
                 listView2.Items.Add(itm);
             }
 
+        }
+
+        private void SearchBox_TextChanged(object sender, EventArgs e)
+        {
+            switch (searchCondBox.SelectedIndex)
+            {
+                case 0:
+                    searchBox.Text = "";
+                    break;
+                case 3:
+                    MakeInvoicePage.OnlyDecimalCheckerStatic(sender, e);
+                    break;
+            }
+        }
+
+        private void SearchCondBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SearchBox_TextChanged(searchBox, e);
         }
     }
 }
