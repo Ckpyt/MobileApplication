@@ -16,5 +16,33 @@ namespace MobileApplication
         {
             InitializeComponent();
         }
+
+        private void PictureBox1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Button2_Click(object sender, EventArgs e)
+        {
+            AboutCompany rt = new AboutCompany();
+            rt.ShowDialog();
+        }
+
+        private void Select2_Click(object sender, EventArgs e)
+        {
+       
+            AboutUs rt = new AboutUs();
+            rt.ShowDialog();
+        }
+
+        private void ExitBtn_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }

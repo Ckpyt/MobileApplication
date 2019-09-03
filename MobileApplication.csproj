@@ -57,10 +57,10 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>5702F842D3D587362FAB5E048C27F8419A9B1627</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>DC22C7E5DB5C5C36DEA0D0228A19974E04069B71</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>MobileApplication_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>MobileApplication_1_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
@@ -230,6 +230,18 @@
     <Compile Include="About.Designer.cs">
       <DependentUpon>About.cs</DependentUpon>
     </Compile>
+    <Compile Include="AboutCompany.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AboutCompany.Designer.cs">
+      <DependentUpon>AboutCompany.cs</DependentUpon>
+    </Compile>
+    <Compile Include="AboutUs.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="AboutUs.Designer.cs">
+      <DependentUpon>AboutUs.cs</DependentUpon>
+    </Compile>
     <Compile Include="Invoice.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="PhoneModel.cs" />
@@ -282,6 +294,12 @@
     <EmbeddedResource Include="About.resx">
       <DependentUpon>About.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="AboutCompany.resx">
+      <DependentUpon>AboutCompany.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="AboutUs.resx">
+      <DependentUpon>AboutUs.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="LogsPage.resx">
       <DependentUpon>LogsPage.cs</DependentUpon>
     </EmbeddedResource>
@@ -304,21 +322,23 @@
       <DependentUpon>ObjectsPage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <AdditionalFiles Include="Invoice templete.docx">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </AdditionalFiles>
+    <None Include="MobileApplication_1_TemporaryKey.pfx" />
     <None Include="MobileApplication_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
+      <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <Compile Include="Properties\Settings.Designer.cs">

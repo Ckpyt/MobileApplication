@@ -29,7 +29,7 @@ namespace MobileApplication
         /// </summary>
         void ShowError()
         {
-            MessageBox.Show("Sorry, your username or password does not founded", "Login error",
+            MessageBox.Show("Sorry, invalid username or password!", "Login error",
                 MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 

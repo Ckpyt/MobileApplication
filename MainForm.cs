@@ -224,5 +224,10 @@ namespace MobileApplication
             FillTabs();
 #endif
         }
+
+        private void MainForm_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }
