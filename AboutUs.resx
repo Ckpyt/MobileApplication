@@ -117,19 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="label1.Text" xml:space="preserve">
-    <value>About the Proponents 
+  <data name="AboutText3.Text" xml:space="preserve">
+    <value>They choose Techcare Plus as a client because of the eagerness to challenging theirselves to developed an Invoice Processing System. As of this moment, they are still enhancing their knowledge in Application Development and still learning.
  
-
-The proponents are Dimitrii Shibalin and Angelica Primavera. 
-
-They are currently studying in Aspire2 International taking Diploma in
-Computing and Software Development as its strand.
-
-They choose Techcare Plus as a client because of the eagerness to challenge
-theirselves to developed an Invoice Processing System.
-As of this moment, they are still enhancing their knowledge in 
-Application Development and still learning.
- </value>
+</value>
   </data>
 </root>

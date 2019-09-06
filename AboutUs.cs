@@ -30,8 +30,18 @@ namespace MobileApplication
 
         private void TextBox1_TextChanged(object sender, EventArgs e)
         {
-            MessageBox.Show("hey whatsup");
+           
             
+        }
+
+        private void AboutUs_Resize(object sender, EventArgs e)
+        {
+        
+        }
+
+        private void Button1_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }
