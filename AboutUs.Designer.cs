@@ -115,6 +115,7 @@
             this.Controls.Add(this.button1);
             this.Controls.Add(this.Logo2);
             this.Name = "AboutUs";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "AboutUs";
             this.Resize += new System.EventHandler(this.AboutUs_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.Logo2)).EndInit();

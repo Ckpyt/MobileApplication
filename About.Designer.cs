@@ -75,9 +75,9 @@
             this.Select2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.Select2.Font = new System.Drawing.Font("Hack", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Select2.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.Select2.Location = new System.Drawing.Point(26, 153);
+            this.Select2.Location = new System.Drawing.Point(12, 153);
             this.Select2.Name = "Select2";
-            this.Select2.Size = new System.Drawing.Size(107, 33);
+            this.Select2.Size = new System.Drawing.Size(121, 33);
             this.Select2.TabIndex = 2;
             this.Select2.Text = "Read";
             this.Select2.UseVisualStyleBackColor = true;
@@ -96,12 +96,13 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(202, 34);
             this.label2.TabIndex = 3;
-            this.label2.Text = "Who We Are?";
+            this.label2.Text = "Who We Are.";
             // 
             // About
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.ClientSize = new System.Drawing.Size(274, 221);
             this.Controls.Add(this.label2);
@@ -114,6 +115,7 @@
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(290, 260);
             this.Name = "About";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "About";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
