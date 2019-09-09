@@ -122,6 +122,7 @@ namespace MobileApplication
                 MessageBox.Show("Table was not found\n" + ex.Message, "SqlException", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             Logger.GetInstance().SaveLog("SQLWorker GetMaxId() exit");
+            conn.Close();
             return maxId;
         }
 
@@ -138,14 +139,14 @@ namespace MobileApplication
             String str;
             SqlConnection myConn = new SqlConnection("Data Source=(LocalDB)\\MSSQLLocalDB;Integrated security=SSPI");
 
-            string logDbFile =  Directory.GetParent(dbFileName) + "\\" + dbName + ".ldf";
+            string logDbFile = Directory.GetParent(dbFileName) + "\\" + dbName + ".ldf";
 
             str = "CREATE DATABASE " + dbName + " ON PRIMARY " +
-                "(NAME =  "+ dbName + "_data, " +
+                "(NAME =  " + dbName + "_data, " +
                 "FILENAME =  '" + dbFileName + "', " +
                 "SIZE = 5MB, MAXSIZE = 20MB, FILEGROWTH = 10%) " +
                 "LOG ON (NAME =" + dbName + "_log, " +
-                "FILENAME = '"+ logDbFile + "', " +
+                "FILENAME = '" + logDbFile + "', " +
                 "SIZE = 5MB, " +
                 "MAXSIZE = 10MB, " +
                 "FILEGROWTH = 10%)";
@@ -158,19 +159,23 @@ namespace MobileApplication
                 alter.ExecuteNonQuery();
             }
             catch (System.Exception ex)
-            { myConn.Close(); }
+            { /*it is ok - database foes not exest */ }
 
-            try { 
-                
-                myConn.Open();
-                myCommand.ExecuteNonQuery();
-                MessageBox.Show("DataBase is Created Successfully", "Sql created", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                myConn.Close();
+
+                try
+                {
+
+                    myConn.Open();
+                    myCommand.ExecuteNonQuery();
+                    MessageBox.Show("DataBase is Created Successfully", "Sql created", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (System.Exception ex)
+                {
+                    MessageBox.Show(ex.ToString(), "MyProgram", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                myConn.Close();
             }
-            catch (System.Exception ex)
-            {
-                MessageBox.Show(ex.ToString(), "MyProgram", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-        }
 
 
             /// <summary>
@@ -180,44 +185,46 @@ namespace MobileApplication
             /// <param name="creatingCommand"> command for create a table. It could be copyed from Table Definition </param>
             /// /// <returns>retirns true if table was created</returns>
             bool CheckAndCreateTable(string checkingCommand, string creatingCommand)
-        {
-            Logger.GetInstance().SaveLog("SQLWorker CheckAndCreateTable() enter " + checkingCommand + " " 
-                + creatingCommand + " " + connectingString);
-
-            if (connectingString == null || connectingString == "")
-                CheckDatabase();
-
-            SqlConnection conn = new SqlConnection(connectingString);
-            SqlCommand comm = new SqlCommand(checkingCommand, conn);
-            conn.Open();
-
-            SqlDataReader reader = null;
-            try
             {
-                reader = comm.ExecuteReader();
-                if (!reader.HasRows)
-                    reader = null;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Table was not found and it will be created:\n" + ex.Message, "SqlException", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+                Logger.GetInstance().SaveLog("SQLWorker CheckAndCreateTable() enter " + checkingCommand + " "
+                    + creatingCommand + " " + connectingString);
 
-            if (reader == null)
-            {
-                conn.Close();
+                if (connectingString == null || connectingString == "")
+                    CheckDatabase();
+
+                SqlConnection conn = new SqlConnection(connectingString);
+                SqlCommand comm = new SqlCommand(checkingCommand, conn);
                 conn.Open();
 
-                comm = new SqlCommand(creatingCommand, conn);
+                SqlDataReader reader = null;
+                try
+                {
+                    reader = comm.ExecuteReader();
+                    if (!reader.HasRows)
+                        reader = null;
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Table was not found and it will be created:\n" + ex.Message, "SqlException", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
 
-                comm.ExecuteNonQuery();
-                Logger.GetInstance().SaveLog("SQLWorker CheckAndCreateTable() exit1");
-                return true;
+                if (reader == null)
+                {
+                    conn.Close();
+                    conn.Open();
+
+                    comm = new SqlCommand(creatingCommand, conn);
+
+                    comm.ExecuteNonQuery();
+                    Logger.GetInstance().SaveLog("SQLWorker CheckAndCreateTable() exit1");
+                    conn.Close();
+                    return true;
+                }
+                Logger.GetInstance().SaveLog("SQLWorker CheckAndCreateTable() exit2");
+                conn.Close();
+                return false;
             }
-            Logger.GetInstance().SaveLog("SQLWorker CheckAndCreateTable() exit2");
-            return false;
-        }
-
+        
         /// <summary>
         /// Check does database has tables. If not, them will be created
         /// </summary>
@@ -289,6 +296,7 @@ namespace MobileApplication
             {
                 MessageBox.Show(ex.Message, "SqlException", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            conn.Close();
         }
 
         /// <summary>
@@ -334,13 +342,13 @@ namespace MobileApplication
                     answ.Add(cust.id, cust);
                     //Description.Text = descr;
                 }
-                conn.Close();
+                
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "SqlException", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
+            conn.Close();
             return answ;
         }
 
@@ -357,7 +365,7 @@ namespace MobileApplication
         }
 
         /// <summary>
-        /// read table and fill the table
+        /// read table and fill the list
         /// </summary>
         /// <typeparam name="T"> objects class. can be anything </typeparam>
         /// <param name="command"> command for selecting row from database </param>
@@ -370,7 +378,7 @@ namespace MobileApplication
         }
 
         /// <summary>
-        /// read table and fill the table
+        /// read table and fill the list
         /// </summary>
         /// <typeparam name="T"> objects class. can be anything </typeparam>
         /// <param name="command"> command for selecting row from database </param>
@@ -395,13 +403,12 @@ namespace MobileApplication
                     answ.Add(readed);
                     //Description.Text = descr;
                 }
-                conn.Close();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message, "SqlException", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
+            conn.Close();
             return answ;
         }
 

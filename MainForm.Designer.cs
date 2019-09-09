@@ -51,6 +51,53 @@
             this.AllTabs.SelectedIndex = 0;
             this.AllTabs.Size = new System.Drawing.Size(808, 429);
             this.AllTabs.TabIndex = 0;
+
+            this.button1 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
+
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(-1, 23);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(98, 23);
+            this.button1.TabIndex = 1;
+            this.button1.Text = "tmpMakeInvoice";
+            this.button1.UseVisualStyleBackColor = true;
+            
+            // 
+            // button2
+            // 
+            this.button2.Location = new System.Drawing.Point(94, 23);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(84, 23);
+            this.button2.TabIndex = 2;
+            this.button2.Text = "tmpKeywords";
+            this.button2.UseVisualStyleBackColor = true;
+            
+            // 
+            // button3
+            // 
+            this.button3.Location = new System.Drawing.Point(177, 23);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(75, 23);
+            this.button3.TabIndex = 3;
+            this.button3.Text = "tmpCustoms";
+            this.button3.UseVisualStyleBackColor = true;
+            
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(259, 23);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(75, 23);
+            this.button4.TabIndex = 4;
+            this.button4.Text = "tmpLogs";
+            this.button4.UseVisualStyleBackColor = true;
+
+
             // 
             // menuStrip1
             // 
