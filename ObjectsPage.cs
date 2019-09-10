@@ -36,7 +36,7 @@ namespace MobileApplication
         /// <summary> type of object in selected node. Object holds in Tag  </summary>
         DataType selectedType = DataType.none;
 
-        /// <summary> event system for another class  </summary>
+        /// <summary> event system for another class. Mostly, for makeInvoicePage  </summary>
 #region Events
         public delegate void AddFunctionDelegate(Function func);
         public AddFunctionDelegate addFunctionEvent;

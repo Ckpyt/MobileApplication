@@ -61,7 +61,7 @@ namespace MobileApplication
 
         /// <summary>
         /// if no one logged, application should be closed.
-        /// If someone logged, only form should be closed
+        /// If someone logged, only this form should be closed
         /// </summary>
         private void LoginForm_FormClosed(object sender, FormClosedEventArgs e)
         {

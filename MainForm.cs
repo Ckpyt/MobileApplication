@@ -1,5 +1,4 @@
-﻿using SHA3.Net;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -9,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using SHA3.Net;
 
 
 namespace MobileApplication
@@ -31,50 +30,9 @@ namespace MobileApplication
             /// TabPage class cannot be designed by designManager. For this reason, in the debug mode, 
             /// ..Page classes inherited from Form page and can be launched by pressing buttons
 #if DEBSYMB
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(-1, 23);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(98, 23);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "tmpMakeInvoice";
-            this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.Button1_Click);
-            // 
-            // button2
-            // 
-            this.button2.Location = new System.Drawing.Point(94, 23);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(84, 23);
-            this.button2.TabIndex = 2;
-            this.button2.Text = "tmpKeywords";
-            this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.Button2_Click);
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(177, 23);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 23);
-            this.button3.TabIndex = 3;
-            this.button3.Text = "tmpCustoms";
-            this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.Button3_Click);
-            // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(259, 23);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 23);
-            this.button4.TabIndex = 4;
-            this.button4.Text = "tmpLogs";
-            this.button4.UseVisualStyleBackColor = true;
             this.button4.Click += new System.EventHandler(this.Button4_Click);
 
             this.Controls.Add(this.button4);
@@ -102,24 +60,16 @@ namespace MobileApplication
         void FillTabs()
         {
             string userRights = currentUser.GetStringRights();
-            ObjectsPage obj = null;
-            MakeInvoicePage invoice = null;
-            UsersPage usersPage = null;
-            LogsPage logs = null;
 
             if (userRights.Contains('D'))
-                obj = new ObjectsPage();
+                AllTabs.TabPages.Add(new ObjectsPage());
             if (userRights.Contains('I'))
-                invoice = new MakeInvoicePage();
+                AllTabs.TabPages.Add( new MakeInvoicePage());
             if (userRights.Contains('U'))
-                usersPage = new UsersPage();
+                AllTabs.TabPages.Add(new UsersPage());
             if (userRights.Contains('L'))
-                logs = new LogsPage();
+                AllTabs.TabPages.Add( new LogsPage());
 
-            if (invoice != null) AllTabs.TabPages.Add(invoice);
-            if (obj != null) AllTabs.TabPages.Add(obj);
-            if (usersPage != null) AllTabs.TabPages.Add(usersPage);
-            if (logs != null) AllTabs.TabPages.Add(logs);
         }
 #endif
 
