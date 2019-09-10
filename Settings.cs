@@ -45,8 +45,19 @@ namespace MobileApplication
 
             configuration.Save(ConfigurationSaveMode.Full, true);
             ConfigurationManager.RefreshSection("appSettings");
-
             DialogResult = DialogResult.OK;
+
+            SQLWorker.GetInstance().CheckDatabase(false);
+
+            if (!SQLWorker.GetInstance().IsItInitialized() &&
+                MessageBox.Show("Sorry, the file could not be founded \n Create it?", "File error",
+                   MessageBoxButtons.YesNo, MessageBoxIcon.Error) == DialogResult.Yes)
+            {
+                DialogResult = DialogResult.OK;
+            }
+            else
+                DialogResult = DialogResult.Cancel;
+
             Close();
             
         }

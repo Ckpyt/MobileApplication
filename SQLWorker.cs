@@ -26,23 +26,33 @@ namespace MobileApplication
         /// </summary>
         static SQLWorker worker = new SQLWorker();
 
+        bool isItInitialized = false;
+
         /// <summary>
         /// private constructor allows to create only managing count of objects
         /// part of singletone
         /// </summary>
         private SQLWorker()
         {
+            worker = this;
+
             Logger.GetInstance().SaveLog("SQLWorker const enter");
-            if(CheckDatabase())
+            if (CheckDatabase())
+            {
                 CheckAndCreateTables();
+                isItInitialized = true;
+            }
             Logger.GetInstance().SaveLog("SQLWorker const exit");
         }
+
+
+        public bool IsItInitialized() { return isItInitialized; }
 
         /// <summary>
         /// check where is database file located. It could be in the same directory or higher
         /// if it was not founded, it will be created
         /// </summary>
-        bool CheckDatabase()
+        public bool CheckDatabase(bool showSettings = true)
         {
             bool result = false;
             Logger.GetInstance().SaveLog("SQLWorker CheckDatabase() enter");
@@ -74,13 +84,14 @@ namespace MobileApplication
                 Logger.GetInstance().SaveLog("SQLWorker CheckDatabase() exit 1");
                 return true;
             }
-            else
+            else if(showSettings)
             {
                 Settings stg = new Settings();
                 var dialRes = stg.ShowDialog();
                 if (dialRes != DialogResult.OK)
                 {
                     Logger.GetInstance().SaveLog("SQLWorker CheckDatabase() exit noOk");
+                    Application.Exit();
                     return false;
                 }
 
@@ -94,7 +105,9 @@ namespace MobileApplication
                 CreateDatabase(dbname, path);
                 result |=CheckDatabase();
             }
+
             Logger.GetInstance().SaveLog("SQLWorker CheckDatabase() exit 2");
+            isItInitialized = result;
             return result;
         }
 
@@ -190,7 +203,8 @@ namespace MobileApplication
                     + creatingCommand + " " + connectingString);
 
                 if (connectingString == null || connectingString == "")
-                    CheckDatabase();
+                    if (!CheckDatabase())
+                        return false;
 
                 SqlConnection conn = new SqlConnection(connectingString);
                 SqlCommand comm = new SqlCommand(checkingCommand, conn);
@@ -264,7 +278,7 @@ namespace MobileApplication
         /// <summary>
         /// Part of singletone
         /// </summary>
-        /// <returns>retirns only one object</returns>
+        /// <returns>returns only one object</returns>
         public static SQLWorker GetInstance()
         {
             return worker;

@@ -24,32 +24,39 @@ namespace MobileApplication
         public MainForm()
         {
             InitializeComponent();
-            SQLWorker.GetInstance();
-            LoginForm lg = new LoginForm();
-            lg.ShowDialog();
-            /// TabPage class cannot be designed by designManager. For this reason, in the debug mode, 
-            /// ..Page classes inherited from Form page and can be launched by pressing buttons
-#if DEBSYMB
-            this.button1.Click += new System.EventHandler(this.Button1_Click);
-            this.button2.Click += new System.EventHandler(this.Button2_Click);
-            this.button3.Click += new System.EventHandler(this.Button3_Click);
-            this.button4.Click += new System.EventHandler(this.Button4_Click);
+            SQLWorker worker = SQLWorker.GetInstance();
+            if (worker.IsItInitialized())
+            {
 
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+
+                LoginForm lg = new LoginForm();
+                lg.ShowDialog();
+                /// TabPage class cannot be designed by designManager. For this reason, in the debug mode, 
+                /// ..Page classes inherited from Form page and can be launched by pressing buttons
+#if DEBSYMB
+                this.button1.Click += new System.EventHandler(this.Button1_Click);
+                this.button2.Click += new System.EventHandler(this.Button2_Click);
+                this.button3.Click += new System.EventHandler(this.Button3_Click);
+                this.button4.Click += new System.EventHandler(this.Button4_Click);
+
+                this.Controls.Add(this.button4);
+                this.Controls.Add(this.button3);
+                this.Controls.Add(this.button2);
+                this.Controls.Add(this.button1);
 
 #else
             if (currentUser != null)
             {
-
                 FillTabs();
                 this.Controls.Add(this.AllTabs);
             }
 #endif
 
-
+            }
+            else
+            {
+                Application.Exit();
+            }
         }
 
 #if DEBSYMB
@@ -134,13 +141,16 @@ namespace MobileApplication
         /// </summary>
         private void NewInvoiceToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if (SQLWorker.GetInstance().IsItInitialized())
+            {
 #if DEBSYMB
 #else
-            MakeInvoicePage inv = AllTabs.TabPages[0] as MakeInvoicePage;
-            AllTabs.SelectedIndex = 0;
-            AllTabs.SelectedTab = AllTabs.TabPages[0];
-            inv.Button1_Click(sender, e);
+                MakeInvoicePage inv = AllTabs.TabPages[0] as MakeInvoicePage;
+                AllTabs.SelectedIndex = 0;
+                AllTabs.SelectedTab = AllTabs.TabPages[0];
+                inv.Button1_Click(sender, e);
 #endif
+            }
         }
 
         /// <summary>
@@ -166,13 +176,16 @@ namespace MobileApplication
         /// </summary>
         private void LogoutToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            LoginForm lgf = new LoginForm();
-            lgf.ShowDialog();
+            if (SQLWorker.GetInstance().IsItInitialized())
+            {
+                LoginForm lgf = new LoginForm();
+                lgf.ShowDialog();
 #if DEBSYMB
 #else
-            AllTabs.TabPages.Clear();
-            FillTabs();
+                AllTabs.TabPages.Clear();
+                FillTabs();
 #endif
+            }
         }
     }
 }
