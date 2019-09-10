@@ -61,10 +61,10 @@ namespace MobileApplication
         {
             string userRights = currentUser.GetStringRights();
 
+            if (userRights.Contains('I'))
+                AllTabs.TabPages.Add(new MakeInvoicePage());
             if (userRights.Contains('D'))
                 AllTabs.TabPages.Add(new ObjectsPage());
-            if (userRights.Contains('I'))
-                AllTabs.TabPages.Add( new MakeInvoicePage());
             if (userRights.Contains('U'))
                 AllTabs.TabPages.Add(new UsersPage());
             if (userRights.Contains('L'))
