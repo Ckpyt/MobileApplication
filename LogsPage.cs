@@ -115,7 +115,9 @@ namespace MobileApplication
         {
             if (listView1.SelectedItems.Count < 1) return;
 
-            Invoice inv = listView1.SelectedItems[0].Tag as Invoice;
+            Invoice inv;
+            inv = (Invoice)listView1.SelectedItems[0].Tag;
+
             string comm = "select * from tblSubInvoices where(InvoiceID=" + inv.id.ToString() + ")";
 
             selectedSubInvoices = SQLWorker.GetInstance().ReadTable<SubInvoice>(comm, (result, subinvoice) =>

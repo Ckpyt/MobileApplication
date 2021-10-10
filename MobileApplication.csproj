@@ -37,7 +37,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;-define DEBSYMB</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;DEBSYMB</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -51,10 +51,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>DC22C7E5DB5C5C36DEA0D0228A19974E04069B71</ManifestCertificateThumbprint>
@@ -63,7 +63,16 @@
     <ManifestKeyFile>MobileApplication_1_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <GenerateManifests>true</GenerateManifests>
+    <GenerateManifests>false</GenerateManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>MobileApplication.Program</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>LocalIntranet</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="BouncyCastle.Crypto, Version=1.8.5.0, Culture=neutral, processorArchitecture=MSIL">
@@ -242,9 +251,12 @@
     <Compile Include="AboutUs.Designer.cs">
       <DependentUpon>AboutUs.cs</DependentUpon>
     </Compile>
-    <Compile Include="Invoice.cs" />
+    <Compile Include="Data models\DataObject.cs" />
+    <Compile Include="Data models\Function.cs" />
+    <Compile Include="Data models\Operation.cs" />
+    <Compile Include="Data models\Invoice.cs" />
     <Compile Include="Logger.cs" />
-    <Compile Include="PhoneModel.cs" />
+    <Compile Include="Data models\PhoneModel.cs" />
     <Compile Include="Settings.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -253,7 +265,7 @@
     </Compile>
     <Compile Include="User.cs" />
     <Compile Include="UsersPage.cs">
-      <SubType>Component</SubType>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="UsersPage.Designer.cs">
       <DependentUpon>UsersPage.cs</DependentUpon>
@@ -265,7 +277,7 @@
       <DependentUpon>LoginForm.cs</DependentUpon>
     </Compile>
     <Compile Include="LogsPage.cs">
-      <SubType>Component</SubType>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="LogsPage.Designer.cs">
       <DependentUpon>LogsPage.cs</DependentUpon>
@@ -277,13 +289,13 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="MakeInvoicePage.cs">
-      <SubType>Component</SubType>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="MakeInvoicePage.Designer.cs">
       <DependentUpon>MakeInvoicePage.cs</DependentUpon>
     </Compile>
     <Compile Include="ObjectsPage.cs">
-      <SubType>Component</SubType>
+      <SubType>Form</SubType>
     </Compile>
     <Compile Include="ObjectsPage.Designer.cs">
       <DependentUpon>ObjectsPage.cs</DependentUpon>
@@ -337,6 +349,7 @@
     <None Include="MobileApplication_1_TemporaryKey.pfx" />
     <None Include="MobileApplication_TemporaryKey.pfx" />
     <None Include="packages.config" />
+    <None Include="Properties\app.manifest" />
     <None Include="Properties\Settings.settings">
       <Generator>PublicSettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

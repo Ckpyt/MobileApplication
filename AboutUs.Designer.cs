@@ -30,7 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AboutUs));
             this.Logo2 = new System.Windows.Forms.PictureBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.CloseButton = new System.Windows.Forms.Button();
             this.AboutText1 = new System.Windows.Forms.Label();
             this.AboutText2 = new System.Windows.Forms.Label();
             this.AboutText3 = new System.Windows.Forms.Label();
@@ -49,18 +49,18 @@
             this.Logo2.TabIndex = 0;
             this.Logo2.TabStop = false;
             // 
-            // button1
+            // CloseButton
             // 
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Font = new System.Drawing.Font("Playfair Display", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button1.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.button1.Location = new System.Drawing.Point(621, 405);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(151, 33);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "EXIT";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.Button1_Click);
+            this.CloseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.CloseButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.CloseButton.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.CloseButton.Location = new System.Drawing.Point(621, 405);
+            this.CloseButton.Name = "CloseButton";
+            this.CloseButton.Size = new System.Drawing.Size(151, 33);
+            this.CloseButton.TabIndex = 2;
+            this.CloseButton.Text = "EXIT";
+            this.CloseButton.UseVisualStyleBackColor = true;
+            this.CloseButton.Click += new System.EventHandler(this.CloseButton_Click);
             // 
             // AboutText1
             // 
@@ -68,11 +68,11 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.AboutText1.AutoSize = true;
-            this.AboutText1.Font = new System.Drawing.Font("December Pastel - Personal Use", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AboutText1.Font = new System.Drawing.Font("Microsoft Sans Serif", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.AboutText1.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.AboutText1.Location = new System.Drawing.Point(22, 115);
             this.AboutText1.Name = "AboutText1";
-            this.AboutText1.Size = new System.Drawing.Size(284, 48);
+            this.AboutText1.Size = new System.Drawing.Size(490, 55);
             this.AboutText1.TabIndex = 3;
             this.AboutText1.Text = "About the Proponents";
             // 
@@ -81,7 +81,7 @@
             this.AboutText2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.AboutText2.Font = new System.Drawing.Font("Hack", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AboutText2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.AboutText2.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.AboutText2.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
             this.AboutText2.Location = new System.Drawing.Point(26, 176);
@@ -95,7 +95,7 @@
             // 
             // AboutText3
             // 
-            this.AboutText3.Font = new System.Drawing.Font("Hack", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.AboutText3.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.AboutText3.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.AboutText3.Location = new System.Drawing.Point(26, 266);
             this.AboutText3.Name = "AboutText3";
@@ -112,12 +112,11 @@
             this.Controls.Add(this.AboutText3);
             this.Controls.Add(this.AboutText2);
             this.Controls.Add(this.AboutText1);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.CloseButton);
             this.Controls.Add(this.Logo2);
             this.Name = "AboutUs";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "AboutUs";
-            this.Resize += new System.EventHandler(this.AboutUs_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.Logo2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -127,7 +126,7 @@
         #endregion
 
         private System.Windows.Forms.PictureBox Logo2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button CloseButton;
         private System.Windows.Forms.Label AboutText1;
         private System.Windows.Forms.Label AboutText2;
         private System.Windows.Forms.Label AboutText3;

@@ -266,6 +266,7 @@ namespace MobileApplication
             sd.SelectionLength = 0;
 
             if (sd.Text.Length > 0 && sd.Text[sd.Text.Length - 1] == '.') return;
+
             OnlyDecimalCheckerStatic(sender, e, false);
         }
 
@@ -285,21 +286,19 @@ namespace MobileApplication
                 else
                     pos--;
 
-            if (txt.Length > 0)
+            if (sd.Text.Length > pos)
             {
                 try
                 {
                     double tmp = double.Parse(txt);
                     sd.Text = tmp.ToString();
                 }
-                catch(Exception ex)
-                {
-                   
-                }
+                catch (Exception) //normal behavior, if a user types non-decimal character
+                { }
                 sd.SelectionStart = pos;
                 sd.SelectionLength = 0;
             }
-            else
+            else if(txt.Length == 0)
             {
                 sd.Text = "0";
             }
@@ -437,7 +436,7 @@ namespace MobileApplication
         }
 
         /// <summary>
-        /// Find and replace text everythere in word document
+        /// Find and replace text everywhere in the word document
         /// </summary>
         /// <param name="doc"> link to document </param>
         /// <param name="Findtext"> source text </param>
@@ -473,9 +472,8 @@ namespace MobileApplication
                 {
                     FindAndReplaceIntoTextBoxes(doc, textToFind, textToReplace);
                 }
-            }catch(Exception ex)
+            }catch(Exception)
             {
-                int i = 0;
             }
             Logger.GetInstance().SaveLog("FindAndReplace exit ");
         }
@@ -698,13 +696,13 @@ namespace MobileApplication
                         ref oMissing, ref oMissing, ref oMissing, ref oMissing);
                     }
                     saved = true;
-                }catch(AccessViolationException ex) { }
+                }catch(AccessViolationException) { } //normal behavior
                 try
                 {
                     if(!saved)
                         doc.SaveAs(pdfPath, word.WdSaveFormat.wdFormatPDF);
                 }
-                catch (AccessViolationException ex) { }
+                catch (AccessViolationException) { }//normal behavior
 
                 doc.Close(false);
                 app.Quit(false);

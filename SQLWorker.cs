@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Configuration;
 using System.Data.SqlClient;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace MobileApplication
@@ -28,7 +24,7 @@ namespace MobileApplication
 
         /// <summary>
         /// private constructor allows to create only managing count of objects
-        /// part of singletone
+        /// part of singleton
         /// </summary>
         private SQLWorker()
         {
@@ -58,7 +54,7 @@ namespace MobileApplication
                     ConfigurationManager.RefreshSection("appSettings");
                 }
             }
-            catch (Exception ex)
+            catch (Exception) //normal behavior. Configuration does not exists.
             {
                 configuration.AppSettings.Settings.Add("dataBaseFile", "MobileInvoice.mdf");
                 configuration.AppSettings.Settings.Add("invoiceFile", "Invoice tempete.docx");
@@ -158,8 +154,8 @@ namespace MobileApplication
                 myConn.Open();
                 alter.ExecuteNonQuery();
             }
-            catch (System.Exception ex)
-            { /*it is ok - database foes not exest */ }
+            catch (System.Exception) //it is ok - database foes not exists
+            {}
 
                 myConn.Close();
 
@@ -181,9 +177,9 @@ namespace MobileApplication
             /// <summary>
             /// Check has the database a table. If not, it will be created
             /// </summary>
-            /// <param name="checkingCommand"> command for checking table. it could be ""select max(Id) from Table"" </param>
+            /// <param name="checkingCommand"> command for checking a table. it could be ""select max(Id) from Table"" </param>
             /// <param name="creatingCommand"> command for create a table. It could be copyed from Table Definition </param>
-            /// /// <returns>retirns true if table was created</returns>
+            /// /// <returns>returns true if a table was created</returns>
             bool CheckAndCreateTable(string checkingCommand, string creatingCommand)
             {
                 Logger.GetInstance().SaveLog("SQLWorker CheckAndCreateTable() enter " + checkingCommand + " "
@@ -262,7 +258,7 @@ namespace MobileApplication
         }
 
         /// <summary>
-        /// Part of singletone
+        /// Part of singleton
         /// </summary>
         /// <returns>retirns only one object</returns>
         public static SQLWorker GetInstance()

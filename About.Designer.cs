@@ -41,15 +41,15 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.exitBtn.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.exitBtn.Font = new System.Drawing.Font("Hack", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.exitBtn.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.exitBtn.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.exitBtn.Location = new System.Drawing.Point(139, 153);
             this.exitBtn.Name = "exitBtn";
             this.exitBtn.Size = new System.Drawing.Size(120, 33);
             this.exitBtn.TabIndex = 0;
-            this.exitBtn.Text = "Exit";
+            this.exitBtn.Text = "Techcare";
             this.exitBtn.UseVisualStyleBackColor = true;
-            this.exitBtn.Click += new System.EventHandler(this.ExitBtn_Click);
+            this.exitBtn.Click += new System.EventHandler(this.ShowClientButton_Click);
             // 
             // pictureBox1
             // 
@@ -65,7 +65,7 @@
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 1;
             this.pictureBox1.TabStop = false;
-            this.pictureBox1.Click += new System.EventHandler(this.PictureBox1_Click);
+            this.pictureBox1.Click += new System.EventHandler(this.ShowClientPictureBox_Click);
             // 
             // Select2
             // 
@@ -73,15 +73,15 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Select2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.Select2.Font = new System.Drawing.Font("Hack", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Select2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Select2.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.Select2.Location = new System.Drawing.Point(12, 153);
             this.Select2.Name = "Select2";
             this.Select2.Size = new System.Drawing.Size(121, 33);
             this.Select2.TabIndex = 2;
-            this.Select2.Text = "Read";
+            this.Select2.Text = "Developers";
             this.Select2.UseVisualStyleBackColor = true;
-            this.Select2.Click += new System.EventHandler(this.Select2_Click);
+            this.Select2.Click += new System.EventHandler(this.ShowUsButton_Click);
             // 
             // label2
             // 
@@ -89,12 +89,12 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Hack", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label2.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
             this.label2.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
             this.label2.Location = new System.Drawing.Point(38, 104);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(202, 34);
+            this.label2.Size = new System.Drawing.Size(197, 33);
             this.label2.TabIndex = 3;
             this.label2.Text = "Who We Are.";
             // 
